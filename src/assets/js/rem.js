@@ -57,5 +57,5 @@ window.onload = function(){
               doc.body.style.fontSize = "16px";
           }, false);
       }
-  })(375, 750);              
+  })(750, 750);              
 }

@@ -16,5 +16,17 @@ i{font-style: normal;}
 .align_center{text-align: center;}
 .pcAuto{width: 1200px;margin:0 auto}
 .mdAuto{}
-body{font-family:Arial, Helvetica, sans-serif!important;}
+@font-face{
+  font-family: 'Whitney Semibold';
+  src : url('../font/Whitney-Semibold_0.otf');
+}
+@font-face{
+  font-family: 'Whitney';
+  src : url('../font/Whitney-Medium_0.otf');
+}
+@font-face{
+  font-family: 'Whitney Book';
+  src : url('../font/Whitney-Book.otf');
+}
+body{font-family:Whitney,Whitney Semibold, Whitney Book, sans-serif!important;}
 

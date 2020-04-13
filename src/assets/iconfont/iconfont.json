@@ -1,0 +1,86 @@
+{
+  "id": "1749278",
+  "name": "百事泰",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "688099",
+      "name": "实验 烧杯 2",
+      "font_class": "shiyanshaobei2",
+      "unicode": "e78c",
+      "unicode_decimal": 59276
+    },
+    {
+      "icon_id": "741916",
+      "name": "设置 (2)",
+      "font_class": "shezhi2",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "6119218",
+      "name": "下-三角",
+      "font_class": "below-s",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "6540838",
+      "name": "列表",
+      "font_class": "liebiao",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "11121474",
+      "name": "文本",
+      "font_class": "wenben",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "8875679",
+      "name": "倒计时",
+      "font_class": "daojishi",
+      "unicode": "e663",
+      "unicode_decimal": 58979
+    },
+    {
+      "icon_id": "286293",
+      "name": "导航-购物车",
+      "font_class": "daohanggouwuche",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "6468302",
+      "name": "结束",
+      "font_class": "jieshu",
+      "unicode": "e676",
+      "unicode_decimal": 58998
+    },
+    {
+      "icon_id": "13740357",
+      "name": "分享",
+      "font_class": "fenxiang",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "728996",
+      "name": "眼睛",
+      "font_class": "yanjing",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "14029783",
+      "name": "人物-团队",
+      "font_class": "renwu-tuandui-copy",
+      "unicode": "e74a",
+      "unicode_decimal": 59210
+    }
+  ]
+}
