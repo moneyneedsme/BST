@@ -49,7 +49,7 @@ export default {
 <style lang="less" scoped>
 .Reviews{
   overflow: hidden;
-  padding:0 63px;
+  padding:0 63px 136px;
   background: white;
   >div{
     margin-top: 72px;
@@ -132,7 +132,7 @@ export default {
 }
 @media screen and (max-width:960px){
   .Reviews{
-    padding:0 0.36rem;
+    padding:0 0.36rem 1.38rem;
     >div{
       margin-top: 0.82rem;
       .head{

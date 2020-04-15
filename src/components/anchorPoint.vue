@@ -1,6 +1,7 @@
 <template>
   <div class='anchorPoint'>
-    <a v-for='(v,i) in list' :key='v+i' :href="'#'+v.id"><span :class='{active:i==active}'>{{v.value}}</span></a>
+    <!-- <a  v-for='(v,i) in list' :key='v+i' :href="'#'+v.id" @click='bindAction(i)'><span :class='{active:i==active}'>{{v.value}}</span></a> -->
+    <a @click='bindAction(v.index)'  v-for='(v,i) in list' :key='v+i' :href="'#'+v.id" ><span :class='{active:v.index==active}'>{{v.value}}</span></a>
   </div>
 </template>
 
@@ -16,12 +17,17 @@ export default {
     },
     active:{
       type: Number,
-      default:0
+      default:-1
     }
   },
   data(){
     return{
       
+    }
+  },
+  methods:{
+    bindAction(index){
+      this.$emit('bindAction',index)
     }
   }
 }
