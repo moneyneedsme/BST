@@ -50,9 +50,13 @@
 <script>
 export default {
   name:'goodsInfo',
+  props:{
+    showTime:{
+      default:true
+    }
+  },
   data(){
     return{
-      showTime:true
     }
   }
 }

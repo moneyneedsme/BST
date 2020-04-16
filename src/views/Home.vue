@@ -6,7 +6,7 @@
       </div>
     </div>
     <div :class="$store.state.isPc?'pcAuto marginTop':'mdAuto'" >
-      <goods-info></goods-info>
+      <goods-info :showTime = 'true'></goods-info>
       <nav-tabs ></nav-tabs>
       <div :class="$store.state.isPc?'pc_content':'md_content'">
         <div class='leftContent'>
@@ -88,10 +88,11 @@ export default {
         setTimeout(()=>{
           this.fdScroll = true;
         },400)
-      }
+       }
       if(this.fdScroll){
         setTimeout(()=>{
           this.fdScroll = true;
+          console.log(document.documentElement.scrollTop,this.AnchorPointTop)
           if(window.scrollY>this.AnchorPointTop){
             this.showAnchorPointHead = true
           }else{
@@ -149,6 +150,21 @@ export default {
       width: 1200px;
       margin:0 auto;
     }
+  }
+  @media screen and (max-width:960px){
+    .headAnchorPoint{
+    z-index: 999;
+    width: 100%;
+    height: 70px!important;
+    background: lightgoldenrodyellow;
+    position: fixed;
+    top:0;
+    height: 0px;
+    >div{
+      width:100%; 
+      margin:0 auto;
+    }
+  }
   }
   .md_content{
     background: white;
