@@ -8,7 +8,7 @@
             <span>Home</span>
             <span>Active Testings</span>
             <span>Test Club</span>
-            <span>User’s Reviews</span>
+            <span @click='toUserReviews'>User’s Reviews</span>
           </div>
           <el-dropdown @command="handleCommand">
             <span class="el-dropdown-link">
@@ -76,6 +76,9 @@ export default {
   methods:{
     handleCommand(command) {
       this.$message('click on item ' + command);
+    },
+    toUserReviews(){
+      this.$router.push({path:'/myCenter'})
     }
   }
 }

@@ -7,6 +7,33 @@ const routes = [
     path: "/",
     name: "Home",
     component: () => import("../views/Home.vue")
+  },
+  {
+    path: "/myCenter",
+    name: "myCenter",
+    component: () => import("../views/myCenter.vue"),
+    children:[
+      {
+        path: "/myReviews",
+        name: "myReviews",
+        component: () => import("../components/myReviews.vue")
+      },
+      {
+        path: "/myArticles",
+        name: "myArticles",
+        component: () => import("../components/myArticles.vue")
+      },
+      {
+        path: "/changePassword",
+        name: "changePassword",
+        component: () => import("../components/changePassword.vue")
+      },
+      {
+        path: "/myProfile",
+        name: "myProfile",
+        component: () => import("../components/myProfile.vue")
+      }
+    ]
   }
 ];
 const router = new VueRouter({

@@ -29,7 +29,7 @@
           </div>
         </div>
         <div class="btnBox">
-          <el-button plain :class='{active:showTime}'>
+          <el-button plain :class='{active:showTime}' @click='showBuyInfo=true'>
             <i class='iconfont iconjieshu'></i>
             <span>Completed</span>
           </el-button>
@@ -44,6 +44,55 @@
         </div>
       </div>
     </div>
+    <el-dialog 
+      class="showBuyInfo"
+      :visible.sync="showBuyInfo"
+      :show-close	= 'false'
+    >
+      <i class='iconfont iconchazishanchudaibiankuang' @click='showBuyInfo=false'></i>
+      <h4>Submit Application</h4>
+      <div class='contenet'>
+        <div class="goods">
+          <img :src="require('../assets/imgs/free/11.jpg')">
+          <div>
+            <h4 class='twoLine'>Free Testing | BESTEK 8-outlet Charging</h4>
+            <div>
+              <div>
+                <span>Price:</span>
+                <i>$39.99</i>
+              </div>
+              <div>
+                <span>Applied:</span>
+                <i>260</i>
+              </div>
+            </div>
+          </div>       
+        </div>
+        <div class='describe'>
+          <h4>Fill out he public test questionnaire:</h4>
+          <p>Filling in the questionnaire carefully will increase the chance of successful application</p>
+        </div>
+        <div class="textBox">
+          <p>Leave your active platform social accounts (Facebook, INS, Twitter or other social account)</p>
+          <el-input placeholder="Reply"></el-input>  
+        </div>
+        <div class="textBox">
+          <p>Please leave an email address for contact</p>
+          <el-input placeholder="Reply"></el-input>  
+        </div>
+      </div>
+      <button @click='showBuyInfo=false;showSuccess=true'>Submit</button>
+    </el-dialog>
+    <el-dialog 
+      class="showSuccess"
+      :visible.sync="showSuccess"
+      :show-close	= 'false'
+    >
+      <i class='iconfont iconchazishanchudaibiankuang' @click='showSuccess=false'></i>
+      <p>Public test application submitted </p>
+      <p>successfully</p>
+      <button>Go To My Application</button>
+    </el-dialog>
   </div>
 </template>
 
@@ -57,6 +106,8 @@ export default {
   },
   data(){
     return{
+      showBuyInfo:false,
+      showSuccess:false,
     }
   }
 }
@@ -198,6 +249,195 @@ export default {
       }
     }
   }
+  
+}
+
+.showBuyInfo{
+  /deep/.el-dialog{
+    background: transparent;
+  }
+  /deep/ .el-dialog{
+    width: 695px;
+    margin-top: 50px!important;
+  }
+  /deep/.el-dialog__header{
+    display: none;
+  }
+  /deep/.el-dialog__body{
+    background:rgba(255,255,255,1);
+    border-radius:20px;
+    position: relative;
+    padding:45px;
+    box-sizing: border-box;
+    >i{
+      font-size: 43px;
+      color:#EBECED;
+      position: absolute;
+      top:-22px;
+      right: -18px;
+      cursor: pointer;
+    }
+    >h4{
+      font-size:32px;
+      font-family:Whitney Semibold;
+      font-weight:400;
+      color:rgba(73,70,69,1);
+      line-height:28px;
+      text-align: center;
+    }
+    .contenet{
+      height: 420px;
+      overflow-y:auto;
+      margin-top: 34px;
+      padding-bottom: 10px;
+      .goods{
+        padding:32px;
+        border:1px solid rgba(238,238,238,1);
+        box-shadow:0px 7px 6px 0px rgba(232,234,236,0.15);
+        border-radius:10px;
+        overflow: hidden;
+        >img{
+            width:117px;
+            height:118px;
+            float: left;
+            margin-right: 34px;
+        }
+        >div{
+          overflow: hidden;
+          >h4{
+            font-size:22px;
+            font-family:Whitney Semibold;
+            font-weight:400;
+            color:rgba(73,70,69,1);
+            line-height:28px;
+            margin-top: 5px;
+            min-height: 50px;
+          }
+          >div{
+            margin-top: 25px;
+            overflow: hidden;
+            font-size: 0;
+            >div{
+              display: inline-block;
+              vertical-align: top;
+              width: 50%;
+              >span{
+                font-size:18px;
+                font-family:Whitney Book;
+                font-weight:400;
+                color:rgba(140,141,141,1);
+              }
+              >i{
+                font-size:22px;
+                font-family:Whitney;
+                font-weight:500;
+                color:rgba(73,70,69,1);
+              }
+            }
+          }
+        }
+      }
+      .describe{
+        margin-top: 45px;
+        >h4{
+          font-size:22px;
+          font-family:Whitney Semibold;
+          font-weight:400;
+          color:rgba(73,70,69,1);
+          line-height:28px;
+        }
+        >p{
+          font-size:16px;
+          font-family:Whitney Book;
+          font-weight:400;
+          color:rgba(73,70,69,1);
+          line-height:28px;
+          margin-top: 12px;
+        }
+      }
+      .textBox{
+        margin-top: 20px;
+        >p{
+          font-size:18px;
+          font-family:Whitney;
+          font-weight:500;
+          color:rgba(73,70,69,1);
+          line-height:26px;
+          margin-bottom: 8px;
+        }
+      }
+    }
+    >button{
+      width:123px;
+      height:35px;
+      line-height: 35px;
+      background:rgba(227,22,25,1);
+      border-radius:18px;
+      outline: none;
+      font-size:20px;
+      font-family:Whitney Book;
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      display: block;
+      margin: 50px auto 0;
+      border:none
+    }
+  }
+  
+}
+.showSuccess{
+  /deep/.el-dialog{
+    background: transparent;
+    position: static;
+  }
+  /deep/ .el-dialog{
+    
+    margin-top: 0px!important;
+  }
+  /deep/.el-dialog__header{
+    display: none;
+  }
+  /deep/.el-dialog__body{
+    width: 695px;
+    background:rgba(255,255,255,1);
+    border-radius:20px;
+    position: absolute;
+    padding: 127px 0px;
+    box-sizing: border-box;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    >i{
+      font-size: 43px;
+      color:#EBECED;
+      position: absolute;
+      top:-22px;
+      right: -18px;
+      cursor: pointer;
+    }
+    >p{
+      font-size:32px;
+      font-family:Whitney Semibold;
+      font-weight:400;
+      color:rgba(73,70,69,1);
+      line-height:38px;
+    }
+    >button{
+      margin-top: 49px;
+      width:300px;
+      height:35px;
+      line-height: 35px;
+      background:rgba(227,22,25,1);
+      border-radius:18px;
+      outline: none;
+      font-size:20px;
+      font-family:Whitney Book;
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      border:none
+    }
+  }
 }
 @media screen and (max-width:960px){
 .goodsInfo{
@@ -288,6 +528,122 @@ export default {
           }
         }
       }
+    }
+  }
+}
+.showBuyInfo{
+  /deep/ .el-dialog{
+    width: 6.79rem;
+    margin-top: 1rem!important;
+  }
+  /deep/.el-dialog__body{
+    padding:0.5rem;
+    >i{
+      font-size: 0.58rem;
+      top:-0.25rem;
+      right: -0.2rem;
+    }
+    >h4{
+      font-size:0.36rem;
+    }
+    .contenet{
+      height: 7.2rem;
+      margin-top: 0.34rem;
+      padding-bottom: 0.1rem;
+      .goods{
+        padding:0.32rem;
+        border-radius:0.12rem;
+        >img{
+            width:1.16rem;
+            height:1.16rem;
+            margin-right:0.5rem;
+        }
+        >div{
+          >h4{
+            font-size:0.26rem;
+            font-family:Whitney;
+            font-weight:500;
+            line-height:0.28rem;
+            margin-top: 0.05rem;
+            min-height: 0.50rem;
+          }
+          >div{
+            margin-top: 0.15rem;
+            >div{
+              >span{
+                font-size:0.24rem;
+              }
+              >i{
+                font-size:0.26rem;
+              }
+            }
+          }
+        }
+      }
+      .describe{
+        margin-top: 0.53rem;
+        >h4{
+          font-size:0.26rem;
+          line-height:0.28rem;
+        }
+        >p{
+          font-size:0.24rem;
+          line-height:0.28rem;
+          margin-top:0.12rem;
+        }
+      }
+      .textBox{
+        margin-top:0.31rem;
+        >p{
+          font-size:0.24rem;
+          line-height:0.28rem;
+          margin-bottom:0.1rem
+        }
+      }
+    }
+    /deep/.el-input__inner{
+      height: 0.6rem;
+      line-height: 0.6rem;
+      font-size: 0.24rem;
+    }
+    >button{
+      width:2.56rem;
+      height:0.58rem;
+      line-height: 0.58rem;
+      border-radius:0.3rem;
+      outline: none;
+      font-size:0.32rem;
+      margin: 0.44rem auto 0;
+      border:none
+    }
+  }
+}
+.showSuccess{
+  /deep/ .el-dialog{
+    
+    margin-top: 0px;
+  }
+  /deep/.el-dialog__body{
+    background:rgba(255,255,255,1);
+    border-radius:20px;
+    padding: 1.27rem 0px;
+    width: 6.79rem;
+    >i{
+      font-size: 0.58rem;
+      top:-0.25rem;
+      right: -0.2rem;
+    }
+    >p{
+      font-size:0.36rem;
+      line-height:0.45rem;
+    }
+    >button{
+      margin-top:0.7rem;
+      width:4rem;
+      height:0.58rem;
+      line-height: 0.58rem;
+      border-radius:0.3rem;
+      font-size:0.32rem;
     }
   }
 }
