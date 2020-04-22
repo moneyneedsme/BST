@@ -10,9 +10,10 @@ ol,ul,li { list-style:none; }
 input, textarea, select, button { font:14px Verdana,Helvetica,Arial,sans-serif; }
 table { border-collapse:collapse; }
 .clearfix:after {content: "."; display: block; height:0; clear:both; visibility: hidden;}
-.clearfix { *zoom:1; }
+.clearfix { *zoom:1;}
 i{font-style: normal;}
 .align_center{text-align: center;}
+*{outline: none;}
 .twoLine{
   overflow: hidden;
   text-overflow: ellipsis;
@@ -30,7 +31,7 @@ i{font-style: normal;}
   font-family:Whitney Semibold;
 }
 .pcAuto{width: 1200px;margin:0 auto}
-/* .mdAuto{} */
+.mdAuto{}
 @font-face{
   font-family: 'Whitney Semibold';
   src : url('../font/Whitney-Semibold_0.otf');
@@ -43,5 +44,6 @@ i{font-style: normal;}
   font-family: 'Whitney Book';
   src : url('../font/Whitney-Book.otf');
 }
+[v-cloak]{display: none!important;}
 body{font-family:Whitney,Whitney Semibold, Whitney Book, sans-serif!important;}
 

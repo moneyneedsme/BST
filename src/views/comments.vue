@@ -83,7 +83,9 @@ export default {
     padding:0px;
     box-sizing: border-box;
     &:hover{
-      color: #E31619
+      color:white;
+      background: #E31619;
+      border:1px solid #E31619;
     }
   }
   .el-button{
@@ -104,7 +106,6 @@ export default {
         color:white;
         background: #E31619;
         border:1px solid #E31619;
-        
       }
     }
   }

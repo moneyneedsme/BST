@@ -1,18 +1,21 @@
 <template>
   <div class='changePassword'>
-    <div>
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+			<el-breadcrumb-item v-for="(v,i) in headlist" :to="{ path:v.path }" :key='i'>{{v.name}}</el-breadcrumb-item>
+		</el-breadcrumb>
+    <div class='content'>
       <h3>Change Password</h3>
       <p>If you forget your password, you can retrieve it by email.</p>
     </div>
-    <div>
+    <div  class='content'>
       <h4>Original Password</h4>
       <el-input v-model="oldPassword" show-password></el-input>
     </div>
-    <div>
+    <div  class='content'>
       <h4>New Password</h4>
       <el-input v-model="newPassword" show-password></el-input>
     </div>
-    <div>
+    <div  class='content'>
       <h4>Confirm Password</h4>
       <el-input v-model="confrimPassword" show-password></el-input>
     </div>
@@ -23,6 +26,14 @@
 <script>
 export default {
   name:'changePassword',
+  props:{
+    headlist:{
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
   data(){
     return{
       oldPassword:'',
@@ -35,11 +46,17 @@ export default {
 
 <style lang="less" scoped>
   .changePassword{
+    position: relative;
     background: white;
     padding:0px 97px 60px;
-    overflow: hidden;
-    >div{
-      margin-top: 55px;
+    /deep/.el-breadcrumb{
+      position: absolute;
+      top: -25px;
+      left: -226px;
+    }
+    >div.content{
+      overflow: hidden;
+      padding-top: 55px;
       >h3{
         font-size:26px;
         font-family:Whitney;

@@ -1,7 +1,10 @@
 <template>
   <div class='myArticles'>
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item v-for="(v,i) in headlist" :to="{ path:v.path }" :key='i'>{{v.name}}</el-breadcrumb-item>
+		</el-breadcrumb>
     <h5><i></i>Post Original</h5>
-    <div v-for="(v,i) in 5" :key='i'>
+    <div v-for="(v,i) in 5" :key='i' class='content'>
       <img :src="require('../assets/imgs/free/11.jpg')">
       <div>
         <div class="right">
@@ -21,14 +24,24 @@
 
 <script>
 export default {
-  name:'myArticles'
+  name:'myArticles',
+  props:{
+    headlist:{
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
+
   .myArticles{
     background: white;
     padding:57px 51px;
+    position: relative;
     >h5{
       font-size:16px;
       font-family:Whitney Book;
@@ -37,7 +50,7 @@ export default {
       margin-bottom: 8px;
       text-align: right;
     }
-    >div{
+    >div.content{
       padding:23px 0;
       box-sizing: border-box;
       overflow: hidden;

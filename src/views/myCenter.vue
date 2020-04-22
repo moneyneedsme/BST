@@ -1,15 +1,11 @@
 <template>
-	<div class='pcAuto myCenter'>
-		<el-breadcrumb separator-class="el-icon-arrow-right">
-			<el-breadcrumb-item :to="{ path: '/' }">My Center</el-breadcrumb-item>
-			<el-breadcrumb-item>My Reviews</el-breadcrumb-item>
-		</el-breadcrumb>
+	<div class='myCenter' :class='$store.state.isPc?"pcAuto":"mdAuto"'>
 		<div class="content">
-			<div class="leftMeun">
-				<div class='title' @click='toMyArticles=0' :class='{active:leftIndex==0}'><i class='iconfont iconwenzhang '></i>My Articles</div>
-				<div @click='toMyArticles(1)' :class='{active:leftIndex==1}'><i></i>All(9)</div>
-				<div @click='toMyArticles(2)' :class='{active:leftIndex==2}'><i></i>Approved(4)</div>
-				<div @click='toMyArticles(3)' :class='{active:leftIndex==3}'><i></i>Not Approved(2)</div>
+			<div class="leftMeun" v-if='$store.state.isPc'>
+				<div class='title' @click='toMyArticles(0,null)' :class='{active:leftIndex==0}'><i class='iconfont iconwenzhang '></i>My Articles</div>
+				<div @click='toMyArticles(1,"All")' :class='{active:leftIndex==1}'><i></i>All(9)</div>
+				<div @click='toMyArticles(2,"Approved")' :class='{active:leftIndex==2}'><i></i>Approved(4)</div>
+				<div @click='toMyArticles(3,"Not Approved")' :class='{active:leftIndex==3}'><i></i>Not Approved(2)</div>
 				<div class='title' @click='leftIndex=4' :class='{active:leftIndex==4}'><i class='iconfont iconshiyanshaobei2 '></i>My Applications</div>
 				<div @click='leftIndex=5' :class='{active:leftIndex==5}'><i></i>All(4)</div>
 				<div @click='leftIndex=6' :class='{active:leftIndex==6}'><i></i>Applying(0)</div>
@@ -22,15 +18,16 @@
 				<div @click='toChangePassword(13)' :class='{active:leftIndex==13}'><i></i>Change Password</div>
 			</div>
 			<div class='cententBox'>
-				<router-view />
+				<router-view :headlist = headlist />
 			</div>
-			<div class="rightBox">
+			<div class="rightBox" v-if='$store.state.isPc'>
 				<div class="userImg">
 					<img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png">
 					<span>Welcome! Emily</span>
 				</div>
-				<hot-activities></hot-activities>
+				<hot-activities ></hot-activities>
 			</div>
+			<hot-activities v-else></hot-activities>
 		</div>
 	</div>
 </template>
@@ -44,19 +41,46 @@ export default {
 	},
 	data(){
 		return{
-			leftIndex:-1,
+			leftIndex:0,
+			headlist:[
+				{name:'My Center',path:''},
+				{name:'My Articles',path:'/myArticles'},
+			],
 		}
 	},
 	methods:{
-		toMyArticles(i){
+		toMyArticles(i,name){
+			if(name){
+				this.headlist = [
+					{name:'My Center',path:''},
+					{name:'My Articles',path:''},
+					{name,path:''}
+				]
+			}else{
+				this.headlist = [
+					{name:'My Center',path:''},
+					{name:'My Articles',path:''},
+				]
+			}
+			
 			this.$router.push({path:'/myArticles'}),
 			this.onActive(i)
 		},
 		toChangePassword(i){
+			this.headlist = [
+				{name:'My Center',path:''},
+				{name:'My Settings',path:''},
+				{name:'Change Password',path:''}
+			]
 			this.$router.push({path:'/changePassword'}),
 			this.onActive(i)
 		},
 		toMyProfile(i){
+			this.headlist = [
+				{name:'My Center',path:''},
+				{name:'My Settings',path:''},
+				{name:'My Profile',path:''}
+			]
 			this.$router.push({path:'/myProfile'}),
 			this.onActive(i)
 		},
@@ -71,7 +95,6 @@ export default {
 .myCenter{
 	padding-top: 47px;
 	.content{
-		overflow: hidden;
 		margin-top:11px;
 	}
 	.leftMeun{
@@ -138,5 +161,11 @@ export default {
 		display: inline-block;
 	}
 }
-
+.pcAuto{
+	/deep/.el-breadcrumb{
+		position: absolute;
+		top: -25px;
+		left: -226px;
+	}
+}
 </style>

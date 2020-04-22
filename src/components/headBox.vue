@@ -5,7 +5,7 @@
         <div class="content">
           <img :src="require('../assets/imgs/logo.png')" class='logo'>
           <div class="list">
-            <span>Home</span>
+            <span @click='toHome'>Home</span>
             <span>Active Testings</span>
             <span>Test Club</span>
             <span @click='toUserReviews'>User’s Reviews</span>
@@ -49,13 +49,13 @@
           width='100%'
           >
           <div class='dialogNav_content'>
-            <span>Home</span>
+            <span @click='tolink("/")'>Home</span>
             <span>Test Club</span>
           </div>
           <el-divider></el-divider>
           <div class='dialogNav_content'>
             <span>Active Testing</span>
-            <span>User’s Reviews</span>
+            <span @click="tolink('/myCenter')">User’s Reviews</span>
           </div>
         </el-dialog>
       </div>
@@ -75,10 +75,17 @@ export default {
   },
   methods:{
     handleCommand(command) {
-      this.$message('click on item ' + command);
+      
+    },
+    toHome(){
+      this.$router.push({path:'/'})
     },
     toUserReviews(){
       this.$router.push({path:'/myCenter'})
+    },
+    tolink(path){
+      this.$router.push({path})
+      this.dialogNav = false;
     }
   }
 }

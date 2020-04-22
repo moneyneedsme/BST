@@ -1,5 +1,8 @@
 <template>
   <div class='myProfile'>
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+			<el-breadcrumb-item v-for="(v,i) in headlist" :to="{ path:v.path }" :key='i'>{{v.name}}</el-breadcrumb-item>
+		</el-breadcrumb>
     <div class='textBox'>
       <h3>My Profile</h3>
       <p>More complete data, more secure account. Complete your profile information</p>
@@ -49,6 +52,14 @@
 <script>
 export default {
   name:'myProfile',
+  props:{
+    headlist:{
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
   data(){
     return{
       CountryValue:'',
@@ -69,11 +80,16 @@ export default {
 
 <style lang="less" scoped>
   .myProfile{
+    position: relative;
     background: white;
     padding:0px 97px 60px;
-    overflow: hidden;
+    /deep/.el-breadcrumb{
+      position: absolute;
+      top: -25px;
+      left: -226px;
+    }
     >div.textBox{
-      margin-top:45px;
+      padding-top:45px;
       >h3{
         font-size:26px;
         font-family:Whitney;

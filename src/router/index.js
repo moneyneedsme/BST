@@ -14,6 +14,10 @@ const routes = [
     component: () => import("../views/myCenter.vue"),
     children:[
       {
+        path: "/",
+        redirect:'/myReviews'
+      },
+      {
         path: "/myReviews",
         name: "myReviews",
         component: () => import("../components/myReviews.vue")
@@ -34,10 +38,20 @@ const routes = [
         component: () => import("../components/myProfile.vue")
       }
     ]
-  }
+  },
+  {
+    path: "/apply",
+    name: "apply",
+    component: () => import("../views/apply.vue")
+  },
+  {
+    path: "/publishArticle",
+    name: "publishArticle",
+    component: () => import("../views/publishArticle.vue")
+  },
 ];
 const router = new VueRouter({
-  mode: "history",
+  mode: "hash",
   base: process.env.BASE_URL,
   routes
 });

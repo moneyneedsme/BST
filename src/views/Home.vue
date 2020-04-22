@@ -10,7 +10,7 @@
       <nav-tabs ></nav-tabs>
       <div :class="$store.state.isPc?'pc_content':'md_content'">
         <div class='leftContent'>
-          <anchor-point :list='pointList'  @bindAction = 'bindAction' :active.sync = 'active' v-show='!showAnchorPointHead' ref='anchorPoint'></anchor-point>
+          <anchor-point :list='pointList'  @bindAction = 'bindAction' :active.sync = 'active' v-show='!showAnchorPointHead' ref='anchorPoint' id='anchorPoint'></anchor-point>
           <reviews class='reviews' id='Reviews' ref='Reviews'></reviews>
           <activity-details id='ActivityDetails' ref='ActivityDetails'></activity-details>
           <winner-lists id='Applicationlists' ref='Applicationlists'></winner-lists>
@@ -63,16 +63,27 @@ export default {
       ActivityDetailsTop:null,
       ApplicationlistsTop:null,
       CommentsTop:null,
-
+      setTime:this.$store.state.isPc?300:0
     }
   },
   mounted(){
-    document.addEventListener('scroll', this.handleScroll);
-    this.AnchorPointTop = this.$refs.anchorPoint.$el.offsetTop;
-    this.ReviewsTop = this.$refs.Reviews?this.$refs.Reviews.$el.offsetTop:undefined;
-    this.ActivityDetailsTop = this.$refs.ActivityDetails.$el.offsetTop;
-    this.ApplicationlistsTop = this.$refs.Applicationlists.$el.offsetTop;
-    this.CommentsTop = this.$refs.Comments.$el.offsetTop;
+    if(!this.$store.state.isPc){
+      setTimeout(() => {
+        document.addEventListener('scroll', this.handleScroll);
+        this.AnchorPointTop = this.$refs.anchorPoint.$el.offsetTop;
+        this.ReviewsTop = this.$refs.Reviews?this.$refs.Reviews.$el.offsetTop:undefined;
+        this.ActivityDetailsTop = this.$refs.ActivityDetails.$el.offsetTop;
+        this.ApplicationlistsTop = this.$refs.Applicationlists.$el.offsetTop;
+        this.CommentsTop = this.$refs.Comments.$el.offsetTop;
+      }, 5000);
+    }else{
+      document.addEventListener('scroll', this.handleScroll);
+      this.AnchorPointTop = this.$refs.anchorPoint.$el.offsetTop;
+      this.ReviewsTop = this.$refs.Reviews?this.$refs.Reviews.$el.offsetTop:undefined;
+      this.ActivityDetailsTop = this.$refs.ActivityDetails.$el.offsetTop;
+      this.ApplicationlistsTop = this.$refs.Applicationlists.$el.offsetTop;
+      this.CommentsTop = this.$refs.Comments.$el.offsetTop;
+    }
   },
   methods:{
     bindAction(i){
@@ -88,30 +99,30 @@ export default {
         setTimeout(()=>{
           this.fdScroll = true;
         },400)
-       }
-      if(this.fdScroll){
-        setTimeout(()=>{
-          this.fdScroll = true;
-          console.log(document.documentElement.scrollTop,this.AnchorPointTop)
-          if(window.scrollY>this.AnchorPointTop){
-            this.showAnchorPointHead = true
-          }else{
-            this.showAnchorPointHead = false
-          }
-          if(window.scrollY>this.ReviewsTop&&window.scrollY<this.ActivityDetailsTop){
-            this.active = 0;
-          }else if(window.scrollY>this.ActivityDetailsTop&&window.scrollY<this.ApplicationlistsTop){
-            this.active = 1;
-          }else if(window.scrollY>this.ApplicationlistsTop&&window.scrollY<this.CommentsTop){
-            this.active = 2;
-          }else if(window.scrollY>this.CommentsTop){
-            this.active = 3;
-          }else{
-            this.active = -1;
-          }
-        },300)
       }
-      this.fdScroll = false;
+      if(this.fdScroll){
+        this.fdScroll = false;
+        if(window.scrollY>this.AnchorPointTop){
+          this.showAnchorPointHead = true
+        }else{
+          this.showAnchorPointHead = false
+        }
+        if(window.scrollY>this.ReviewsTop&&window.scrollY<this.ActivityDetailsTop){
+          this.active = 0;
+        }else if(window.scrollY>this.ActivityDetailsTop&&window.scrollY<this.ApplicationlistsTop){
+          this.active = 1;
+        }else if(window.scrollY>this.ApplicationlistsTop&&window.scrollY<this.CommentsTop){
+          this.active = 2;
+        }else if(window.scrollY>this.CommentsTop){
+          this.active = 3;
+        }else{
+          this.active = -1;
+        }
+      }else{
+        setTimeout(() => {
+          this.fdScroll = true;
+        },this.setTime);
+      }
     }
   }
 }
