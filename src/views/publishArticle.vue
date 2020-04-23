@@ -18,22 +18,29 @@
     </div>
     <div class="left">
       <div class="updataImgBox">
-      <el-upload
-          ref = 'upload'
-          class="avatar-uploader"
-          :http-request="subeImg"
-          action=""
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-          >
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <div class='updataImg'>
-              <i class='iconfont iconjiahao'></i>
-              <h4>Upload Cover Image</h4>
-              <p>To get a better display effect, we recommends you upload the cover image size not less than size of 905*480 pixels.</p>
-            </div>
-          
-        </el-upload>
+        <el-upload
+            ref = 'upload'
+            class="avatar-uploader"
+            :http-request="subeImg"
+            action=""
+            :show-file-list="false"
+            :before-upload="beforeAvatarUpload"
+            >
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+              <div class='updataImg'>
+                <i class='iconfont iconjiahao'></i>
+                <h4>Upload Cover Image</h4>
+                <p>To get a better display effect, we recommends you upload the cover image size not less than size of 905*480 pixels.</p>
+              </div>
+          </el-upload>
+        </div>
+        <el-input placeholder="Add Article Title"></el-input>
+        <quill-editor ref="text" v-model="content" class="myQuillEditor" :options="editorOption" />
+        <div class="btnBox">
+          <button>Submit</button>
+          <button>Save</button>
+          <button>Preview</button>
+          {{content}}
         </div>
     </div>
     <img-tailoring
@@ -51,11 +58,15 @@
 
 <script>
 import  imgTailoring from "../components/imgTailoring";
-
+import { quillEditor } from 'vue-quill-editor'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 export default {
   name:'publishArticle',
   components:{
-    imgTailoring
+    imgTailoring,
+    quillEditor
   },
   data(){
     return{
@@ -65,6 +76,8 @@ export default {
       imgUrl:'',
       fileUpload: null,
       isShowCropper:false,
+      content: '',
+      editorOption: {} 
     }
   },
   methods:{
@@ -114,9 +127,40 @@ export default {
   .publishArticle{
     margin-top: 53px;
     overflow: hidden;
+    .left{
+      width:895px;
+      padding-bottom: 50px;
+      .el-input{
+        margin: 16px 0;
+      }
+      /deep/.ql-editor{
+        min-height: 400px;
+      }
+      .btnBox{
+        text-align: center;
+        margin-top: 30px;
+        >button{
+          width:194px;
+          height:46px;
+          border-radius:23px;
+          border: none;
+          padding:0;
+          font-size:22px;
+          font-family:Whitney Book;
+          font-weight:400;
+          color:rgba(255,255,255,1);
+          margin-right: 18px;
+          &:last-of-type{
+            margin-right: 0px;
+          }
+          &:hover{
+            background:rgba(228,0,0,1);
+          }
+        }
+      }
+    }
     .updataImgBox{
       background: white;
-      width: 905px;
       height: 480px;
       position: relative;
       div.updataImg{
