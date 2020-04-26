@@ -14,8 +14,9 @@
       :fixedBox = 'fixedBox'
     ></vueCropper>
     <div class='btnBox'>
-      <Button  style="margin-right:20px" @click="cancel" >取消</Button>
-      <Button  @click="onCubeImg" >确定裁剪图片</Button>
+      <span>Drag and Resize</span>
+      <Button  @click="onCubeImg" class='Confirm'>Confirm</Button>
+      <Button  style="margin-right:20px" @click="cancel" >Cancel</Button>
     </div>
   </div>
 </template>
@@ -118,9 +119,41 @@ export default {
     }
     .btnBox{
       position: absolute;
+      width: 80%;
       left:50%;
       bottom: 4%;
-      transform: translateX(-50%)
+      transform: translateX(-50%);
+      padding:24px 29px;
+      background: white;
+      box-sizing: border-box;
+      overflow: hidden;
+      >span{
+        font-size:22px;
+        font-family:Whitney Book;
+        font-weight:400;
+        color:rgba(76,73,72,1);
+        vertical-align: middle;
+      }
+      >button{
+        width:132px;
+        height:38px;
+        line-height: 38px;
+        border:1px solid rgba(208,208,208,1);
+        border-radius:19px;
+        box-sizing: border-box;
+        font-size:22px;
+        font-family:Whitney Book;
+        font-weight:400;
+        color:rgba(76,73,72,1);
+        float: right;
+        cursor: pointer;
+        margin-left: 13px;
+      }
+      .Confirm{
+        background:rgba(228,0,0,1);
+        border-color:rgba(228,0,0,1);
+        color:rgba(255,255,255,1);
+      }
     }
   }
 </style>

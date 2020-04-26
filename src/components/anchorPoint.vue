@@ -38,7 +38,7 @@ export default {
   height: 71px;
   line-height: 74px;
   background: white;
-  padding:0 34px;
+  padding:0 57px;
   display: flex;
   justify-content: space-between;
   >a{

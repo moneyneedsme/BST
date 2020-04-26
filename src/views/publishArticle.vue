@@ -40,7 +40,6 @@
           <button>Submit</button>
           <button>Save</button>
           <button>Preview</button>
-          {{content}}
         </div>
     </div>
     <img-tailoring
@@ -58,6 +57,8 @@
 
 <script>
 import  imgTailoring from "../components/imgTailoring";
+import  {httpNetwork} from "../config/axios";
+import { Upload } from '../config'
 import { quillEditor } from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
@@ -70,6 +71,7 @@ export default {
   },
   data(){
     return{
+      Upload,
       imageUrl:"",
       autoCropWidth:200,
       autoCropHeight:200,
@@ -91,8 +93,9 @@ export default {
       //   reader.readAsDataURL(file)
       // console.log(file)
         let formData = new FormData();//formdata格式
-       formData.append('Img', file);
-       this.axios.post("https://vendor-platform-test.sun-hyt.com/system/file/uploadFile", formData).then(res => {
+       formData.append('file', file);
+       httpNetwork(this.Upload,formData).then(res => {
+         console.log(res)
        });
     },
     beforeAvatarUpload(file) {
@@ -149,6 +152,7 @@ export default {
           font-family:Whitney Book;
           font-weight:400;
           color:rgba(255,255,255,1);
+          background:rgba(209,209,210,1);
           margin-right: 18px;
           &:last-of-type{
             margin-right: 0px;

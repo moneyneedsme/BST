@@ -1,39 +1,49 @@
 <template>
   <div>
     <div class='goodsInfo'>
-      <img :src="require('../assets/imgs/free/11.jpg')">
+      <img :src="imgUrl+datas.image">
       <div>
-        <h2>Free Testing | Crowdfunding Is OngoingM-Care Toothbrush Set & UV Sanitizer...</h2>
+        <h2>{{datas.name}}</h2>
         <div class='Applied'>
           <i class='iconfont iconrenwu-tuandui-copy'></i>
-          <span> 260 Applied</span>
+          <span> {{datas.applied}} Applied</span>
           <b></b>
           <i class='iconfont iconyanjing'></i>
-          <span> 260 Applied</span>
+          <span> {{datas.views}} Views</span>
         </div>
         <div class="Qty" >
             <span>Qty:</span>
-            <i>6</i>
+            <i>{{datas.required}}</i>
             <span>Price:</span>
-            <i>$25.99</i>
+            <i>${{datas.retailprice}}</i>
         </div>
         
         <div class="activityEnds" >
-          <template v-if='!showTime'>
-            Activity ends, 20 applied successfully
+          <template v-if='datas.zhuangtai==0'>
+            Activity ends, {{datas.applysuccess}} applied successfully
             <a href="#">See Results</a>
           </template>
-          <div class=time v-else>
+          <div class=time v-else-if='datas.zhuangtai==1'>
               <i class='iconfont icondaojishi'></i>
-              Count Down: <span>10</span> Days <span>6</span> Hours
+              Count Down: <span>{{datas.leftday}}</span> Days <span>{{datas.lefthour}}</span> Hours
           </div>
         </div>
         <div class="btnBox">
-          <el-button plain :class='{active:showTime}' @click='showBuyInfo=true'>
+          <div v-if='datas.zhuangtai==0' class='showStatus' >
             <i class='iconfont iconjieshu'></i>
             <span>Completed</span>
-          </el-button>
-          <el-button plain :class='{active:!showTime}'>
+          </div>
+          <div v-else class='showStatus buyActive' @click='showBuyInfo=true' >
+            <template v-if="$store.state.isPc">
+              <i class='iconfont iconmianfei'  style="margin-right:6px"></i>
+              <span >Apply for Free</span>
+            </template  >
+            <template v-else>
+               <i class='iconfont iconmianfei'  ></i>
+              <span>Apply</span>
+            </template>
+          </div>
+          <el-button plain :class='{active:!datas.status==1  }' >
             <i class='iconfont icondaohanggouwuche'></i>
             <span>Buy Now</span>
           </el-button>
@@ -80,6 +90,10 @@
           <p>Please leave an email address for contact</p>
           <el-input placeholder="Reply"></el-input>  
         </div>
+        <div class="textBox">
+          <p>Convince us why choose you</p>
+          <el-input placeholder="Reply"></el-input>  
+        </div>
       </div>
       <button @click='showBuyInfo=false;showSuccess=true'>Submit</button>
     </el-dialog>
@@ -97,11 +111,11 @@
 </template>
 
 <script>
+import  {httpNetwork} from "../config/axios";
 export default {
   name:'goodsInfo',
   props:{
-    showTime:{
-      default:true
+    datas:{
     }
   },
   data(){
@@ -109,6 +123,10 @@ export default {
       showBuyInfo:false,
       showSuccess:false,
     }
+  },
+  mounted(){
+  },
+  methods:{
   }
 }
 </script>
@@ -222,7 +240,31 @@ export default {
     .btnBox{
       display: flex;
       justify-content: space-between;
+      div.buyActive{
+        cursor: pointer;
+        background:rgba(227,22,25,1);
+        color:white;
+        border:none;
+        span{
+          color:white;
+        }
+      }
+      .showStatus{
+        line-height:47px;
+        text-align: center;
+        border: 1px solid #DCDFE6;
+        .iconmianfei{
+          font-size: 18px;
+        }
+      }
       >button{
+        &:hover,&.active{
+          color:white;
+          border:none;
+          background:rgba(227,22,25,1);
+        }
+      }
+      >button,.showStatus{
         margin-top: 80px;
         box-sizing: border-box;
         width:167px;
@@ -232,18 +274,18 @@ export default {
         font-size:18px;
         font-weight:500;
         color:rgba(73,70,69,1);
-        &:hover,&.active{
-          color:white;
-          border:none;
-          background:rgba(227,22,25,1);
+        span{
+          font-size:18px;
+          font-family:Whitney Book;
+          font-weight:400;
         }
         i{
           font-size: 21px;
           margin-right: 12px;
-          vertical-align: -1px;
+          vertical-align:1px;
           &.share{
             font-size: 24px;
-            vertical-align: -4px;
+            vertical-align: -2px;
           }
         }
       }
@@ -511,7 +553,18 @@ export default {
       }
     }
     .btnBox{
-      >button{
+      .showStatus{
+        line-height:0.4rem;
+        text-align: center;
+        i{
+          font-size:0.28rem;
+          margin-right: 0.08rem;
+        }
+        span{
+          vertical-align: top;
+        }
+      }
+      >button,.showStatus{
         margin-top: 0.92rem;
         width:1.9rem;
         height:0.47rem;
@@ -526,6 +579,12 @@ export default {
             font-size: 0.36rem;
             vertical-align: -2px;
           }
+        }
+        span{
+          font-size:0.24rem;
+          font-family:Whitney Book;
+          font-weight:400;
+          color:rgba(73,70,69,1);
         }
       }
     }

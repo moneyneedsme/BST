@@ -241,6 +241,7 @@ export default {
       >img{
         width: 750px;
         height: 750px;
+        border-radius:20px 20px 0 0 ;
       }
     }
     /deep/.el-carousel__indicators--outside{
@@ -450,12 +451,13 @@ export default {
       margin: 0;
     }
     /deep/.el-dialog__body{
-      border-radius:0 20px 20px 0 ;
+      border-radius:0 ;
       padding:0 0 1rem;
       >i{
         font-size: 0.58rem;
         top:-0.25rem;
         right: -0.2rem;
+        z-index: 99999999;
       }
       /deep/ .el-carousel__container{
         height:  7.14rem;
@@ -464,6 +466,7 @@ export default {
         >img{
           width:  7.14rem;
           height:  7.14rem;
+          border-radius: 0px;
         }
       }
       .index{

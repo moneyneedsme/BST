@@ -1,17 +1,18 @@
 <template>
   <div>
+    <h1>{{$store.state.islogin}}</h1>
     <div class='headAnchorPoint' v-show='showAnchorPointHead'>
       <div>
           <anchor-point :list='pointList' @bindAction = 'bindAction' :active.sync = 'active'></anchor-point>
       </div>
     </div>
     <div :class="$store.state.isPc?'pcAuto marginTop':'mdAuto'" >
-      <goods-info :showTime = 'true'></goods-info>
+      <goods-info :datas = 'goodsInfodatas'></goods-info>
       <nav-tabs ></nav-tabs>
       <div :class="$store.state.isPc?'pc_content':'md_content'">
         <div class='leftContent'>
           <anchor-point :list='pointList'  @bindAction = 'bindAction' :active.sync = 'active' v-show='!showAnchorPointHead' ref='anchorPoint' id='anchorPoint'></anchor-point>
-          <reviews class='reviews' id='Reviews' ref='Reviews'></reviews>
+          <reviews v-if='this.goodsInfodatas.zhuangtai==0' class='reviews' id='Reviews' ref='Reviews'></reviews>
           <activity-details id='ActivityDetails' ref='ActivityDetails'></activity-details>
           <winner-lists id='Applicationlists' ref='Applicationlists'></winner-lists>
           <comments id='Comments' ref='Comments'></comments>
@@ -30,6 +31,8 @@ import reviews from '../components/Reviews'
 import activityDetails from '../components/activityDetails'
 import winnerLists from './winnerLists'
 import comments from './comments'
+import  {httpNetwork} from "../config/axios";
+import { mapActions } from "vuex";
 export default {
   name:'home',
   components: { 
@@ -44,17 +47,9 @@ export default {
   },
   data(){
     return{
-      pointList:true?[
-        {value:"Reviews",id:"Reviews",index:0},
-        {value:"Activity Details",id:"ActivityDetails",index:1},
-        {value:"Application lists",id:"Applicationlists",index:2},
-        {value:"Comments",id:"Comments",index:3},
-      ]:
-      [
-        {value:"Activity Details",id:"ActivityDetails",index:1},
-        {value:"Application lists",id:"Applicationlists",index:2},
-        {value:"Comments",id:"Comments",index:3},
-      ],
+      pointList:[],
+      product_activity_id:767,
+      goodsInfodatas:{},
       active:-1,
       fdScroll:true,
       AnchorPointTop:null,
@@ -65,6 +60,10 @@ export default {
       CommentsTop:null,
       setTime:this.$store.state.isPc?300:0
     }
+  },
+  created(){
+    this.getLogin();
+    this.getactivitydetail();
   },
   mounted(){
     if(!this.$store.state.isPc){
@@ -84,8 +83,12 @@ export default {
       this.ApplicationlistsTop = this.$refs.Applicationlists.$el.offsetTop;
       this.CommentsTop = this.$refs.Comments.$el.offsetTop;
     }
+
   },
   methods:{
+     ...mapActions([
+      "getLogin"
+    ]),
     bindAction(i){
       this.handleScroll(null,true,i)
     },
@@ -123,7 +126,35 @@ export default {
           this.fdScroll = true;
         },this.setTime);
       }
-    }
+    },
+    getactivitydetail(){
+      const url = `index.php?route=newhome/activity/getactivitydetail&product_activity_id=${this.product_activity_id}`
+      httpNetwork(url,null,'get').then(res=>{
+        this.goodsInfodatas = res.data;
+        this.pointList = res.data.zhuangtai==0?[
+          {value:"Reviews",id:"Reviews",index:0},
+          {value:"Activity Details",id:"ActivityDetails",index:1},
+          {value:"Application lists",id:"Applicationlists",index:2},
+          {value:"Comments",id:"Comments",index:3},
+        ]:
+        [
+          {value:"Activity Details",id:"ActivityDetails",index:1},
+          {value:"Application lists",id:"Applicationlists",index:2},
+          {value:"Comments",id:"Comments",index:3},
+        ];
+      })
+    },
+    // isLogin(){
+    //   const url = 'index.php?route=forum/forum2/checklogin'
+    //   httpNetwork(url,null,'get').then(res=>{
+    //     console.log(res)
+    //   }).catch(err=>{
+    //     console.log(err)
+    //     if(err.code===0){
+    //     //  window.location.href="https://www.bestekdirect.com/login"
+    //     }
+    //   })
+    // }
   }
 }
 </script>

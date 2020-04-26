@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "../store";
+import config from "../config";
+
 Vue.use(VueRouter);
 const routes = [
   {
@@ -49,9 +51,14 @@ const routes = [
     name: "publishArticle",
     component: () => import("../views/publishArticle.vue")
   },
+  {
+    path: "/postComments",
+    name: "postComments",
+    component: () => import("../views/postComments.vue")
+  },
 ];
 const router = new VueRouter({
-  mode: "hash",
+  mode: "history",
   base: process.env.BASE_URL,
   routes
 });
@@ -59,6 +66,14 @@ router.beforeEach((to, from, next) => {
   if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
     store.commit("setPc", false);
   }
+  if (!from.name) {
+    config.setStorage('store',store.state)
+  }
   next();
 });
+router.afterEach((to,from) => {
+  if (!from.name) {
+    store.commit("setState", config.getStorage('store'));
+  }
+})
 export default router;

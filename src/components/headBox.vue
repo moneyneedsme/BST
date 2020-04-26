@@ -8,7 +8,7 @@
             <span @click='toHome'>Home</span>
             <span>Active Testings</span>
             <span>Test Club</span>
-            <span @click='toUserReviews'>User’s Reviews</span>
+            <span>User’s Reviews</span>
           </div>
           <el-dropdown @command="handleCommand">
             <span class="el-dropdown-link">
@@ -75,7 +75,11 @@ export default {
   },
   methods:{
     handleCommand(command) {
-      
+      switch(command){
+        case 'a':
+          this.toUserReviews();
+          break;
+      }
     },
     toHome(){
       this.$router.push({path:'/'})
