@@ -1,6 +1,6 @@
 <template>
   <div class='activityDetails'>
-    <div class=details></div>
+    <div class=details v-html='longtext'></div>
     <div class="share">
       <img :src="require('../assets/imgs/faceBook.png')">
       <img :src="require('../assets/imgs/twritte.png')">
@@ -11,6 +11,7 @@
 <script>
 export default {
   name:'activityDetails',
+  props:['longtext'],
   data(){
     return{
     }  
@@ -22,9 +23,7 @@ export default {
 .activityDetails{
   overflow: hidden;
   padding:0 63px 105px;
-  background: lightgoldenrodyellow;
   .details{
-    height: 700px;
   }
   .share{
     text-align: center;

@@ -8,9 +8,6 @@ export default new Vuex.Store({
     islogin:0,//1表示登录 0表示未登录
   },
   mutations: {
-    setState(state,data){
-      state = data;
-    },
     setPc(state, value = true) {
       state.isPc = value;
     },
@@ -21,12 +18,11 @@ export default new Vuex.Store({
   actions: {
     getLogin({ state, commit }){
       const url = 'index.php?route=forum/forum2/checklogin'
-      httpNetwork(url,null,'get').then(res=>{
+      return httpNetwork(url,null,'get').then(res=>{
         if(res.code===1){
           commit('setLogin',1)
         }
       }).catch(err=>{
-        commit('setLogin',1)
         if(err.code===0){
         //  window.location.href="https://www.bestekdirect.com/login"
         }

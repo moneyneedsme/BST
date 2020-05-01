@@ -5,11 +5,11 @@
       type="textarea"
       :autosize="{ minRows: 2, maxRows:5}"
       placeholder="Share your thoughts......"
-      v-model="textValue">
+      v-model="content">
     </el-input>
     <div class='btnBox'>
-      <el-button round >Cancel</el-button>
-      <el-button class='Release' round>Release</el-button>
+      <el-button round @click='content=""'>Cancel</el-button>
+      <el-button class='Release' round @click='onRelease'>Release</el-button>
     </div>
     <commentsItems
       class='commentsItems'
@@ -35,11 +35,13 @@
 </template>
 <script>
 import commentsItems from '../components/commentsItems'
+import  {httpNetwork} from "../config/axios"
 export default {
   name:'comments',
   components:{
     commentsItems
   },
+  props:['product_activity_id','ceping_review_id'],
   data(){
     let list = new Array(6);
     let item = {
@@ -53,10 +55,29 @@ export default {
     list.fill(item)
     return{
       list,
-      textValue:'',
+      content:'',
       pageSize:5,
       currentPage:1,
     }
+  },
+  methods:{
+    onRelease(){
+      const url = `index.php?route=forum/ceping/comment_add`
+      const data = {
+        ceping_review_id:this.ceping_review_id,
+        product_activity_id:this.product_activity_id,
+        content:this.content
+      }
+      return httpNetwork(url,data).then(res=>{
+        this.content = ''
+        this.$message({
+          showClose: true,
+          message: res.text,
+          type: 'success',
+          duration:1500
+        });
+      })
+    },
   }
 }
 </script>

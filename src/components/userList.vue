@@ -1,8 +1,8 @@
 <template>
   <div :class='$store.state.isPc?"pc_userList":"md_userList"'>
-    <div v-for='(v,i) in list' :key='v.name+i'>
-      <img :src="v.imgUrl">
-      <p>{{v.name}}</p>
+    <div v-for='(v,i) in list' :key='i'>
+      <img :src="v.avatar">
+      <p>{{v.user_name}}</p>
     </div>
   </div>
 </template>

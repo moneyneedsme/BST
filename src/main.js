@@ -10,6 +10,20 @@ import "element-ui/lib/theme-chalk/index.css";
 import  config from "./config";
 Vue.prototype.imgUrl= config.imgUrl
 Vue.use(ElementUI);
+Vue.prototype.vueLoading= {
+  node:'',
+  show(){
+    this.node = ElementUI.Loading.service({
+      lock: true,
+      text: 'Loading',
+      spinner: 'el-icon-loading',
+      background: 'rgba(0, 0, 0, 0.7)'
+    })
+  },
+  hide(){
+    this.node.close()
+  }
+}
 Vue.config.productionTip = false;
 new Vue({
   router,

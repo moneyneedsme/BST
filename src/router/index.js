@@ -1,8 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "../store";
-import config from "../config";
-
 Vue.use(VueRouter);
 const routes = [
   {
@@ -63,17 +61,6 @@ const router = new VueRouter({
   routes
 });
 router.beforeEach((to, from, next) => {
-  if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
-    store.commit("setPc", false);
-  }
-  if (!from.name) {
-    config.setStorage('store',store.state)
-  }
   next();
 });
-router.afterEach((to,from) => {
-  if (!from.name) {
-    store.commit("setState", config.getStorage('store'));
-  }
-})
 export default router;

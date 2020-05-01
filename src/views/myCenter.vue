@@ -1,6 +1,5 @@
 <template>
 	<div class='myCenter' :class='$store.state.isPc?"pcAuto":"mdAuto"'>
-		<h1>{{$store.state.islogin}}</h1>
 		<div class="content">
 			<div class="leftMeun" v-if='$store.state.isPc'>
 				<div class='title' :class='{active:leftIndex==0}'><i class='iconfont iconwenzhang '></i>My Articles</div>

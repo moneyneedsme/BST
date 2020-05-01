@@ -59,18 +59,33 @@ export default {
       console.log(response, file, fileList)
     },
     onErrorImg(){
-      this.$message.error('Upload failed!');
+      this.$message({
+        showClose: true,
+        message: 'Upload failed!',
+        type: 'error',
+        duration:1500
+      });
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
       const isPNG = file.type === 'image/png';
       const isLt2M = file.size / 1024 / 1024 < 8;
       if (!isJPG&&!isPNG) {
-        this.$message.error('The uploaded image can only be in JPG or PNG format!');
+          this.$message({
+            showClose: true,
+            message: 'The uploaded image can only be in JPG or PNG format!',
+            type: 'error',
+            duration:1500
+          });
         return false;
       }
       if (!isLt2M) {
-        this.$message.error('The size of uploaded picture cannot exceed 8MB!');
+        this.$message({
+          showClose: true,
+          message: 'The size of uploaded picture cannot exceed 8MB!',
+          type: 'error',
+          duration:1500
+        });
         return false;
       }
     }

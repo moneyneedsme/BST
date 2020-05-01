@@ -63,17 +63,17 @@
       <h4>Submit Application</h4>
       <div class='contenet'>
         <div class="goods">
-          <img :src="require('../assets/imgs/free/11.jpg')">
+          <img :src="imgUrl+datas.image">
           <div>
-            <h4 class='twoLine'>Free Testing | BESTEK 8-outlet Charging</h4>
+            <h4 class='twoLine'>{{datas.name}}</h4>
             <div>
               <div>
                 <span>Price:</span>
-                <i>$39.99</i>
+                <i>${{datas.retailprice}}</i>
               </div>
               <div>
                 <span>Applied:</span>
-                <i>260</i>
+                <i>{{datas.applied}}</i>
               </div>
             </div>
           </div>       
@@ -84,18 +84,18 @@
         </div>
         <div class="textBox">
           <p>Leave your active platform social accounts (Facebook, INS, Twitter or other social account)</p>
-          <el-input placeholder="Reply"></el-input>  
+          <el-input placeholder="Reply" v-model="submitData.socialaccount"></el-input>  
         </div>
         <div class="textBox">
           <p>Please leave an email address for contact</p>
-          <el-input placeholder="Reply"></el-input>  
+          <el-input placeholder="Reply" v-model="submitData.contactemail"></el-input>  
         </div>
         <div class="textBox">
           <p>Convince us why choose you</p>
-          <el-input placeholder="Reply"></el-input>  
+          <el-input placeholder="Reply" v-model="submitData.whychooseyou"></el-input>  
         </div>
       </div>
-      <button @click='showBuyInfo=false;showSuccess=true'>Submit</button>
+      <button @click='onSubmitBtn'>Submit</button>
     </el-dialog>
     <el-dialog 
       class="showSuccess"
@@ -105,7 +105,7 @@
       <i class='iconfont iconchazishanchudaibiankuang' @click='showSuccess=false'></i>
       <p>Public test application submitted </p>
       <p>successfully</p>
-      <button>Go To My Application</button>
+      <button @click='tolink'>Go To My Application</button>
     </el-dialog>
   </div>
 </template>
@@ -116,17 +116,55 @@ export default {
   name:'goodsInfo',
   props:{
     datas:{
+      type:Object,
+      default:()=>{
+        return {}
+      }
+    },
+    product_activity_id:{
+      type:[Number,String],
+      default:0
     }
   },
   data(){
     return{
       showBuyInfo:false,
       showSuccess:false,
+      submitData:{
+        contactemail:'',
+        socialaccount:'',
+        whychooseyou:''
+      },
+      url:''
     }
   },
   mounted(){
   },
   methods:{
+    tolink(){
+      window.location.href = this.url
+    },
+    onSubmitBtn(){
+      const url = `index.php?route=newhome/activity/applyp`
+      const data = {
+        product_activity_id:this.product_activity_id,
+        contactemail:this.submitData.contactemail,
+        socialaccount:this.submitData.socialaccount,
+        whychooseyou:this.submitData.whychooseyou,
+      }
+      httpNetwork(url,data).then(res=>{
+        this.showBuyInfo=false
+        this.showSuccess=true
+        console.log(res)
+        this.url = res.redirecturl
+        // this.$message({
+        //   showClose: true,
+        //   message: '恭喜你，这是一条成功消息',
+        //   type: 'success',
+        //   duration:1500
+        // });
+      })
+    }
   }
 }
 </script>
@@ -485,8 +523,8 @@ export default {
 .goodsInfo{
   margin:0 0.36rem;
   >img{
-    width:100%;
-    height:100%;
+    width:6.78rem;
+    height:5.23rem;
     float: inherit;
   }
   >div{
@@ -557,7 +595,7 @@ export default {
         line-height:0.4rem;
         text-align: center;
         i{
-          font-size:0.28rem;
+          font-size:0.28rem!important;
           margin-right: 0.08rem;
         }
         span{
@@ -584,7 +622,6 @@ export default {
           font-size:0.24rem;
           font-family:Whitney Book;
           font-weight:400;
-          color:rgba(73,70,69,1);
         }
       }
     }

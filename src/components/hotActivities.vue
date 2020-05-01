@@ -2,20 +2,35 @@
   <div class='hotActivities'>
     <h2>Hot Activities</h2>
     <div class='content'>
-      <div v-for='(v,i) in 4' :key='i'>
-        <img :src="require('../assets/imgs/free/11.jpg')" >
-        <p>Free Testing | BESTEK M-Care Toothbrush Set & UV SanitizerSanitizerSanitizer</p>
+      <div v-for='(v,i) in list' :key='i' @click='toLink(v)'>
+        <img :src="imgUrl+v.image">
+        <p>{{v.name}}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import  {httpNetwork} from "../config/axios";
 export default {
   name:'hotActivities',
   data(){
     return{
-
+      list:[]
+    }
+  },
+  created(){
+    this.getTactivities()
+  },
+  methods:{
+    toLink(data){
+      console.log(data)
+    },
+    getTactivities(){
+      const url = `index.php?route=newhome/activity/getactivities`
+      return httpNetwork(url,null,'get').then(res=>{
+        this.list = res.activetesting
+      })
     }
   }
 }
@@ -36,6 +51,7 @@ export default {
   .content{
     overflow: hidden;
     >div{
+      cursor: pointer;
       margin-top: 8px;
       padding-bottom: 17px;
       background: white;

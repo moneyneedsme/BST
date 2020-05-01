@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-cloak>
     <template v-if="$store.state.isPc">
       <div class="pc_head">
         <div class="content">
@@ -27,21 +27,41 @@
     </template>
     <template v-else>
       <div class="md_head">
-        <el-dropdown @command="handleCommand">
-          <span class="el-dropdown-link">
-            <el-avatar :src="avatarUrl"></el-avatar>
-            <span class="userName">My Center</span>
-            <i class="iconfont iconbelow-s"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="a"><i class='iconfont iconwenben'></i><span class='pc_fontColor'>My Articles</span></el-dropdown-item>
-              <el-dropdown-item command="b"><i class='iconfont iconshiyanshaobei2'></i><span class='pc_fontColor'>My Applications</span></el-dropdown-item>
-              <el-dropdown-item command="c"><i class='iconfont iconshezhi2'></i><span class='pc_fontColor '>My Settings</span></el-dropdown-item>
-              <el-dropdown-item command="e" divided class='align_center pc_fontColor'>Log Out</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+        <span class="el-dropdown-link" @click='tabsValue=true'>
+          <el-avatar :src="avatarUrl"></el-avatar>
+          <span class="userName">My Center</span>
+          <i class="iconfont iconbelow-s"></i>
+        </span>
         <i class='iconfont iconliebiao' @click='dialogNav=true'>
         </i>
+        <el-dialog 
+          :visible.sync="tabsValue"
+          :show-close = false
+          custom-class='tabsNav'
+          width='100%'
+          >
+          <div class='tabsBox'>
+            <div class="left">
+              <h4><i class='iconfont iconpingzi'></i> My Applications</h4>
+              <p>All(6)</p>
+              <p>Succeed(0)</p>
+              <p>Applying(0)</p>
+              <p>Failed(0)</p>
+              <h4><i class='iconfont iconpingzi'></i> My Drafts</h4>
+              <h4 style='margin-top:1.2rem'><i class='iconfont iconpingzi'></i> My Reviews</h4>
+            </div>
+            <div class="right">
+              <h4><i class='iconfont iconpingzi'></i> My Articles</h4>
+              <p>All(6)</p>
+              <p>Approved(4)</p>
+              <p>Not Approved(2)</p>
+              <h4 style='margin-top:1.5rem'><i class='iconfont iconpingzi'></i> My Settings</h4>
+              <p>My Profile</p>
+              <p>Change Password </p>
+            </div>
+            <button>Log Out</button>
+          </div>
+        </el-dialog>
         <el-dialog 
           :visible.sync="dialogNav"
           :show-close = false
@@ -70,7 +90,8 @@ export default {
   data(){
     return{
       avatarUrl:'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-      dialogNav:false
+      dialogNav:false,
+      tabsValue:false
     }
   },
   methods:{
@@ -194,6 +215,62 @@ export default {
       }
     }
   }
+  /deep/.tabsNav{
+    margin-top: 0px!important;
+    .el-dialog__header{
+      padding:0
+    }
+    .el-dialog__body {
+      margin-top: 2.25rem;
+      padding:0 1.07rem 0.94rem 0.64rem;
+      .tabsBox{
+        overflow: hidden;
+        >div{
+          width: 47%;
+          >h4{
+            margin-top: 0.63rem;
+            font-size:0.32rem;
+            font-family:Whitney;
+            font-weight:500;
+            color:rgba(73,70,69,1);
+            height: 0.39rem;
+            line-height: 0.39rem;
+            >i{
+              font-size: 0.26rem;
+              margin-right: 0.06rem;
+            }
+          }
+          >p{
+            height:0.56rem;
+            line-height: .56rem;
+            box-sizing: border-box;
+            border:1px solid rgba(210,210,210,1);
+            border-radius:0.28rem;
+            text-align: center;
+            margin-top: 0.28rem;
+            font-size:0.26rem;
+            font-family:Whitney Book;
+            font-weight:400;
+            color:rgba(73,70,69,1);
+          }
+        }
+        >button{
+          margin-top: 0.78rem;
+          height:0.56rem;
+          line-height: 0.56rem;
+          padding:0px;
+          background:rgba(244,246,248,1);
+          border:1px solid rgba(229,230,231,1);
+          border-radius:0.285rem;
+          width: 100%;
+          font-size:0.32rem;
+          font-family:Whitney;
+          font-weight:500;
+          color:rgba(73,70,69,1);
+        }
+      }
+    }
+  }
 }
 .fontColor{
   font-size:0.26rem;
@@ -208,5 +285,7 @@ export default {
   font-family:Whitney Book;
   margin-left: 12px;
 }
+
+
 
 </style>

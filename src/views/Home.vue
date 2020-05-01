@@ -1,21 +1,20 @@
 <template>
   <div>
-    <h1>{{$store.state.islogin}}</h1>
     <div class='headAnchorPoint' v-show='showAnchorPointHead'>
       <div>
           <anchor-point :list='pointList' @bindAction = 'bindAction' :active.sync = 'active'></anchor-point>
       </div>
     </div>
     <div :class="$store.state.isPc?'pcAuto marginTop':'mdAuto'" >
-      <goods-info :datas = 'goodsInfodatas'></goods-info>
+      <goods-info :datas = 'goodsInfodatas' :product_activity_id='product_activity_id'></goods-info>
       <nav-tabs ></nav-tabs>
       <div :class="$store.state.isPc?'pc_content':'md_content'">
         <div class='leftContent'>
           <anchor-point :list='pointList'  @bindAction = 'bindAction' :active.sync = 'active' v-show='!showAnchorPointHead' ref='anchorPoint' id='anchorPoint'></anchor-point>
-          <reviews v-if='this.goodsInfodatas.zhuangtai==0' class='reviews' id='Reviews' ref='Reviews'></reviews>
-          <activity-details id='ActivityDetails' ref='ActivityDetails'></activity-details>
-          <winner-lists id='Applicationlists' ref='Applicationlists'></winner-lists>
-          <comments id='Comments' ref='Comments'></comments>
+          <reviews v-if='this.goodsInfodatas.zhuangtai==0' class='reviews' :product_activity_id='product_activity_id' id='Reviews' ref='Reviews'></reviews>
+          <activity-details id='ActivityDetails' ref='ActivityDetails' :longtext = 'goodsInfodatas.longtext'></activity-details>
+          <winner-lists id='Applicationlists' ref='Applicationlists'  :product_activity_id='product_activity_id'></winner-lists>
+          <comments id='Comments' ref='Comments' :product_activity_id='product_activity_id'></comments>
         </div>
         <hot-activities class='hot-activities'></hot-activities>
       </div>
@@ -48,7 +47,7 @@ export default {
   data(){
     return{
       pointList:[],
-      product_activity_id:767,
+      product_activity_id:766, //767活动中 766已结束 765已结束
       goodsInfodatas:{},
       active:-1,
       fdScroll:true,
@@ -58,12 +57,16 @@ export default {
       ActivityDetailsTop:null,
       ApplicationlistsTop:null,
       CommentsTop:null,
-      setTime:this.$store.state.isPc?300:0
+      setTime:this.$store.state.isPc?300:0,
     }
   },
   created(){
-    this.getLogin();
-    this.getactivitydetail();
+    this.vueLoading.show()
+    let p1 = this.getLogin()
+    let p2 = this.getactivitydetail()
+    Promise.all([p1,p2]).finally(()=>{
+      this.vueLoading.hide()
+    })
   },
   mounted(){
     if(!this.$store.state.isPc){
@@ -129,7 +132,7 @@ export default {
     },
     getactivitydetail(){
       const url = `index.php?route=newhome/activity/getactivitydetail&product_activity_id=${this.product_activity_id}`
-      httpNetwork(url,null,'get').then(res=>{
+      return httpNetwork(url,null,'get').then(res=>{
         this.goodsInfodatas = res.data;
         this.pointList = res.data.zhuangtai==0?[
           {value:"Reviews",id:"Reviews",index:0},

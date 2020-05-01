@@ -1,6 +1,7 @@
 import axios from 'axios'
 import config from './index'
 import {Message} from 'element-ui'
+import qs from 'qs';
 const addErrorLog = errorInfo => {
   const {
     statusText,
@@ -27,6 +28,7 @@ class HttpRequest {
     const config = {
       baseURL: this.baseUrl,
       headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
       }
     }
     return config
@@ -99,7 +101,7 @@ export const httpNetwork = (URL, info, method = 'post') => {
   return new Promise((resolve, reject) => {
     http.request({
         url:URL,
-        data: info,
+        data: qs.stringify(info),
         method
       }).then(res => {
         if (res.data.code === 1) {
@@ -108,7 +110,9 @@ export const httpNetwork = (URL, info, method = 'post') => {
           if(res.data.text){
             Message({
               message: res.data.text,
-              type: 'error'
+              showClose: true,
+              type: 'error',
+              duration:1500
             })
           }
           reject(res.data)
@@ -119,3 +123,11 @@ export const httpNetwork = (URL, info, method = 'post') => {
   })
 }
 export default axios
+// function toFormData(data){
+//   let formData = new FormData()
+//   for(let key in data){
+//     if(data.hasOwnProperty(key)){
+//       formData.append(key,data[key])
+//     }
+//   }
+// }

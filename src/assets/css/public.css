@@ -45,5 +45,7 @@ i{font-style: normal;}
   src : url('../font/Whitney-Book.otf');
 }
 [v-cloak]{display: none!important;}
+.left{float: left;}
+.right{float: right;}
 body{font-family:Whitney,Whitney Semibold, Whitney Book, sans-serif!important;}
 

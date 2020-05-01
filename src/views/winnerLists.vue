@@ -2,49 +2,81 @@
   <div class='winnerLists'>
     <h3>Winner Lists</h3>
     <user-list
-      :list='list'
+      :list='winList'
     ></user-list>
     <h3>All Lists</h3>
     <user-list
-      :list='list'
+      :list='allList'
     ></user-list>
     <el-pagination
       v-if='$store.state.isPc'
+      v-show='allList.length'
       background
+      @current-change = 'currentChange'
       :pageSize='pageSize'
       :currentPage = 'currentPage'
       layout="prev, pager, next"
-      :total="100">
+      :total="total">
     </el-pagination>
     <el-pagination
       v-else
+      v-show='allList.length'
       small
+      @current-change = 'currentChange'
       :pageSize='pageSize'
       :currentPage = 'currentPage'
       layout="prev, pager, next"
-      :total="100">
+      :total="total">
     </el-pagination>
   </div>
 </template>
 <script>
 import userList from '../components/userList'
+import  {httpNetwork} from "../config/axios"
 export default {
   name:'winnerLists',
   components:{
     userList
   },
+  props:['product_activity_id'],
   data(){
-    let list = new Array(18);
-    let item = {
-      imgUrl:require("../assets/imgs/twritte.png"),
-      name:'Trevor Goldsmith444'
-    }
-    list.fill(item)
     return{
-      list,
-      pageSize:5,
+      allList:[],
+      winList:[],
+      pageSize:25,
       currentPage:1,
+      total:1
     }
+  },
+  created(){
+    this.getsuccessApplylist()
+    this.getapplylist()
+  },
+  methods:{
+    currentChange(num){
+      this.currentPage = num
+      this.getapplylist()
+    },
+    getsuccessApplylist(){
+      const url = `index.php?route=newhome/activity/getsuccess_applylist&
+      product_activity_id=${this.product_activity_id}`
+      return httpNetwork(url,null,'get').then(res=>{
+        this.currentPage = res.currentpage
+        this.total = parseInt(res.totalnums)
+        this.winList = [...res.data]
+      })
+    },
+    getapplylist(){
+      const url = `index.php?route=newhome/activity/getapplylist&
+      product_activity_id=${this.product_activity_id}&
+      page=${this.currentPage}&
+      limit=${this.pageSize}`
+      return httpNetwork(url,null,'get').then(res=>{
+        this.currentPage = res.currentpage
+        this.total = parseInt(res.totalnums)
+        this.allList = [...res.data]
+      })
+    },
   }
 }
 </script>

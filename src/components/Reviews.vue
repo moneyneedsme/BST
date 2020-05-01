@@ -1,35 +1,36 @@
 <template>
   <div class='Reviews'>
-    <div v-for='(v,i) in 4' :key='i' @click ='infoDetail=true'>
+    <div v-for='(v,i) in reviewsList' :key='i' @click ='toDetails(v)'>
       <div class="head">
-        <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" />
-        <span class="userName">ErikNL</span>
-        <i>2 days ago</i>
+        <img :src="v.result.avatar" />
+        <span class="userName">{{v.result.user_name}}</span>
+        <i>{{v.created_atstr}}</i>
       </div>
-      <h2>Bestek electric toothbrush micro crowd test | confident smile, starting from "teeth"</h2>
-      <p>Thanks to sun Shijun, the best @ from the moon, and bestek, the father of gold, for giving me the chance to make this public test, and giving me this m-care electric toothbrush of bestek. [standard configuration] charging toothbrush ped </p>
+      <h2>{{v.result.review_title}}</h2>
+      <div class='content' v-html='v.result.review_content'>Thanks to sun Shijun, the best @ from the moon, and bestek, the father of gold, for giving me the chance to make this public test, and giving me this m-care electric toothbrush of bestek. [standard configuration] charging toothbrush ped </div>
       <div class="imgBox">
-        <img :src="require('../assets/imgs/free/11.jpg')">
-        <img :src="require('../assets/imgs/free/11.jpg')">
-        <img :src="require('../assets/imgs/free/11.jpg')">
-        <img :src="require('../assets/imgs/free/11.jpg')">
+        <img v-for='(item,index) in v.review_image_ids' :src="item.photopath" :key='index'>
       </div>
     </div>
     <el-pagination
       v-if='$store.state.isPc'
       background
+      v-show='reviewsList.length'
+      @current-change = 'currentChange'
       :pageSize='pageSize'
       :currentPage = 'currentPage'
       layout="prev, pager, next"
-      :total="100">
+      :total="total">
     </el-pagination>
     <el-pagination
       v-else
       small
+      @current-change = 'currentChange'
+      v-show='reviewsList.length'
       :pageSize='pageSize'
       :currentPage = 'currentPage'
       layout="prev, pager, next"
-      :total="100">
+      :total="total">
     </el-pagination>
     <el-dialog 
       class="infoDetail"
@@ -42,11 +43,11 @@
         arrow = 'always'
         @change = 'carouselChange'
       >
-        <el-carousel-item v-for="(item,i) in imgList" :key="i">
-          <img :src="item">
+        <el-carousel-item v-for="(item,i) in detailsData.review_image_ids" :key="i">
+          <img :src="item.photopath">
         </el-carousel-item>
       </el-carousel>
-      <div class="index" v-if='imgList.length'>{{imgIndex}}/{{imgList.length}}</div>
+      <div class="index" v-if='detailsData.review_image_ids&&detailsData.review_image_ids.length'>{{imgIndex}}/{{detailsData.review_image_ids.length}}</div>
       <div class="content">
         <div class="head">
           <img :src="require('../assets/imgs/free/11.jpg')">
@@ -74,18 +75,18 @@
             v-model="textValue">
           </el-input>
           <div class='btnBox'>
-            <span>All reviews(6)</span>
-            <el-button round >Cancel</el-button>
-            <el-button class='Release' round>Release</el-button>
+            <span>All reviews({{comments.length}})</span>
+            <el-button round @click='textValue=""'>Cancel</el-button>
+            <el-button class='Release' round @click='onRelease'>Release</el-button>
           </div>
         </div>
         <div class='commentsItems'>
-          <div v-for='(v,i) in list' :key='v.name+i'>
+          <div v-for='(v,i) in comments' :key='v.name+i'>
             <img :src="v.imgUrl">
             <div class='centent'>
               <div class="name">{{v.name}}</div>
               <p>{{v.content}}</p>
-              <div class='time'>{{v.time}}</div>
+              <div class='time'>{{v.date_added}}</div>
             </div>
           </div>
         </div>
@@ -95,28 +96,70 @@
 </template>
 
 <script>
+import  {httpNetwork} from "../config/axios";
 export default {
   name:'Reviews',
+  props:['product_activity_id'],
   data(){
-    let list = new Array(6);
-    let item = {
-      imgUrl:require("../assets/imgs/twritte.png"),
-      name:'lavigne derek',
-      time:'20 days ago',
-      content:'This would be perfect for my new house, I will share my using experience in BESTEK community'
-    }
-    list.fill(item)
     return{
       pageSize:5,
       currentPage:1,
-      imgList:[require('../assets/imgs/free/11.jpg'),require('../assets/imgs/free/11.jpg'),require('../assets/imgs/free/11.jpg')],
+      total:1,
+      reviewsList:[],
+      detailsData:{},
       infoDetail:false,
       imgIndex:1,
       textValue:'',
-      list
+      items:{},
+      comments:[]
     }
   },
+  created(){
+    this.reviewGetAll()
+  },
   methods:{
+    onRelease(){
+      const url = `index.php?route=forum/ceping/comment_add`
+      const data = {
+        ceping_review_id:this.items.result.ceping_review_id,
+        product_activity_id:this.product_activity_id,
+        content:this.textValue
+      }
+      return httpNetwork(url,data).then(res=>{
+        this.textValue = ''
+        this.$message({
+          showClose: true,
+          message: res.text,
+          type: 'success',
+          duration:1500
+        });
+      })
+    },
+    toDetails(item){
+      this.items = item
+      const url = `index.php?route=forum/ceping/review_get_details&
+      ceping_review_id=${item.result.ceping_review_id}&page=1&limit=999`
+      return httpNetwork(url,null,'get').then(res=>{
+        this.detailsData = res.data
+        this.comments = res.comments
+        this.infoDetail = true
+      })
+    },
+    currentChange(num){
+      this.currentPage = num
+      this.reviewGetAll()
+    },
+    reviewGetAll(){
+      const url = `index.php?route=forum/ceping/review_get_all&
+      product_activity_id=${this.product_activity_id}&
+      page=${this.currentPage}&
+      limit=${this.pageSize}`
+      return httpNetwork(url,null,'get').then(res=>{
+        this.currentPage = res.currentpage
+        this.total = parseInt(res.totalnums)
+        this.reviewsList = res.data
+      })
+    },
     carouselChange(newIndex,oldIndex){
       this.imgIndex = newIndex+1
     }
@@ -160,7 +203,7 @@ export default {
       font-weight:500;
       color:rgba(34,24,21,1);
     }
-    >p{
+    >div.content{
       font-size:16px;
       font-family:Whitney Light;
       font-weight:400;
@@ -378,7 +421,12 @@ export default {
               color:rgba(89,87,87,1);
             }
             .time{
-              font-size:0.24rem;
+              margin-top: 6px;
+              text-align: right;
+              font-size:16px;
+              font-family:Whitney Book;
+              font-weight:400;
+              color:rgba(137,137,137,1);
             }
           }
         }
@@ -407,7 +455,7 @@ export default {
         margin-top: 0.35rem;
         font-size:0.26rem;
       }
-      >p{
+      >div.content{
         font-size:0.24rem;
         margin-top: 0.25rem;
       }
@@ -567,6 +615,7 @@ export default {
               .time{
                 text-align: right;
                 line-height:24px;
+                margin-top: 0.06rem;
               }
             }
           }
