@@ -3,8 +3,8 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item v-for="(v,i) in headlist" :to="{ path:v.path }" :key='i'>{{v.name}}</el-breadcrumb-item>
 		</el-breadcrumb>
-    <h5><i></i>Post Original</h5>
-    <div v-for="(v,i) in 5" :key='i' class='content'>
+    <h5><i class='iconfont iconcaogao'></i>Post Original</h5>
+    <div v-for="(v,i) in list" :key='i' class='content'>
       <img :src="require('../assets/imgs/free/11.jpg')">
       <div>
         <div class="right">
@@ -12,10 +12,10 @@
           <i>View</i>
           <i>Delete</i>
         </div>
-        <h2>Free Testing | BESTEK 8-outlet Charging Station</h2>
+        <h2>{{v.title}}</h2>
         <div class='times'>
-          <span>2020-03-20 03:02</span>
-          <span :class='{active:i==1}'>Approved</span>
+          <span>{{v.updated_at}}</span>
+          <span :class='{active:v.archived==="f"}'>Approved</span>
         </div>
       </div>
     </div>
@@ -31,13 +31,26 @@ export default {
       default() {
         return []
       }
+    },
+    list:{
+      type: Array,
+      default() {
+        return []
+      }
     }
+  },
+  mounted(){
+  },
+  data(){
+    return {
+    }
+  },
+  methods:{
   }
 }
 </script>
 
 <style lang="less" scoped>
-
   .myArticles{
     background: white;
     padding:57px 51px;
@@ -49,6 +62,10 @@ export default {
       color:rgba(73,70,69,1);
       margin-bottom: 8px;
       text-align: right;
+      >i{
+        margin-right: 5px;
+        cursor: pointer;
+      }
     }
     >div.content{
       padding:23px 0;
@@ -103,6 +120,48 @@ export default {
             cursor: pointer;
             &:nth-of-type(2){
               margin:16px 0 ;
+            }
+          }
+        }
+      }
+    }
+  }
+  @media screen and (max-width:960px){
+    .myArticles{
+      padding:0.57rem 0.36rem;
+      >h5{
+        font-size:0.26rem;
+        margin-bottom: 0.08rem;
+      }
+      >div.content{
+        padding:0.2343m 0;
+        >img{
+          width: 1.81rem;
+          height: 0.93rem;
+          margin-right: 0.18rem;
+        }
+        >div{
+          >h2{
+            font-size:0.26rem;
+            margin-top: 0.05rem;
+            min-height:0.42rem;
+          }
+          .times{
+            margin-top: 0.20rem;
+            >span{
+              font-size:0.24rem;
+              &:nth-of-type(2){
+                margin-left: 0.14rem;
+              }
+            }
+          }
+          .right{
+            margin-left:0.5rem;
+            >i{
+              font-size:0.26rem;
+              &:nth-of-type(2){
+                margin:0.16rem 0 ;
+              }
             }
           }
         }

@@ -18,17 +18,17 @@
 				</div>
 			</div>
 			<div class="tabs">
-				<span @click='index=0' :class='{active:index==0}'>All (5)</span>
-				<span @click='index=1' :class='{active:index==1}'>Succeed(2)</span>
-				<span @click='index=2' :class='{active:index==2}'>Applying (4)</span>
-				<span @click='index=3' :class='{active:index==3}'>Failed(2)</span>
+				<span @click='ontab(0)' :class='{active:index==0}'>All ({{dataall.length}})</span>
+				<span @click='ontab(1)' :class='{active:index==1}'>Succeed({{shenqing_chenggong.length}})</span>
+				<span @click='ontab(2)' :class='{active:index==2}'>Applying ({{shenqing_shenhezhong.length}})</span>
+				<span @click='ontab(3)' :class='{active:index==3}'>Failed({{shenqing_shibai.length}})</span>
 			</div>
 			<div class="directory">
 				<h3>Comment Rules：</h3>
 				<p>Congratulations on your successful qualification to obtain free samples, please click Submit Review on below relatedactivity and share your experience and feelings about this evaluation in details. Review would be auditted and once</p>
 				<p>Sorry that your application wasn’t be seleted, please don’t be discouraged, you still have chance to share your comment as long as you purchased our products--click Submit Review on below related activity and share your experience and</p>
 			</div>
-			<div class="items">
+			<div class="items" v-for='(v,i) in list' :key='i'>
 				<div class="items_head">
 					<span>Applying</span>
 					<i>Announce Soon</i>
@@ -37,19 +37,7 @@
 				<div class="item_content">
 					<img :src="require('../assets/imgs/free/11.jpg')">
 					<div>Reddot Design Award | M-Care Toothbrush Set & UV Sanitizer | Crowdfunding Invitation</div>
-					<button>Submit Review</button>
-				</div>
-			</div>
-			<div class="items">
-				<div class="items_head">
-					<span>Applying</span>
-					<i>Announce Soon</i>
-					<i>2020-03-20</i>
-				</div>
-				<div class="item_content">
-					<img :src="require('../assets/imgs/free/11.jpg')">
-					<div>Reddot Design Award | M-Care Toothbrush Set & UV Sanitizer | Crowdfunding Invitation</div>
-					<button class='active'>Submit Review</button>
+					<button class='active' @click='toPost'>Submit Review</button>
 				</div>
 			</div>
 		</div>
@@ -62,6 +50,7 @@
 
 <script>
 import hotActivities from '../components/hotActivities'
+import  {httpNetwork} from "../config/axios";
 export default {
 	name:'apply',
 	components: { 
@@ -69,16 +58,55 @@ export default {
 	},
 	data(){
 		return{
-			index:0
+			index:0,
+			list:[],
+			dataall:[],
+			shenqing_chenggong:[],
+			shenqing_shenhezhong:[],
+			shenqing_shibai:[]
 		}
 	},
+	async mounted(){
+		this.index = this.$route.query.index ||0
+		await this.getData()
+		this.ontab(this.index)
+	},
 	methods:{
+		ontab(i){
+			this.index = i
+			switch(this.index){
+				case 1:
+					this.list = this.shenqing_chenggong
+					break
+				case 2:
+					this.list = this.shenqing_shenhezhong
+					break
+				case 3:
+					this.list = this.shenqing_shibai
+					break
+				default:
+					this.list = this.dataall
+			}
+		},
+		getData(){
+			const url = `index.php?route=forum/houtai/application_list`
+      return httpNetwork(url,null,'get').then(res=>{
+				this.dataall = res.data.dataall
+				this.shenqing_chenggong = res.data.shenqing_chenggong
+				this.shenqing_shenhezhong = res.data.shenqing_shenhezhong
+				this.shenqing_shibai = res.data.shenqing_shibai
+      })
+		},
+		toPost(){
+			this.$router.push({path:'/postComments'})
+		}
 	}
 }
 </script>
 
 <style lang="less" scoped>
 .apply{
+	overflow: hidden;
 	margin-top: 77px;
 	.rightBox{
 		width: 278px;

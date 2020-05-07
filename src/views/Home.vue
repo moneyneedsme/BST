@@ -60,38 +60,40 @@ export default {
       setTime:this.$store.state.isPc?300:0,
     }
   },
-  created(){
+  mounted(){
     this.vueLoading.show()
     let p1 = this.getLogin()
     let p2 = this.getactivitydetail()
     Promise.all([p1,p2]).finally(()=>{
       this.vueLoading.hide()
+      setTimeout(() => {
+        this.initScroll()
+      }, 6000);
     })
   },
-  mounted(){
-    if(!this.$store.state.isPc){
-      setTimeout(() => {
+  methods:{
+     ...mapActions([
+      "getLogin"
+    ]),
+    initScroll(){
+      if(!this.$store.state.isPc){
+        setTimeout(() => {
+          document.addEventListener('scroll', this.handleScroll);
+          this.AnchorPointTop = this.$refs.anchorPoint.$el.offsetTop;
+          this.ReviewsTop = this.$refs.Reviews?this.$refs.Reviews.$el.offsetTop:undefined;
+          this.ActivityDetailsTop = this.$refs.ActivityDetails.$el.offsetTop;
+          this.ApplicationlistsTop = this.$refs.Applicationlists.$el.offsetTop;
+          this.CommentsTop = this.$refs.Comments.$el.offsetTop;
+        }, 500);
+      }else{
         document.addEventListener('scroll', this.handleScroll);
         this.AnchorPointTop = this.$refs.anchorPoint.$el.offsetTop;
         this.ReviewsTop = this.$refs.Reviews?this.$refs.Reviews.$el.offsetTop:undefined;
         this.ActivityDetailsTop = this.$refs.ActivityDetails.$el.offsetTop;
         this.ApplicationlistsTop = this.$refs.Applicationlists.$el.offsetTop;
         this.CommentsTop = this.$refs.Comments.$el.offsetTop;
-      }, 5000);
-    }else{
-      document.addEventListener('scroll', this.handleScroll);
-      this.AnchorPointTop = this.$refs.anchorPoint.$el.offsetTop;
-      this.ReviewsTop = this.$refs.Reviews?this.$refs.Reviews.$el.offsetTop:undefined;
-      this.ActivityDetailsTop = this.$refs.ActivityDetails.$el.offsetTop;
-      this.ApplicationlistsTop = this.$refs.Applicationlists.$el.offsetTop;
-      this.CommentsTop = this.$refs.Comments.$el.offsetTop;
-    }
-
-  },
-  methods:{
-     ...mapActions([
-      "getLogin"
-    ]),
+      }
+    },
     bindAction(i){
       this.handleScroll(null,true,i)
     },

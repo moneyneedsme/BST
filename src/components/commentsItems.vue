@@ -1,19 +1,19 @@
 <template>
   <div class='commentsItems'>
-    <div v-for='(v,i) in list' :key='v.name+i'>
+    <div v-for='(v,i) in list' :key='v.comment_id'>
       <div class='imgBox'>
-        <img :src="v.imgUrl">
-        <p>{{v.name}}</p>
+        <img :src="v.avatar">
+        <p>{{v.user_name}}</p>
       </div>
       <div class='centent'>
         <div class="times">
-          <span>{{v.time}}</span>
-          <i>{{i+1}}#</i>
+          <span>{{v.date_added}}</span>
+          <i>{{v.louceng}}#</i>
         </div>
         <p>{{v.content}}</p>
         <div class='zan'>
-          <span>{{v.zanNum}}</span>
-          <i class='iconfont iconxin'></i>
+          <span >{{v.numbers_like}}</span>
+          <i @click='toZan(v,i)' class='iconfont iconxin'></i>
           <i class='iconfont iconlianjie'></i>
         </div>
       </div>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import  {httpNetwork} from "../config/axios"
 export default {
   name:'commentsItems',
   props:{
@@ -32,8 +33,33 @@ export default {
       }
     }
   },
+  computed:{
+    commentsList(){
+      return this.list||[]
+    }
+  },
   data(){
     return{
+    }
+  },
+  methods:{
+    toZan(item,index){
+      const url = `index.php?route=forum/ceping/commentlike`
+      const data = {
+        ceping_comment_id:item.ceping_review_id,
+        type:item.type=='1'?'0':'1',
+      }
+      return httpNetwork(url,data).then(res=>{
+        this.$message({
+          showClose: true,
+          message: res.text,
+          type: 'success',
+          duration:1500
+        });
+        this.$set(this.list[index],'type',item.type=='1'?'0':'1')
+        this.$set(this.list[index],'numbers_like',this.list[index].numbers_like++)
+      })
+      console.log(item)
     }
   }
 }

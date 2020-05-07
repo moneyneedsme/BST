@@ -23,7 +23,6 @@
         <button @click='toSubmit'>Submit</button>
         <button>Save</button>
         <button>Preview</button>
-        {{content}}
       </div>
   </div>
 </template>
@@ -157,6 +156,51 @@ export default {
         }
         &:hover{
           background:rgba(228,0,0,1);
+        }
+      }
+    }
+  }
+  @media screen and (max-width:960px){
+    .postComments{
+      margin-top: 0.53rem;
+      overflow: hidden;
+      padding:0 0.36rem;
+      .updataImg{
+        padding:0 0.3rem;
+        min-height: 4.80rem;
+        >div{
+          width:1.13rem;
+          height:1.14rem;
+          margin-right: 0.23rem;
+          margin-top:0.43rem;
+          .iconchazishanchudaibiankuang{
+            top:2px;
+            right:2px;
+            font-size:0.28rem;
+          }
+        }
+        .add{
+          line-height: 1.14rem;
+          .iconjiahao{
+            font-size: 0.42rem;
+          }
+        }
+      }
+      .el-input{
+        margin: 0.16rem 0;
+      }
+      /deep/.ql-editor{
+        min-height: 4rem;
+      }
+      .btnBox{
+        text-align: center;
+        margin-top: 0.3rem;
+        >button{
+          width:1.94rem;
+          height:0.46rem;
+          border-radius:23px;
+          font-size:0.32rem;
+          margin-right: 0.18rem;
         }
       }
     }

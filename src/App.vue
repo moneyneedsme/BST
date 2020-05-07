@@ -3,15 +3,19 @@
     <!-- <div id="nav">
       <router-link to="/">Home</router-link>
     </div> -->
+    <!-- <my-header/> -->
     <head-box></head-box>
     <router-view />
+    <my-footer/>
   </div>
 </template>
 <script>
 import headBox from './components/headBox'
+import myHeader from '@/components/header'
+import myFooter from '@/components/footer'
 export default {
   name:"App",
-  components: { headBox },
+  components: { headBox,myHeader,myFooter},
   created(){
     //在页面加载时读取sessionStorage里的状态信息
     if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {

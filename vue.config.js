@@ -1,4 +1,5 @@
-
+const path = require('path');
+const webpack = require('webpack')
 module.exports = {
   publicPath: './',
   lintOnSave: false,
@@ -8,6 +9,19 @@ module.exports = {
         errors:false
     },
   },
+  configureWebpack: {
+    plugins: [
+      new webpack.ProvidePlugin({
+        $:"jquery",
+        jQuery:"jquery",
+        "windows.jQuery":"jquery"
+      })
+    ]
+  },
+  chainWebpack: (config) => {
+		config.resolve.alias
+			.set('@', path.join(__dirname, './src'))
+	},
   // proxy: {
   //   '/api': {
   //       // 目标 API 地址

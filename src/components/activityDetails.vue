@@ -24,6 +24,7 @@ export default {
   overflow: hidden;
   padding:0 63px 105px;
   .details{
+    position: relative;
   }
   .share{
     text-align: center;

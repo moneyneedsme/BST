@@ -6,8 +6,8 @@
 				<div @click='toMyArticles(1,"All")' :class='{active:leftIndex==1}'><i></i>All(9)</div>
 				<div @click='toMyArticles(2,"Approved")' :class='{active:leftIndex==2}'><i></i>Approved(4)</div>
 				<div @click='toMyArticles(3,"Not Approved")' :class='{active:leftIndex==3}'><i></i>Not Approved(2)</div>
-				<div class='title' @click='leftIndex=4' :class='{active:leftIndex==4}'><i class='iconfont iconshiyanshaobei2 '></i>My Applications</div>
-				<div :class='{active:leftIndex==5}'><i></i>All(4)</div>
+				<div class='title' :class='{active:leftIndex==4}'><i class='iconfont iconshiyanshaobei2 '></i>My Applications</div>
+				<div @click='toApply(5)' :class='{active:leftIndex==5}'><i></i>All(4)</div>
 				<div @click='toApply(6)' :class='{active:leftIndex==6}'><i></i>Applying(0)</div>
 				<div @click='toApply(7)' :class='{active:leftIndex==7}'><i></i>Succeed(0)</div>
 				<div @click='toApply(8)' :class='{active:leftIndex==8}'><i></i>Failed(0)</div>
@@ -18,7 +18,7 @@
 				<div @click='toChangePassword(13)' :class='{active:leftIndex==13}'><i></i>Change Password</div>
 			</div>
 			<div class='cententBox'>
-				<router-view :headlist = headlist />
+				<router-view :headlist = headlist :list = 'list' />
 			</div>
 			<div class="rightBox" v-if='$store.state.isPc'>
 				<div class="userImg">
@@ -34,6 +34,7 @@
 
 <script>
 import hotActivities from '../components/hotActivities'
+import  {httpNetwork} from "../config/axios";
 export default {
 	name:'myCenter',
 	components: { 
@@ -44,16 +45,71 @@ export default {
 			leftIndex:-1,
 			headlist:[
 				{name:'My Center',path:''},
-				{name:'My Articles',path:'/myArticles'},
+				{name:'My Articles',path:''},
 			],
+			list:[],
+      allList:[],
+      fList:[],
+      tList:[]
+		}
+	},
+	async mounted(){
+		this.leftIndex = this.$route.query.leftIndex ||-1
+		await this.getData()
+		switch(this.leftIndex){
+			case 1:
+				this.toMyArticles(1,"All");
+				break;
+			case 2:
+				this.toMyArticles(2,"Approved");
+				break;
+			case 3:
+				this.toMyArticles(3,"Not Approved");
+				break;
+			case 12:
+				this.toMyProfile(12);
+				break;
+			case 13:
+				this.toChangePassword(13);
+				break;
 		}
 	},
 	methods:{
+		getData(){
+			const url = `index.php?route=forum/forumtopiccreate/get_topic_list_by_user`
+      return httpNetwork(url,null,'get').then(res=>{
+        this.allList = res.data
+        if(res.data&&res.data.length){
+          res.data.map(v=>{
+            if(v.archived==='f'){
+              this.fList.push(v)
+            }else if(v.archived==='t'){
+              this.tList.push(v)
+            }
+          })
+        }
+      })
+		},
 		toApply(i){
 			this.onActive(i)
-			this.$router.push({path:'/apply'});
+			var index
+			switch(i){
+				case 6:
+					index = 1
+					break;
+				case 7:
+					index = 2
+					break;
+				case 8:
+					index = 3
+					break;
+				default:
+					index = 0
+			}
+			this.$router.push({path:'/apply',query:{index}});
 		},
 		toMyArticles(i,name){
+			console.log(111)
 			if(name){
 				this.headlist = [
 					{name:'My Center',path:''},
@@ -66,7 +122,16 @@ export default {
 					{name:'My Articles',path:''},
 				]
 			}
-			
+			switch(i){
+				case 2:
+					this.list = this.tList
+					break;
+				case 3:
+					this.list = this.fList
+					break;
+				default:
+					this.list = this.allList
+			}
 			this.$router.push({path:'/myArticles'}),
 			this.onActive(i)
 		},
@@ -98,6 +163,7 @@ export default {
 <style lang="less" scoped>
 .myCenter{
 	padding-top: 47px;
+	overflow: hidden;
 	.content{
 		margin-top:11px;
 	}
@@ -172,4 +238,12 @@ export default {
 		left: -226px;
 	}
 }
+ @media screen and (max-width:960px){
+	.myCenter{
+		.cententBox{
+			width:100%;
+			display:block;
+		}
+	}
+ }
 </style>

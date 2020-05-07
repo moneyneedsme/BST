@@ -8,9 +8,16 @@
         <div>
           <span>2020-03-20 03:02</span>
           <span :class='{active:i==1}'>Approved</span>
-          <i>Edit</i>
-          <i>View</i>
-          <i>Delete</i>
+          <template v-if='$store.state.isPc'>
+            <i>Edit</i>
+            <i>View</i>
+            <i>Delete</i>
+          </template>
+          <div v-else>
+            <i>Edit</i>
+            <i>View</i>
+            <i>Delete</i>
+          </div>
         </div>
       </div>
     </div>
@@ -80,6 +87,49 @@ export default {
             font-weight:400;
             color:rgba(73,70,69,1);
             text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+  @media screen and (max-width:960px){
+    .myReviews{
+      padding:0.57rem 0.36rem;
+      >div{
+        padding:0.23rem 0;
+        >img{
+          width: 1.81rem;
+          height: 0.93rem;
+          margin-right: 0.18rem;
+        }
+        >div{
+          overflow: hidden;
+          >h2{
+            font-size:0.26rem;
+            margin-top: 0.05rem;
+          }
+          >p{
+            font-size:0.24rem;
+            margin-top: 0.10rem;
+          }
+          >div{
+            margin-top: 0.2rem;
+            >span{
+              font-size:0.24rem;
+              &:nth-of-type(2){
+                margin-left:0.14rem;
+              }
+            }
+            >div{
+              >i{
+                margin-right: 0.21rem;
+                font-size:0.26rem;
+                font-family:Whitney Book;
+                font-weight:400;
+                color:rgba(73,70,69,1);
+                text-decoration: underline;
+              }
+            }
           }
         }
       }

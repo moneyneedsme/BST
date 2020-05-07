@@ -100,13 +100,25 @@ export default {
         case 'a':
           this.toUserReviews();
           break;
+        case 'b':
+          this.toApplications();
+          break;
+        case 'c':
+          this.toSettings();
+          break;
       }
     },
     toHome(){
       this.$router.push({path:'/'})
     },
     toUserReviews(){
-      this.$router.push({path:'/myCenter'})
+      this.$router.push({path:'/myCenter',query:{ArticlesID:0,leftIndex:1}})
+    },
+    toApplications(){
+      this.$router.push({path:'/apply',query:{ArticlesID:0,index:0}})
+    },
+    toSettings(){
+      this.$router.push({path:'/myCenter',query:{leftIndex:12}})
     },
     tolink(path){
       this.$router.push({path})

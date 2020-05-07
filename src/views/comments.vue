@@ -18,18 +18,22 @@
     <el-pagination
       v-if='$store.state.isPc'
       background
+      v-show='list.length'
+      @current-change = 'currentChange'
       :pageSize='pageSize'
       :currentPage = 'currentPage'
       layout="prev, pager, next"
-      :total="100">
+      :total="total">
     </el-pagination>
     <el-pagination
       v-else
       small
+      v-show='list.length'
+      @current-change = 'currentChange'
       :pageSize='pageSize'
       :currentPage = 'currentPage'
       layout="prev, pager, next"
-      :total="100">
+      :total="total">
     </el-pagination>
   </div>
 </template>
@@ -43,24 +47,30 @@ export default {
   },
   props:['product_activity_id','ceping_review_id'],
   data(){
-    let list = new Array(6);
-    let item = {
-      imgUrl:require("../assets/imgs/twritte.png"),
-      name:'lavigne derek',
-      isZan:false,
-      zanNum:10,
-      time:'Mar 2, 2020 8:23 pm',
-      content:'This would be perfect for my new house, I will share my using experience in BESTEK community'
-    }
-    list.fill(item)
     return{
-      list,
+      list:[],
       content:'',
-      pageSize:5,
+      pageSize:10,
       currentPage:1,
+      total:1
     }
   },
+  mounted(){
+    this.getList()
+  },
   methods:{
+    currentChange(num){
+      this.currentPage = num
+      this.getList()
+    },
+    getList(){
+      const url = `index.php?route=forum/ceping/comment_getall&product_activity_id=${this.product_activity_id}&page=${this.currentPage}&limit=${this.pageSize}`
+      return httpNetwork(url,null,'get').then(res=>{
+        this.list = res.data
+        this.currentPage = res.currentpage
+        this.total = parseInt(res.totalnums)
+      })
+    },
     onRelease(){
       const url = `index.php?route=forum/ceping/comment_add`
       const data = {
@@ -76,6 +86,7 @@ export default {
           type: 'success',
           duration:1500
         });
+        this.getList()
       })
     },
   }

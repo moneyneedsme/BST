@@ -99,4 +99,40 @@ export default {
       cursor: pointer;
     }
   }
+  @media screen and (max-width:960px){
+    .changePassword{
+      padding:0.5rem 0.97rem 0.36rem;
+      /deep/.el-breadcrumb{
+        position: inherit;
+        top: 0;
+        left: 0;
+      }
+      >div.content{
+        padding-top: 0.55rem;
+        >h3{
+          font-size:0.32rem;
+        }
+        >p{
+          font-size:0.26rem;
+          margin-top: 0.10rem;
+        }
+        >h4{
+          font-size:0.28rem;
+          margin-bottom:0.08rem;
+        }
+        /deep/.el-input__inner{
+          border-radius: 20px;
+        }
+      }
+      >button{
+        width:1.82rem;
+        height:0.54rem;
+        line-height:0.54rem;
+        background:rgba(227,22,25,1);
+        border-radius:17px;
+        margin:0.55rem auto 0;
+        font-size:0.26rem;
+      }
+    }
+  }
 </style>

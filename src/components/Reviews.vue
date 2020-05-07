@@ -48,24 +48,24 @@
         </el-carousel-item>
       </el-carousel>
       <div class="index" v-if='detailsData.review_image_ids&&detailsData.review_image_ids.length'>{{imgIndex}}/{{detailsData.review_image_ids.length}}</div>
-      <div class="content">
+      <div class="content" v-if='detailsData.result'>
         <div class="head">
-          <img :src="require('../assets/imgs/free/11.jpg')">
+          <img :src="detailsData.result.avatar">
           <div>
             <div>
-              <span>MonicaMiu</span>
+              <span>{{detailsData.result.user_name}}</span>
               <i>
                 <i class='iconfont iconxin'></i>
-                <span>36</span>
+                <span>{{detailsData.result.likecount}}</span>
                 <i class='iconfont iconfenxiang1'></i>
               </i>
             </div>
-            <p>20 days ago</p>
+            <p>{{detailsData.result.date_added}}</p>
           </div> 
         </div>
         <div class="describe">
-          <h2>Free Testing bestek m-care electric toothbrush with both beauty and function</h2>
-          <p>First of all, thank you for Junjun's trust and the mass testing products provided by the brand side. It's a great honor to have the opportunity to participate in the mass testing again. Now everyone pays more and more attention to the health of teeth, so the demand for electric toothbrush is higher and higher, after all, it's much cleaner than manual toothbrush. Before speaking of electric toothbrush, I only knew about Philips and Oral-B, and I only bought Philips if I bought it myself. I didn't expect that now the domestic products are getting better and better, so I especially look forward to the toothbrush this time. I check the tracking every day. Today, the package will be taken apart and tested as soon as it arrives. Generally speaking, I'm very surprised and like it!</p>
+          <h2>{{detailsData.result.review_title}}</h2>
+          <div v-html='detailsData.result.review_content'></div>
         </div>
         <div class='comment'>
           <el-input
@@ -81,10 +81,10 @@
           </div>
         </div>
         <div class='commentsItems'>
-          <div v-for='(v,i) in comments' :key='v.name+i'>
-            <img :src="v.imgUrl">
+          <div v-for='(v,i) in comments' :key='i'>
+            <img :src="v.avatar">
             <div class='centent'>
-              <div class="name">{{v.name}}</div>
+              <div class="name">{{v.user_name}}</div>
               <p>{{v.content}}</p>
               <div class='time'>{{v.date_added}}</div>
             </div>
@@ -133,12 +133,13 @@ export default {
           type: 'success',
           duration:1500
         });
+        this.toDetails()
       })
     },
     toDetails(item){
-      this.items = item
+      if(item) this.items = item
       const url = `index.php?route=forum/ceping/review_get_details&
-      ceping_review_id=${item.result.ceping_review_id}&page=1&limit=999`
+      ceping_review_id=${this.items.result.ceping_review_id}&page=1&limit=999`
       return httpNetwork(url,null,'get').then(res=>{
         this.detailsData = res.data
         this.comments = res.comments
@@ -351,7 +352,7 @@ export default {
           font-weight:400;
           color:rgba(62,58,57,1);
         }
-        >p{
+        >div{
           font-size:16px;
           font-family:Whitney Book;
           font-weight:400;
@@ -558,7 +559,7 @@ export default {
         }
         .describe{
           margin-top: 0.54rem;
-          >h2{
+          >div{
             font-size:0.32rem;
           }
           >p{

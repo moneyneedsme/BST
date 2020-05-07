@@ -82,7 +82,7 @@ export default {
   .myProfile{
     position: relative;
     background: white;
-    padding:0px 97px 60px;
+    padding:97px 60px;
     /deep/.el-breadcrumb{
       position: absolute;
       top: -25px;
@@ -154,6 +154,64 @@ export default {
       font-weight:500;
       color:rgba(255,255,255,1);
       cursor: pointer;
+    }
+  }
+  @media screen and (max-width:960px){
+    .myProfile{
+      padding:0.97rem 0.36rem;
+      /deep/.el-breadcrumb{
+        position: inherit;
+        top: 0;
+        left: 0;
+      }
+      >div.textBox{
+        padding-top: 0.55rem;
+        >h3{
+          font-size:0.32rem;
+        }
+        >p{
+          font-size:0.26rem;
+          margin-top: 0.10rem;
+        }
+        >h4{
+          font-size:0.28rem;
+          margin-bottom:0.08rem;
+        }
+        /deep/.el-input__inner{
+          border-radius: 20px;
+        }
+      
+      }
+      >div.dob{
+        overflow: hidden;
+        >div{
+          width: 48%;
+          float: left;
+          &:first-of-type{
+            margin-right:4%;
+          }
+          margin-top:0.35rem;
+          >h4{
+            font-size:0.28rem;
+            margin-bottom:0.08rem;
+          }
+          /deep/.el-input__inner{
+            border-radius: 20px;
+          }
+          /deep/.el-select{
+            width: 100%;
+          }
+        }
+      }
+      >button{
+        width:1.82rem;
+        height:0.54rem;
+        line-height:0.54rem;
+        background:rgba(227,22,25,1);
+        border-radius:17px;
+        margin:0.55rem auto 0;
+        font-size:0.26rem;
+      }
     }
   }
 </style>
