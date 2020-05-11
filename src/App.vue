@@ -32,7 +32,7 @@ export default {
         sessionStorage.setItem("store",JSON.stringify(this.$store.state))
     })
     console.log(this.$store.state)
-  }
+  },
 }
 </script>  
 <style lang="less" scoped>

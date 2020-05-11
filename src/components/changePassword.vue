@@ -9,21 +9,22 @@
     </div>
     <div  class='content'>
       <h4>Original Password</h4>
-      <el-input v-model="oldPassword" show-password></el-input>
+      <el-input v-model.trim="oldpassword" show-password></el-input>
     </div>
     <div  class='content'>
       <h4>New Password</h4>
-      <el-input v-model="newPassword" show-password></el-input>
+      <el-input v-model.trim="password" show-password></el-input>
     </div>
     <div  class='content'>
       <h4>Confirm Password</h4>
-      <el-input v-model="confrimPassword" show-password></el-input>
+      <el-input v-model.trim="confirm " show-password></el-input>
     </div>
-    <button>Submit</button>
+    <button @click='onSubmit'>Submit</button>
   </div>
 </template>
 
 <script>
+import  {httpNetwork} from "../config/axios"
 export default {
   name:'changePassword',
   props:{
@@ -36,10 +37,61 @@ export default {
   },
   data(){
     return{
-      oldPassword:'',
-      newPassword:'',
-      confrimPassword:''
+      oldpassword:'',
+      password:'',
+      confirm:''
     }
+  },
+  methods:{
+    onSubmit(){
+      if(this.oldpassword.length<6||this.oldpassword.length>16){
+        this.$message({
+          showClose: true,
+          message: 'Password length should be greater than 6 and less than 16!',
+          type: 'error',
+          duration:1500
+        })
+      }else if(this.password.length<6||this.password.length>16){
+        this.$message({
+          showClose: true,
+          message: 'Password length should be greater than 6 and less than 16!',
+          type: 'error',
+          duration:1500
+        })
+      }else if(this.confirm.length<6||this.confirm.length>16){
+        this.$message({
+          showClose: true,
+          message: 'Password length should be greater than 6 and less than 16!',
+          type: 'error',
+          duration:1500
+        })
+      }else if(this.confirm!==this.password){
+        this.$message({
+          showClose: true,
+          message: 'Two passwords are inconsistent!',
+          type: 'error',
+          duration:1500
+        })
+      }else{
+        const url = `index.php?route=account/password/changepass`
+        const data = {
+          oldpassword:this.oldpassword,
+          password:this.password,
+          confirm:this.confirm,
+        }
+        httpNetwork(url,data).then(res=>{
+          this.$message({
+            showClose: true,
+            message: res.text,
+            type: 'success',
+            duration:1500
+          });
+          this.oldpassword = ''
+          this.password = ''
+          this.confirm = ''
+        })
+      }
+    },
   }
 }
 </script>

@@ -3,16 +3,16 @@
 		<div class="content">
 			<div class="leftMeun" v-if='$store.state.isPc'>
 				<div class='title' :class='{active:leftIndex==0}'><i class='iconfont iconwenzhang '></i>My Articles</div>
-				<div @click='toMyArticles(1,"All")' :class='{active:leftIndex==1}'><i></i>All(9)</div>
-				<div @click='toMyArticles(2,"Approved")' :class='{active:leftIndex==2}'><i></i>Approved(4)</div>
-				<div @click='toMyArticles(3,"Not Approved")' :class='{active:leftIndex==3}'><i></i>Not Approved(2)</div>
+				<div @click='toMyArticles(1,"All")' :class='{active:leftIndex==1}'><i></i>All({{allnumbers.articlenum&&allnumbers.articlenum.totalarticle||0}})</div>
+				<div @click='toMyArticles(2,"Approved")' :class='{active:leftIndex==2}'><i></i>Approved({{allnumbers.articlenum&&allnumbers.articlenum.approved||0}})</div>
+				<div @click='toMyArticles(3,"Not Approved")' :class='{active:leftIndex==3}'><i></i>Not Approved({{allnumbers.articlenum&&allnumbers.articlenum.notapproved||0}})</div>
 				<div class='title' :class='{active:leftIndex==4}'><i class='iconfont iconshiyanshaobei2 '></i>My Applications</div>
-				<div @click='toApply(5)' :class='{active:leftIndex==5}'><i></i>All(4)</div>
-				<div @click='toApply(6)' :class='{active:leftIndex==6}'><i></i>Applying(0)</div>
-				<div @click='toApply(7)' :class='{active:leftIndex==7}'><i></i>Succeed(0)</div>
-				<div @click='toApply(8)' :class='{active:leftIndex==8}'><i></i>Failed(0)</div>
-				<div class='title' @click='leftIndex=9' :class='{active:leftIndex==9}'><i class='iconfont iconcaogao '></i>My Drafts (0)</div>
-				<div class='title' @click='leftIndex=10' :class='{active:leftIndex==10}'><i class='iconfont iconpinglun '></i>My Reviews(5)</div>
+				<div @click='toApply(5)' :class='{active:leftIndex==5}'><i></i>All({{allnumbers.applicationnum&&allnumbers.applicationnum.totalapplication||0}})</div>
+				<div @click='toApply(6)' :class='{active:leftIndex==6}'><i></i>Applying({{allnumbers.applicationnum&&allnumbers.applicationnum.totalshenhezhong||0}})</div>
+				<div @click='toApply(7)' :class='{active:leftIndex==7}'><i></i>Succeed({{allnumbers.applicationnum&&allnumbers.applicationnum.totalchenggong||0}})</div>
+				<div @click='toApply(8)' :class='{active:leftIndex==8}'><i></i>Failed({{allnumbers.applicationnum&&allnumbers.applicationnum.totalshibai||0}})</div>
+				<div class='title' @click='toMyDrafts(9)' :class='{active:leftIndex==9}'><i class='iconfont iconcaogao '></i>My Drafts ({{allnumbers.totaldrafts||0}})</div>
+				<div class='title' @click='getMyReviews(10)' :class='{active:leftIndex==10}'><i class='iconfont iconpinglun '></i>My Reviews({{allnumbers.totalreviews||0}})</div>
 				<div class='title' @click='leftIndex=11' :class='{active:leftIndex==11}'><i class='iconfont iconshezhi2 '></i>My Settings</div>
 				<div @click='toMyProfile(12)' :class='{active:leftIndex==12}'><i></i>My Profile</div>
 				<div @click='toChangePassword(13)' :class='{active:leftIndex==13}'><i></i>Change Password</div>
@@ -22,8 +22,8 @@
 			</div>
 			<div class="rightBox" v-if='$store.state.isPc'>
 				<div class="userImg">
-					<img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png">
-					<span>Welcome! Emily</span>
+					<img :src="allnumbers.userinfo&&allnumbers.userinfo.avatar">
+					<span>Welcome! {{allnumbers.userinfo&&allnumbers.userinfo.user_name}}</span>
 				</div>
 				<hot-activities ></hot-activities>
 			</div>
@@ -34,7 +34,7 @@
 
 <script>
 import hotActivities from '../components/hotActivities'
-import  {httpNetwork} from "../config/axios";
+import  {httpNetwork} from "../config/axios"
 export default {
 	name:'myCenter',
 	components: { 
@@ -42,19 +42,18 @@ export default {
 	},
 	data(){
 		return{
-			leftIndex:-1,
-			headlist:[
-				{name:'My Center',path:''},
-				{name:'My Articles',path:''},
-			],
+			leftIndex:1,
+			headlist:[],
 			list:[],
       allList:[],
       fList:[],
-      tList:[]
+			tList:[],
+			allnumbers:{}
 		}
 	},
 	async mounted(){
-		this.leftIndex = this.$route.query.leftIndex ||-1
+		this.leftIndex = this.$route.query.leftIndex ||1
+		this.getAllnumbers()
 		await this.getData()
 		switch(this.leftIndex){
 			case 1:
@@ -66,6 +65,12 @@ export default {
 			case 3:
 				this.toMyArticles(3,"Not Approved");
 				break;
+			case 9:
+				this.toMyDrafts(9);
+				break;
+			case 10:
+				this.getMyReviews(10);
+				break;
 			case 12:
 				this.toMyProfile(12);
 				break;
@@ -74,7 +79,64 @@ export default {
 				break;
 		}
 	},
+	// beforeRouteUpdate (to, from, next) {
+	// 	this.leftIndex = to.query.leftIndex ||1
+	// 	switch(this.leftIndex){
+	// 		case 1:
+	// 			this.toMyArticles(1,"All");
+	// 			break;
+	// 		case 2:
+	// 			this.toMyArticles(2,"Approved");
+	// 			break;
+	// 		case 3:
+	// 			this.toMyArticles(3,"Not Approved");
+	// 			break;
+	// 		case 9:
+	// 			this.toMyDrafts(9);
+	// 			break;
+	// 		case 10:
+	// 			this.getMyReviews(10);
+	// 			break;
+	// 		case 12:
+	// 			this.toMyProfile(12);
+	// 			break;
+	// 		case 13:
+	// 			this.toChangePassword(13);
+	// 			break;
+	// 	}
+	// 	next()
+	// },
 	methods:{
+		getAllnumbers(){
+			const url = `index.php?route=forum/houtai/getallnumbers`
+			httpNetwork(url,null,'get').then(res=>{
+				this.allnumbers = res
+			})
+		},
+		async toMyDrafts(i){
+			this.onActive(i)
+			this.headlist = [
+				{name:'My Center',path:''},
+				{name:'My Drafts',path:''},
+			]
+			const url = `https://www.bestekdirect.com/index.php?route=forum/ceping/review_get_all_draft_by_user&page=1&limit=999`
+      await httpNetwork(url,null,'get').then(res=>{
+        this.list = res.data
+			})
+			this.$router.push({path:'/myReviews'})
+		},
+		async getMyReviews(i){
+			this.onActive(i)
+			this.headlist = [
+				{name:'My Center',path:''},
+				{name:'My Reviews',path:''},
+			]
+			const url = `https://www.bestekdirect.com/index.php?route=forum/ceping/review_get_all_by_user&page=1&limit=999`
+      await httpNetwork(url,null,'get').then(res=>{
+        this.list = res.data
+			})
+			this.$router.push({path:'/myReviews'})
+		},
 		getData(){
 			const url = `index.php?route=forum/forumtopiccreate/get_topic_list_by_user`
       return httpNetwork(url,null,'get').then(res=>{
@@ -95,10 +157,10 @@ export default {
 			var index
 			switch(i){
 				case 6:
-					index = 1
+					index = 2
 					break;
 				case 7:
-					index = 2
+					index = 1
 					break;
 				case 8:
 					index = 3
@@ -109,7 +171,6 @@ export default {
 			this.$router.push({path:'/apply',query:{index}});
 		},
 		toMyArticles(i,name){
-			console.log(111)
 			if(name){
 				this.headlist = [
 					{name:'My Center',path:''},
@@ -205,7 +266,7 @@ export default {
 		float: right;
 		margin-left: 12px;
 		.userImg{
-			padding:33px;
+			padding:33px 0 33px 33px;
 			background: white;
 			>img{
 				width:72px;

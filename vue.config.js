@@ -22,17 +22,15 @@ module.exports = {
 		config.resolve.alias
 			.set('@', path.join(__dirname, './src'))
 	},
-  // proxy: {
-  //   '/api': {
-  //       // 目标 API 地址
-  //       target: 'http://xxx.com:2086',//真实的api地址
-  //       // 如果要代理 websockets
-  //       // ws: true,
-  //       // 将主机标头的原点更改为目标URL
+  // devServer: {
+  //   proxy: {
+  //     '/api': {
+  //       target: 'https://www.hotcn.xyz/',
   //       changeOrigin: true,
   //       pathRewrite: {
-  //           '^/api': ''
+  //         "^/api": ""
   //       }
+  //     }
   //   }
   // }
 };

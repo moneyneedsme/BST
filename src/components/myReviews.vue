@@ -1,22 +1,25 @@
 <template>
   <div class='myReviews'>
-    <div v-for="(v,i) in 5" :key='i'>
-      <img :src="require('../assets/imgs/free/11.jpg')">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item v-for="(v,i) in headlist" :to="{ path:v.path }" :key='i'>{{v.name}}</el-breadcrumb-item>
+		</el-breadcrumb>
+    <div v-for="(v,i) in getList" :key='i' class='content'>
+      <img :src="v.review_image_ids&&v.review_image_ids[0]?imgUrl+v.review_image_ids[0].photopath:require('../assets/imgs/free/11.jpg')">
       <div>
-        <h2 class='oneLine'>Free Testing | BESTEK 8-outlet Charging Station</h2>
-        <p class='oneLine'>Test with a good toothbrush, I began to look forward to ......</p>
+        <h2 class='oneLine'>{{v.result&&v.result.review_title}}</h2>
+        <div  class='oneLine reviewContent' v-html='v.result&&v.result.review_content'></div>
         <div>
-          <span>2020-03-20 03:02</span>
-          <span :class='{active:i==1}'>Approved</span>
+          <span>{{v.result&&v.result.date_added}}</span>
+          <span class='active'>Approved</span>
           <template v-if='$store.state.isPc'>
-            <i>Edit</i>
+            <i @click='editItem(v,i)'>Edit</i>
             <i>View</i>
-            <i>Delete</i>
+            <i @click='deleteItem(v,i)'>Delete</i>
           </template>
           <div v-else>
-            <i>Edit</i>
+            <i @click='editItem(v,i)'>Edit</i>
             <i>View</i>
-            <i>Delete</i>
+            <i @click='deleteItem(v,i)'>Delete</i>
           </div>
         </div>
       </div>
@@ -25,8 +28,54 @@
 </template>
 
 <script>
+import  {httpNetwork} from "../config/axios"
 export default {
-  name:'myReviews'
+  name:'myReviews',
+  props:{
+    headlist:{
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    list:{
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
+  computed:{
+    getList(){
+      return this.list
+    }
+  },
+  methods:{
+    editItem(item,index){
+      this.$router.push({path:'/postComments',query:{cid:item.result.ceping_review_id}})
+    },
+    deleteItem(item,index){
+      this.$confirm('This operation will be permanently deleted. Do you want to continue?', 'Tips', {
+        confirmButtonText: 'Determine',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        const url = `index.php?route=forum/ceping/review_delete`
+        const data = {
+          ceping_review_id:item.result.ceping_review_id,
+        }
+        httpNetwork(url,data).then(res=>{
+          this.getList.splice(index,1)
+          this.$message({
+            showClose: true,
+            message: res.text,
+            type: 'success',
+            duration:1500
+          });
+        })
+      })
+    },
+  },
 }
 </script>
 
@@ -34,7 +83,8 @@ export default {
   .myReviews{
     background: white;
     padding:57px 51px;
-    >div{
+    position: relative;
+    >div.content{
       padding:23px 0;
       box-sizing: border-box;
       overflow: hidden;
@@ -57,12 +107,13 @@ export default {
           color:rgba(73,70,69,1);
           margin-top: 5px;
         }
-        >p{
+        >div.reviewContent{
           font-size:16px;
           font-family:Whitney Book;
           font-weight:400;
           color:rgba(62,58,57,1);
           margin-top: 10px;
+          height: 20px;
         }
         >div{
           overflow: hidden;
@@ -87,6 +138,7 @@ export default {
             font-weight:400;
             color:rgba(73,70,69,1);
             text-decoration: underline;
+            cursor: pointer;
           }
         }
       }
@@ -95,7 +147,7 @@ export default {
   @media screen and (max-width:960px){
     .myReviews{
       padding:0.57rem 0.36rem;
-      >div{
+      >div.content{
         padding:0.23rem 0;
         >img{
           width: 1.81rem;
@@ -108,9 +160,10 @@ export default {
             font-size:0.26rem;
             margin-top: 0.05rem;
           }
-          >p{
+          >div.reviewContent{
             font-size:0.24rem;
             margin-top: 0.10rem;
+            height: 0.32rem;
           }
           >div{
             margin-top: 0.2rem;

@@ -6,10 +6,14 @@ export default new Vuex.Store({
   state: {
     isPc: true,
     islogin:0,//1表示登录 0表示未登录
+    userInfo:{}
   },
   mutations: {
     setPc(state, value = true) {
       state.isPc = value;
+    },
+    setuserInfo(state,value) {
+      state.userInfo = value;
     },
     setLogin(state, value = 0) {
       state.islogin = value;
@@ -20,7 +24,8 @@ export default new Vuex.Store({
       const url = 'index.php?route=forum/forum2/checklogin'
       return httpNetwork(url,null,'get').then(res=>{
         if(res.code===1){
-          commit('setLogin',1)
+          commit('userInfo',1)
+          commit('setLogin',res.user)
         }
       }).catch(err=>{
         if(err.code===0){

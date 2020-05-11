@@ -7,9 +7,9 @@
         <i>{{v.created_atstr}}</i>
       </div>
       <h2>{{v.result.review_title}}</h2>
-      <div class='content' v-html='v.result.review_content'>Thanks to sun Shijun, the best @ from the moon, and bestek, the father of gold, for giving me the chance to make this public test, and giving me this m-care electric toothbrush of bestek. [standard configuration] charging toothbrush ped </div>
+      <div class='content' v-html='v.result.review_content'></div>
       <div class="imgBox">
-        <img v-for='(item,index) in v.review_image_ids' :src="item.photopath" :key='index'>
+        <img v-for='(item,index) in v.review_image_ids' :src="hasImgPrefix(item.photopath)" :key='index'>
       </div>
     </div>
     <el-pagination
@@ -44,7 +44,7 @@
         @change = 'carouselChange'
       >
         <el-carousel-item v-for="(item,i) in detailsData.review_image_ids" :key="i">
-          <img :src="item.photopath">
+          <img :src="hasImgPrefix(item.photopath)">
         </el-carousel-item>
       </el-carousel>
       <div class="index" v-if='detailsData.review_image_ids&&detailsData.review_image_ids.length'>{{imgIndex}}/{{detailsData.review_image_ids.length}}</div>
@@ -118,6 +118,10 @@ export default {
     this.reviewGetAll()
   },
   methods:{
+    hasImgPrefix(str){
+      if(str.indexOf('https://www.bestekdirect.com')<0) return 'https://www.bestekdirect.com'+str
+      return str
+    },
     onRelease(){
       const url = `index.php?route=forum/ceping/comment_add`
       const data = {

@@ -1,11 +1,11 @@
-<template>
+ <template>
   <div class='myArticles'>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item v-for="(v,i) in headlist" :to="{ path:v.path }" :key='i'>{{v.name}}</el-breadcrumb-item>
 		</el-breadcrumb>
-    <h5><i class='iconfont iconcaogao'></i>Post Original</h5>
+    <h5><i class='iconfont iconcaogao' @click='toPostOriginal'></i>Post Original</h5>
     <div v-for="(v,i) in list" :key='i' class='content'>
-      <img :src="require('../assets/imgs/free/11.jpg')">
+      <img :src="v.image_url||require('../assets/imgs/free/11.jpg')">
       <div>
         <div class="right">
           <i>Edit</i>
@@ -46,6 +46,9 @@ export default {
     }
   },
   methods:{
+    toPostOriginal(){
+      this.$router.push({path:'/publishArticle'})
+    }
   }
 }
 </script>

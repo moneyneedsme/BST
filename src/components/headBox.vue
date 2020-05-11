@@ -43,21 +43,21 @@
           <div class='tabsBox'>
             <div class="left">
               <h4><i class='iconfont iconpingzi'></i> My Applications</h4>
-              <p>All(6)</p>
-              <p>Succeed(0)</p>
-              <p>Applying(0)</p>
-              <p>Failed(0)</p>
-              <h4><i class='iconfont iconpingzi'></i> My Drafts</h4>
-              <h4 style='margin-top:1.2rem'><i class='iconfont iconpingzi'></i> My Reviews</h4>
+              <p @click='toApplications(0)'>All({{allnumbers.applicationnum&&allnumbers.applicationnum.totalapplication||0}})</p>
+              <p @click='toApplications(1)'>Succeed({{allnumbers.applicationnum&&allnumbers.applicationnum.totalchenggong||0}})</p>
+              <p @click='toApplications(2)'>Applying({{allnumbers.applicationnum&&allnumbers.applicationnum.totalshenhezhong||0}})</p>
+              <p @click='toApplications(3)'>Failed({{allnumbers.applicationnum&&allnumbers.applicationnum.totalshibai||0}})</p>
+              <h4 @click='toMyCentent(9)'><i class='iconfont iconpingzi'></i> My Drafts({{allnumbers.totaldrafts||0}})</h4>
+              <h4 style='margin-top:1.2rem' @click='toMyCentent(10)'><i class='iconfont iconpingzi'></i> My Reviews({{allnumbers.totalreviews||0}})</h4>
             </div>
             <div class="right">
               <h4><i class='iconfont iconpingzi'></i> My Articles</h4>
-              <p>All(6)</p>
-              <p>Approved(4)</p>
-              <p>Not Approved(2)</p>
+              <p @click='toUserReviews(1)'>All({{allnumbers.articlenum&&allnumbers.articlenum.totalarticle||0}})</p>
+              <p @click='toUserReviews(2)'>Approved({{allnumbers.articlenum&&allnumbers.articlenum.approved||0}})</p>
+              <p @click='toUserReviews(3)'>Not Approved({{allnumbers.articlenum&&allnumbers.articlenum.notapproved||0}})</p>
               <h4 style='margin-top:1.5rem'><i class='iconfont iconpingzi'></i> My Settings</h4>
-              <p>My Profile</p>
-              <p>Change Password </p>
+              <p @click='toMyCentent(12)'>My Profile</p>
+              <p @click='toMyCentent(13)'>Change Password </p>
             </div>
             <button>Log Out</button>
           </div>
@@ -85,16 +85,27 @@
 </template>
 
 <script>
+import  {httpNetwork} from "../config/axios"
 export default {
   name:'headBox',
   data(){
     return{
       avatarUrl:'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
       dialogNav:false,
-      tabsValue:false
+      tabsValue:false,
+      allnumbers:{}
     }
   },
+  mounted(){
+    this.getAllnumbers()
+  },
   methods:{
+    getAllnumbers(){
+			const url = `index.php?route=forum/houtai/getallnumbers`
+			httpNetwork(url,null,'get').then(res=>{
+				this.allnumbers = res
+			})
+		},
     handleCommand(command) {
       switch(command){
         case 'a':
@@ -111,11 +122,17 @@ export default {
     toHome(){
       this.$router.push({path:'/'})
     },
-    toUserReviews(){
-      this.$router.push({path:'/myCenter',query:{ArticlesID:0,leftIndex:1}})
+    toMyCentent(leftIndex){
+      this.$router.push({path:'/myCenter',query:{leftIndex}})
+      this.tabsValue = false
     },
-    toApplications(){
-      this.$router.push({path:'/apply',query:{ArticlesID:0,index:0}})
+    toUserReviews(leftIndex=1){
+      this.$router.push({path:'/myCenter',query:{ArticlesID:0,leftIndex}})
+      this.tabsValue = false
+    },
+    toApplications(index=0){
+      this.$router.push({path:'/apply',query:{ArticlesID:0,index}})
+      this.tabsValue = false
     },
     toSettings(){
       this.$router.push({path:'/myCenter',query:{leftIndex:12}})

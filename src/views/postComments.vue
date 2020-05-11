@@ -3,7 +3,7 @@
       <div class="updataImg">
         <div v-for='(v,i) in imgList' :key='i'>
           <img :src="v">
-          <i class='iconfont iconchazishanchudaibiankuang'></i>
+          <i class='iconfont iconchazishanchudaibiankuang' @click='deleteImg(i)'></i>
         </div>
         <el-upload
           class="upload-demo add"
@@ -17,11 +17,11 @@
           <i class='iconfont iconjiahao'></i>
         </el-upload>
       </div>
-      <el-input placeholder="Add Article Title"></el-input>
+      <el-input placeholder="Add Article Title" v-model="title"></el-input>
       <quill-editor ref="text" v-model="content" class="myQuillEditor" :options="editorOption" />
       <div class="btnBox">
         <button @click='toSubmit'>Submit</button>
-        <button>Save</button>
+        <button @click='toSubmit(1)'>Save</button>
         <button>Preview</button>
       </div>
   </div>
@@ -33,6 +33,7 @@ import { Upload } from '../config'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
+import  {httpNetwork} from "../config/axios";
 export default {
   name:'postComments',
   components:{
@@ -41,21 +42,108 @@ export default {
   data(){
     return{
       Upload,
-      imgList:[require('../assets/imgs/free/11.jpg')],
+      imgList:[],
+      imgIds:[],
       isShowCropper:false,
       content: '',
       editorOption: {
         // action:  'https://www.bestekdirect.com/index.php?route=forum/photos/upload',  // 必填参数 图片上传地址
         // methods: 'post',  // 必填参数 图片上传方式
-      }
+      },
+      product_activity_id:null,
+      ceping_review_id:null,
+      title:''
     }
   },
+  mounted(){
+    this.product_activity_id = this.$route.query.id
+    this.ceping_review_id = this.$route.query.cid
+    this.getReview()
+  },
   methods:{
-    toSubmit(){
-      console.log(this.$refs.text.value)
+    getReview(){
+      if(!this.ceping_review_id) return false
+      const data = {
+        ceping_review_id:this.ceping_review_id
+      }
+      const url = `index.php?route=forum/ceping/review_get`
+      return httpNetwork(url,data).then(res=>{
+        res.data.review_images.map(v=>{
+          this.imgList.push(v.photopath)
+          this.imgIds.push(v.ceping_review_photo_id)
+        })
+        this.title = res.data.review_title
+        this.content = res.data.review_content
+      })
+    },
+    toSubmit(isdraft){
+      if(!this.product_activity_id && !this.ceping_review_id){
+        this.$message({
+          showClose: true,
+          message: 'ID does not exist！',
+          type: 'error',
+          duration:1500
+        });
+      }else if(this.imgList.length<1){
+        this.$message({
+          showClose: true,
+          message: 'Please upload the picture first！',
+          type: 'error',
+          duration:1500
+        });
+      }else if(!this.title){
+        this.$message({
+          showClose: true,
+          message: 'Please fill in the title first！',
+          type: 'error',
+          duration:1500
+        });
+      }else if(!this.content){
+        this.$message({
+          showClose: true,
+          message: 'Please fill in the content first',
+          type: 'error',
+          duration:1500
+        });
+      }else{
+        const data = {
+          product_activity_id:this.product_activity_id,
+          review_content:this.content,
+          review_title:this.title,
+          review_image_ids:this.imgIds.join(',')
+        }
+        if(this.ceping_review_id){ //修改
+          const url = `index.php?route=forum/ceping/review_update`
+          return httpNetwork(url,data).then(res=>{
+            this.$message({
+              showClose: true,
+              message: res.text,
+              type: 'success',
+              duration:1500
+            });
+            this.$router.push({path:'/myCenter',query:{leftIndex:10}})
+          })
+        }else{
+          const url = `index.php?route=forum/ceping/review_add`
+          return httpNetwork(url,data).then(res=>{
+            this.$message({
+              showClose: true,
+              message: res.text,
+              type: 'success',
+              duration:1500
+            });
+            this.$router.push({path:'/apply',query:{index:0}});
+          })
+        }
+      }
+    },
+    deleteImg(index){
+      this.imgList.splice(index,1)
+      this.imgIds.splice(index,1)
     },
     onSuccessImg(response, file, fileList){
-      console.log(response, file, fileList)
+      this.imgList.push(response.photopath)
+      this.imgIds.push(response.ceping_review_photo_id)
     },
     onErrorImg(){
       this.$message({
@@ -140,6 +228,7 @@ export default {
       text-align: center;
       margin-top: 30px;
       >button{
+        cursor: pointer;
         width:194px;
         height:46px;
         border-radius:23px;

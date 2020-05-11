@@ -9,22 +9,22 @@
     </div>
     <div class='textBox'>
       <h4>Email*</h4>
-      <el-input></el-input>
+      <el-input v-model.trim="contactemail"></el-input>
     </div>
     <div class="dob">
       <div class='textBox'>
         <h4>First Name*</h4>
-        <el-input></el-input>
+        <el-input v-model.trim="firstname"></el-input>
       </div>
       <div class='textBox'>
         <h4>Last Name*</h4>
-        <el-input></el-input>
+        <el-input v-model.trim="lastname"></el-input>
       </div>
     </div>
     <div class="dob">
       <div class='textBox'>
         <h4>Country*</h4>
-        <el-select v-model="CountryValue">
+        <el-select v-model="country" filterable >
           <el-option
             v-for="item in CountryOptions"
             :key="item.value"
@@ -35,21 +35,15 @@
       </div>
       <div class='textBox'>
         <h4>Mobile Number*</h4>
-        <el-select v-model="CountryValue">
-          <el-option
-            v-for="item in CountryOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
+        <el-input v-model.trim="telephone"></el-input>
       </div>
     </div>
-    <button>Submit</button>
+    <button @click='onSubmit'>Submit</button>
   </div>
 </template>
 
 <script>
+import  {httpNetwork} from "../config/axios"
 export default {
   name:'myProfile',
   props:{
@@ -62,17 +56,85 @@ export default {
   },
   data(){
     return{
-      CountryValue:'',
-      CountryOptions:[
-        {
-          value: '1',
-          label: '中国'
-        },
-        {
-          value: '2',
-          label: '美国'
-        },
-      ]
+      contactemail: '',
+      firstname: '',
+      lastname: '',
+      telephone: '',
+      country: null,
+      CountryOptions: []
+    }
+  },
+  mounted(){
+    this.getallcountries()
+  },
+  methods:{
+    onSubmit(){
+      if(!this.contactemail){
+        this.$message({
+          showClose: true,
+          message: 'Please fill in the email first!',
+          type: 'error',
+          duration:1500
+        })
+      }else if(!this.firstname){
+        this.$message({
+          showClose: true,
+          message: 'Please fill in the first name first!',
+          type: 'error',
+          duration:1500
+        })
+      }else if(!this.lastname){
+        this.$message({
+          showClose: true,
+          message: 'Please fill in the last name first!',
+          type: 'error',
+          duration:1500
+        })
+      }else if(!this.telephone){
+        this.$message({
+          showClose: true,
+          message: 'Please fill in the mobile phone first!',
+          type: 'error',
+          duration:1500
+        })
+      }else if(!this.country){
+        this.$message({
+          showClose: true,
+          message: 'Please select a country first!',
+          type: 'error',
+          duration:1500
+        })
+      }else{
+        const url = `index.php?route=forum/houtai/changeprofile`
+        const data = {
+          contactemail:this.contactemail,
+          firstname:this.firstname,
+          lastname:this.lastname,
+          telephone:this.telephone,
+          country:this.country
+        }
+        httpNetwork(url,data).then(res=>{
+          this.$message({
+            showClose: true,
+            message: res.text,
+            type: 'success',
+            duration:1500
+          });
+          this.contactemail = ''
+          this.firstname = ''
+          this.lastname = ''
+          this.telephone = ''
+          this.country = null
+        })
+      }
+    },
+    getallcountries(){
+      const url = `index.php?route=forum/houtai/getallcountries`
+      httpNetwork(url,null,'get').then(res=>{
+        this.CountryOptions = res.data.map(v=>{
+          return {value:v.country_id,label:v.name}
+        })
+      })
     }
   }
 }

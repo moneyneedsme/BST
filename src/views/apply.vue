@@ -2,18 +2,18 @@
 	<div class="apply" :class='$store.state.isPc?"pcAuto":"mdAuto"'>
 		<div class='cententBox'>
 			<div class="head">
-				<img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png">
-				<span>Welcome! Emily</span>
+				<img :src="userinfo.avatar">
+				<span>Welcome! {{userinfo.user_name}}</span>
 				<div>
-					<h2>2</h2>
+					<h2>{{countnum.points}}</h2>
 					<p>Points</p>
 				</div>
 				<div>
-					<h2>0</h2>
+					<h2>{{countnum.applied}}</h2>
 					<p>Applied</p>
 				</div>
 				<div>
-					<h2>3</h2>
+					<h2>{{countnum.myreviews}}</h2>
 					<p>My Reviews</p>
 				</div>
 			</div>
@@ -30,14 +30,18 @@
 			</div>
 			<div class="items" v-for='(v,i) in list' :key='i'>
 				<div class="items_head">
-					<span>Applying</span>
-					<i>Announce Soon</i>
-					<i>2020-03-20</i>
+					<template v-if='v.issuccess==0'>
+						<span>Applying</span>
+						<i>Announce Soon</i>
+					</template>
+					<span v-else-if='v.issuccess==1'>Succeed</span>
+					<span v-else>Failed</span>
+					<i>{{v.apply_date}}</i>
 				</div>
 				<div class="item_content">
-					<img :src="require('../assets/imgs/free/11.jpg')">
-					<div>Reddot Design Award | M-Care Toothbrush Set & UV Sanitizer | Crowdfunding Invitation</div>
-					<button class='active' @click='toPost'>Submit Review</button>
+					<img :src="imgUrl+v.image">
+					<div>{{v.aname}}</div>
+					<button class='active' @click='toPost(v.product_activity_id)'>Submit Review</button>
 				</div>
 			</div>
 		</div>
@@ -58,18 +62,25 @@ export default {
 	},
 	data(){
 		return{
-			index:0,
-			list:[],
-			dataall:[],
-			shenqing_chenggong:[],
-			shenqing_shenhezhong:[],
-			shenqing_shibai:[]
+			index: 0,
+			list: [],
+			dataall: [],
+			shenqing_chenggong: [],
+			shenqing_shenhezhong: [],
+			shenqing_shibai: [],
+			userinfo: {},
+			countnum: {}
 		}
 	},
 	async mounted(){
 		this.index = this.$route.query.index ||0
 		await this.getData()
 		this.ontab(this.index)
+	},
+	beforeRouteUpdate (to, from, next) {
+		this.index = to.query.index ||0
+		this.ontab(this.index)
+		next()
 	},
 	methods:{
 		ontab(i){
@@ -95,10 +106,12 @@ export default {
 				this.shenqing_chenggong = res.data.shenqing_chenggong
 				this.shenqing_shenhezhong = res.data.shenqing_shenhezhong
 				this.shenqing_shibai = res.data.shenqing_shibai
+				this.userinfo = res.userinfo
+				this.countnum = res.countnum
       })
 		},
-		toPost(){
-			this.$router.push({path:'/postComments'})
+		toPost(id){
+			this.$router.push({path:'/postComments',query:{id}})
 		}
 	}
 }
