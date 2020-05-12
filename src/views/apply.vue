@@ -1,9 +1,23 @@
 <template>
 	<div class="apply" :class='$store.state.isPc?"pcAuto":"mdAuto"'>
 		<div class='cententBox'>
-			<div class="head">
+			<div class="head" v-if='$store.state.isPc'>
 				<img :src="userinfo.avatar">
 				<span>Welcome! {{userinfo.user_name}}</span>
+				<div>
+					<h2>{{countnum.points}}</h2>
+					<p>Points</p>
+				</div>
+				<div>
+					<h2>{{countnum.applied}}</h2>
+					<p>Applied</p>
+				</div>
+				<div>
+					<h2>{{countnum.myreviews}}</h2>
+					<p>My Reviews</p>
+				</div>
+			</div>
+			<div class="head" v-else>
 				<div>
 					<h2>{{countnum.points}}</h2>
 					<p>Points</p>
@@ -25,8 +39,7 @@
 			</div>
 			<div class="directory">
 				<h3>Comment Rules：</h3>
-				<p>Congratulations on your successful qualification to obtain free samples, please click Submit Review on below relatedactivity and share your experience and feelings about this evaluation in details. Review would be auditted and once</p>
-				<p>Sorry that your application wasn’t be seleted, please don’t be discouraged, you still have chance to share your comment as long as you purchased our products--click Submit Review on below related activity and share your experience and</p>
+				<p>Congratulations on your successful qualification to obtain free samples, please click Submit Review on below relatedactivity and share your experience and feelings about this evaluation in details. Review would be auditted and once Sorry that your application wasn’t be seleted, please don’t be discouraged, you still have chance to share your comment as long as you purchased our products--click Submit Review on below related activity and share your experience and</p>
 			</div>
 			<div class="items" v-for='(v,i) in list' :key='i'>
 				<div class="items_head">
@@ -118,7 +131,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.apply{
+.apply.pcAuto{
 	overflow: hidden;
 	margin-top: 77px;
 	.rightBox{
@@ -282,6 +295,159 @@ export default {
 				>div{
 					margin:30px 153px 30px 230px;
 					font-size:18px;
+					font-family:Whitney Book;
+					font-weight:400;
+					color:rgba(73,70,69,1);
+				}
+			}
+		}
+	}
+}
+.apply.mdAuto{
+	overflow: hidden;
+	margin-top: 0.17rem;
+	.cententBox{
+		padding:0px 0.26rem;
+		box-sizing: border-box;
+		.head{
+			background: white;
+			padding:0.38rem 0.41rem;
+			display: flex;
+			justify-content: space-between;
+			>div{
+				text-align: center;
+				width: 1.9rem;
+				padding:0.17rem;
+				border:1px solid rgba(230,230,232,1);
+				border-radius:0.1rem;
+				box-sizing: border-box;
+				>h2{
+					font-size:0.36rem;
+					font-family:Whitney;
+					font-weight:500;
+					color:rgba(73,70,69,1);
+				}
+				>p{
+					margin-top: 0.09rem;
+					font-size:0.24rem;
+					font-family:Whitney Book;
+					font-weight:400;
+					color:rgba(73,70,69,1);
+				}
+			}
+		}
+		.tabs{
+			font-size: 0px;
+			background:rgba(244,246,248,1);
+			margin-top: 0.17rem;
+			background: white;
+			>span{
+				display: inline-block;
+				vertical-align: top;
+				width: 25%;
+				text-align: center;
+				height: 0.5rem;
+				line-height: 0.5rem;
+				font-size:0.26rem;
+				font-family:Whitney Book;
+				font-weight:400;
+				color:rgba(34,24,21,1);
+				cursor: pointer;
+				box-sizing: border-box;
+				&.active{
+					background:rgba(227,22,25,1);
+					font-family:Whitney Semibold;
+					color: white;
+				}
+			}
+		}
+		.directory{
+			background: white;
+			padding: 0.6rem 0.42rem 0.55rem 0.3rem;
+			margin-top: 0.13rem;
+			>h3{
+				font-size:0.26rem;
+				font-family:Whitney Semibold;
+				font-weight:400;
+				color:rgba(76,73,72,1);
+			}
+			>p{
+				font-size:0.24rem;
+				font-family:Whitney Book;
+				font-weight:400;
+				color:rgba(76,73,72,1);
+				margin-top: 0.36rem;
+			}
+		}
+		.items{
+			overflow: hidden;
+			background: white;
+			padding: 0 0.19rem 0.23rem;
+			.items_head{
+				height:0.68rem;
+				line-height: 0.68rem;
+				background:rgba(244,246,248,1);
+				padding:0px 0.41rem;
+				>span{
+					font-size:0.36rem;
+					font-family:Whitney Semibold;
+					font-weight:400;
+					color:rgba(76,73,72,1);
+					margin-right:0.1rem;
+				}
+				>i{
+					font-size:0.24rem;
+					font-family:Whitney Book;
+					font-weight:400;
+					color:rgba(114,113,113,1);
+					&:last-of-type{
+						float: right;
+						margin-top: 1px;
+					}
+				}
+			}
+			.item_content{
+				border:1px solid rgba(244,246,248,1);
+				border-top: 0px;
+				overflow: hidden;
+				position: relative;
+				width:100%;
+				box-sizing: border-box;
+				min-height: 1.98rem;
+				>img{
+					width:1.98rem;
+					height:1.01rem;
+					position: absolute;
+					top:50%;
+					left: 0.23rem;
+					transform: translateY(-50%);
+				}
+				>button{
+					position: absolute;
+					top:65%;
+					right:1.32rem;
+					transform: translateY(-50%);
+					width:1.94rem;
+					height:0.35rem;
+					line-height: 0.35rem;
+					background:rgba(244,246,248,1);
+					border:1px solid rgba(219,220,221,1);
+					border-radius:21px;
+					box-sizing: border-box;
+					font-size: 0.24rem;
+					font-family:Whitney Book;
+					font-weight:400;
+					color:rgba(255,255,255,1);
+					cursor: pointer;
+					&.active{
+						border:none;
+						background:rgba(227,22,25,1);	
+						color:rgba(255,255,255,1);
+					}
+				}
+				>div{
+					margin:0.41rem 0.23rem 0.41rem 2.3rem;
+					font-size:0.24rem;
 					font-family:Whitney Book;
 					font-weight:400;
 					color:rgba(73,70,69,1);

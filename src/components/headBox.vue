@@ -52,9 +52,9 @@
             </div>
             <div class="right">
               <h4><i class='iconfont iconpingzi'></i> My Articles</h4>
-              <p @click='toUserReviews(1)'>All({{allnumbers.articlenum&&allnumbers.articlenum.totalarticle||0}})</p>
-              <p @click='toUserReviews(2)'>Approved({{allnumbers.articlenum&&allnumbers.articlenum.approved||0}})</p>
-              <p @click='toUserReviews(3)'>Not Approved({{allnumbers.articlenum&&allnumbers.articlenum.notapproved||0}})</p>
+              <p @click='toMyCentent(1)'>All({{allnumbers.articlenum&&allnumbers.articlenum.totalarticle||0}})</p>
+              <p @click='toMyCentent(2)'>Approved({{allnumbers.articlenum&&allnumbers.articlenum.approved||0}})</p>
+              <p @click='toMyCentent(3)'>Not Approved({{allnumbers.articlenum&&allnumbers.articlenum.notapproved||0}})</p>
               <h4 style='margin-top:1.5rem'><i class='iconfont iconpingzi'></i> My Settings</h4>
               <p @click='toMyCentent(12)'>My Profile</p>
               <p @click='toMyCentent(13)'>Change Password </p>
@@ -86,6 +86,7 @@
 
 <script>
 import  {httpNetwork} from "../config/axios"
+import Utils from '../config/util'
 export default {
   name:'headBox',
   data(){
@@ -123,7 +124,7 @@ export default {
       this.$router.push({path:'/'})
     },
     toMyCentent(leftIndex){
-      this.$router.push({path:'/myCenter',query:{leftIndex}})
+      Utils.$emit('init',leftIndex);
       this.tabsValue = false
     },
     toUserReviews(leftIndex=1){
@@ -250,7 +251,7 @@ export default {
       padding:0
     }
     .el-dialog__body {
-      margin-top: 2.25rem;
+      // margin-top: 2.25rem;
       padding:0 1.07rem 0.94rem 0.64rem;
       .tabsBox{
         overflow: hidden;

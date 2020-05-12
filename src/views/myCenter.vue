@@ -1,5 +1,5 @@
 <template>
-	<div class='myCenter' :class='$store.state.isPc?"pcAuto":"mdAuto"'>
+	<div class='myCenter' :class='$store.state.isPc?"pcAuto":"mdAuto"' ref='myCenter'>
 		<div class="content">
 			<div class="leftMeun" v-if='$store.state.isPc'>
 				<div class='title' :class='{active:leftIndex==0}'><i class='iconfont iconwenzhang '></i>My Articles</div>
@@ -35,6 +35,7 @@
 <script>
 import hotActivities from '../components/hotActivities'
 import  {httpNetwork} from "../config/axios"
+import Utils from '../config/util'
 export default {
 	name:'myCenter',
 	components: { 
@@ -52,10 +53,20 @@ export default {
 		}
 	},
 	async mounted(){
+		this.vueLoading.show()
 		this.leftIndex = this.$route.query.leftIndex ||1
 		this.getAllnumbers()
-		await this.getData()
-		switch(this.leftIndex){
+		await this.getData().finally(()=>{
+			this.vueLoading.hide()
+		})
+		this.init(this.leftIndex)
+		Utils.$on('init', (i)=>{
+        this.init(i);
+    })
+	},
+	methods:{
+		init(i){
+			switch(i){
 			case 1:
 				this.toMyArticles(1,"All");
 				break;
@@ -78,35 +89,7 @@ export default {
 				this.toChangePassword(13);
 				break;
 		}
-	},
-	// beforeRouteUpdate (to, from, next) {
-	// 	this.leftIndex = to.query.leftIndex ||1
-	// 	switch(this.leftIndex){
-	// 		case 1:
-	// 			this.toMyArticles(1,"All");
-	// 			break;
-	// 		case 2:
-	// 			this.toMyArticles(2,"Approved");
-	// 			break;
-	// 		case 3:
-	// 			this.toMyArticles(3,"Not Approved");
-	// 			break;
-	// 		case 9:
-	// 			this.toMyDrafts(9);
-	// 			break;
-	// 		case 10:
-	// 			this.getMyReviews(10);
-	// 			break;
-	// 		case 12:
-	// 			this.toMyProfile(12);
-	// 			break;
-	// 		case 13:
-	// 			this.toChangePassword(13);
-	// 			break;
-	// 	}
-	// 	next()
-	// },
-	methods:{
+		},
 		getAllnumbers(){
 			const url = `index.php?route=forum/houtai/getallnumbers`
 			httpNetwork(url,null,'get').then(res=>{

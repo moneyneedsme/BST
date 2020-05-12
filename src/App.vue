@@ -5,8 +5,8 @@
     </div> -->
     <!-- <my-header/> -->
     <head-box></head-box>
-    <router-view />
-    <my-footer/>
+    <router-view/>
+    <my-footer  class='footer'/>
   </div>
 </template>
 <script>
@@ -39,4 +39,12 @@ export default {
 .minWidth {
   min-width: 1200px;
 }
+.footer{
+  margin-top: 40px;
+}
+ @media screen and (max-width:960px){
+   .footer{
+     margin-top: 0.6rem;
+   }
+ }
 </style>

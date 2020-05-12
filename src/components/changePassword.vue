@@ -153,7 +153,7 @@ export default {
   }
   @media screen and (max-width:960px){
     .changePassword{
-      padding:0.5rem 0.97rem 0.36rem;
+      padding:0.5rem 0.36rem 0.36rem;
       /deep/.el-breadcrumb{
         position: inherit;
         top: 0;

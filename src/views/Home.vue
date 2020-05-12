@@ -188,8 +188,6 @@ export default {
   .headAnchorPoint{
     z-index: 999;
     width: 100%;
-    height: 70px!important;
-    background: lightgoldenrodyellow;
     position: fixed;
     top:0;
     height: 0px;
@@ -202,8 +200,6 @@ export default {
     .headAnchorPoint{
     z-index: 999;
     width: 100%;
-    height: 70px!important;
-    background: lightgoldenrodyellow;
     position: fixed;
     top:0;
     height: 0px;
