@@ -13,7 +13,7 @@
           <anchor-point :list='pointList'  @bindAction = 'bindAction' :active.sync = 'active' v-show='!showAnchorPointHead' ref='anchorPoint' id='anchorPoint'></anchor-point>
           <reviews v-if='this.goodsInfodatas.zhuangtai==0' class='reviews' :product_activity_id='product_activity_id' id='Reviews' ref='Reviews'></reviews>
           <activity-details id='ActivityDetails' ref='ActivityDetails' :longtext = 'goodsInfodatas.longtext'></activity-details>
-          <winner-lists id='Applicationlists' ref='Applicationlists'  :product_activity_id='product_activity_id'></winner-lists>
+          <winner-lists v-if='this.goodsInfodatas.zhuangtai==0'  id='Applicationlists' ref='Applicationlists'  :product_activity_id='product_activity_id'></winner-lists>
           <comments id='Comments' ref='Comments' :product_activity_id='product_activity_id'></comments>
         </div>
         <hot-activities class='hot-activities'></hot-activities>
@@ -139,12 +139,11 @@ export default {
         this.pointList = res.data.zhuangtai==0?[
           {value:"Reviews",id:"Reviews",index:0},
           {value:"Activity Details",id:"ActivityDetails",index:1},
-          {value:"Application lists",id:"Applicationlists",index:2},
+          {value:"Application Lists",id:"Applicationlists",index:2},
           {value:"Comments",id:"Comments",index:3},
         ]:
         [
           {value:"Activity Details",id:"ActivityDetails",index:1},
-          {value:"Application lists",id:"Applicationlists",index:2},
           {value:"Comments",id:"Comments",index:3},
         ];
       })

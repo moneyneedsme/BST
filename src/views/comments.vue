@@ -9,7 +9,7 @@
     </el-input>
     <div class='btnBox'>
       <el-button round @click='content=""'>Cancel</el-button>
-      <el-button class='Release' round @click='onRelease'>Release</el-button>
+      <el-button :class='{"Release":content.length}' round @click='onRelease'>Release</el-button>
     </div>
     <commentsItems
       class='commentsItems'

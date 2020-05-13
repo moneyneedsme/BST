@@ -77,7 +77,7 @@
           <div class='btnBox'>
             <span>All reviews({{comments.length}})</span>
             <el-button round @click='textValue=""'>Cancel</el-button>
-            <el-button class='Release' round @click='onRelease'>Release</el-button>
+            <el-button :class='{"Release":textValue.length}' round @click='onRelease'>Release</el-button>
           </div>
         </div>
         <div class='commentsItems'>

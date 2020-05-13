@@ -83,6 +83,7 @@ export default {
         width:55px;
         height: 55px;
         vertical-align: top;
+        border-radius: 50%;
       }
       >p{
         text-align: center;

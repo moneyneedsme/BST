@@ -43,7 +43,7 @@
               <span>Apply</span>
             </template>
           </div>
-          <el-button plain :class='{active:!datas.status==1  }' >
+          <el-button @click='toBuy' plain :class='{active:!datas.status==1  }' >
             <i class='iconfont icondaohanggouwuche'></i>
             <span>Buy Now</span>
           </el-button>
@@ -79,7 +79,7 @@
           </div>       
         </div>
         <div class='describe'>
-          <h4>Fill out he public test questionnaire:</h4>
+          <h4>Fill out the public test questionnaire:</h4>
           <p>Filling in the questionnaire carefully will increase the chance of successful application</p>
         </div>
         <div class="textBox">
@@ -141,8 +141,12 @@ export default {
   mounted(){
   },
   methods:{
+    toBuy(){
+      window.location.href = 'https://www.bestekdirect.com/groupbuy/ShoppingCart1.html'
+    },
     tolink(){
-      window.location.href = this.url
+      // window.location.href = this.url
+      this.$router.push({path:'/apply',query:{index:2}});
     },
     onSubmitBtn(){
       const url = `index.php?route=newhome/activity/applyp`
@@ -451,7 +455,7 @@ export default {
       width:123px;
       height:35px;
       line-height: 35px;
-      background:rgba(227,22,25,1);
+      background: #D1D1D2;
       border-radius:18px;
       outline: none;
       font-size:20px;
@@ -460,7 +464,11 @@ export default {
       color:rgba(255,255,255,1);
       display: block;
       margin: 50px auto 0;
-      border:none
+      border:none;
+      cursor: pointer;
+      &:hover{
+        background:rgba(227,22,25,1);
+      }
     }
   }
   
@@ -508,14 +516,17 @@ export default {
       width:300px;
       height:35px;
       line-height: 35px;
-      background:rgba(227,22,25,1);
+      background:#D1D1D2;
       border-radius:18px;
       outline: none;
       font-size:20px;
       font-family:Whitney Book;
       font-weight:400;
       color:rgba(255,255,255,1);
-      border:none
+      border:none;
+      &:hover{
+        background:rgba(227,22,25,1);
+      }
     }
   }
 }
