@@ -182,15 +182,13 @@ export default {
 }
 .footer-container {
   height: 411.5px;
-  padding: 92px 0;
+  padding: 20px 0;
   background: #fff;
-  border-top: 1px solid #e2e0e0;
   border-bottom: 1px solid #ccc;
 }
 .company-box {
   min-width: 1210px;
-  height: 128.5px;
-  padding: 38.5px 0 81.5px;
+  padding: 22px 0;
   background: #f1f3f4;
 }
 .flex {

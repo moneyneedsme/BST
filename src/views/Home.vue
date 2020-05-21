@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div class='headAnchorPoint' v-show='showAnchorPointHead'>
+    <div class='headAnchorPoint' :class='$store.state.isPc?"pc_head":""' v-show='showAnchorPointHead'>
       <div>
+          <button v-if='$store.state.isPc' @click='toBuy' class='iconfont icondaohanggouwuche'>Buy Now</button>
           <anchor-point :list='pointList' @bindAction = 'bindAction' :active.sync = 'active'></anchor-point>
       </div>
     </div>
@@ -13,7 +14,7 @@
           <anchor-point :list='pointList'  @bindAction = 'bindAction' :active.sync = 'active' v-show='!showAnchorPointHead' ref='anchorPoint' id='anchorPoint'></anchor-point>
           <reviews v-if='this.goodsInfodatas.zhuangtai==0' class='reviews' :product_activity_id='product_activity_id' id='Reviews' ref='Reviews'></reviews>
           <activity-details id='ActivityDetails' ref='ActivityDetails' :longtext = 'goodsInfodatas.longtext'></activity-details>
-          <winner-lists v-if='this.goodsInfodatas.zhuangtai==0'  id='Applicationlists' ref='Applicationlists'  :product_activity_id='product_activity_id'></winner-lists>
+          <winner-lists :status='this.goodsInfodatas.zhuangtai'  id='Applicationlists' ref='Applicationlists'  :product_activity_id='product_activity_id'></winner-lists>
           <comments id='Comments' ref='Comments' :product_activity_id='product_activity_id'></comments>
         </div>
         <hot-activities class='hot-activities'></hot-activities>
@@ -31,7 +32,6 @@ import activityDetails from '../components/activityDetails'
 import winnerLists from './winnerLists'
 import comments from './comments'
 import  {httpNetwork} from "../config/axios";
-import { mapActions } from "vuex";
 export default {
   name:'home',
   components: { 
@@ -47,7 +47,7 @@ export default {
   data(){
     return{
       pointList:[],
-      product_activity_id:766, //767活动中 766已结束 765已结束
+      product_activity_id:this.$store.state.product_activity_id, //767活动中 766已结束 765已结束
       goodsInfodatas:{},
       active:-1,
       fdScroll:true,
@@ -61,10 +61,10 @@ export default {
     }
   },
   mounted(){
+    console.log(this.$store.state)
     this.vueLoading.show()
-    let p1 = this.getLogin()
     let p2 = this.getactivitydetail()
-    Promise.all([p1,p2]).finally(()=>{
+    Promise.all([p2]).finally(()=>{
       this.vueLoading.hide()
       setTimeout(() => {
         this.initScroll()
@@ -72,9 +72,9 @@ export default {
     })
   },
   methods:{
-     ...mapActions([
-      "getLogin"
-    ]),
+    toBuy(){
+      window.location.href = 'https://www.bestekdirect.com/groupbuy/ShoppingCart1.html'
+    },
     initScroll(){
       if(!this.$store.state.isPc){
         setTimeout(() => {
@@ -144,6 +144,7 @@ export default {
         ]:
         [
           {value:"Activity Details",id:"ActivityDetails",index:1},
+          {value:"Application Lists",id:"Applicationlists",index:2},
           {value:"Comments",id:"Comments",index:3},
         ];
       })
@@ -191,8 +192,47 @@ export default {
     top:0;
     height: 0px;
     >div{
+      margin:0 auto;
+      border-bottom: 1px solid #c3c3c3;
+    }
+  }
+  .pc_head{
+    background: white;
+    height: 65px;
+    border-bottom: 1px solid #c3c3c3;
+    >div{
+      border:none;
       width: 1200px;
       margin:0 auto;
+      .anchorPoint{
+        height: 65px;
+        line-height: 68px;
+        padding:0
+      }
+      >button{
+        float: right;
+        box-sizing: border-box;
+        width:150px;
+        height:42px;
+        background:rgba(244,246,248,1);
+        border-radius:23px;
+        font-size:18px;
+        font-weight:500;
+        color:rgba(73,70,69,1);
+        border: none;
+        margin-top: 12px;
+        margin-left: 250px;
+        cursor: pointer;
+        &:hover{
+          color:white;
+          background:rgba(227,22,25,1);
+        }
+        &.icondaohanggouwuche::before{
+          font-size: 20px;
+          vertical-align: 1px;
+          margin-right: 12px;
+        }
+      }
     }
   }
   @media screen and (max-width:960px){

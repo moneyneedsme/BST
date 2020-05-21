@@ -37,9 +37,11 @@
 				<span @click='ontab(2)' :class='{active:index==2}'>Applying ({{shenqing_shenhezhong.length}})</span>
 				<span @click='ontab(3)' :class='{active:index==3}'>Failed({{shenqing_shibai.length}})</span>
 			</div>
-			<div class="directory">
+			<div class="directory" v-show='index!==2'>
 				<h3>Comment Rules：</h3>
-				<p>Congratulations on your successful qualification to obtain free samples, please click Submit Review on below relatedactivity and share your experience and feelings about this evaluation in details. Review would be auditted and once Sorry that your application wasn’t be seleted, please don’t be discouraged, you still have chance to share your comment as long as you purchased our products--click Submit Review on below related activity and share your experience and</p>
+				<p v-show='index==0'>Thanks for taking part in our test events！Whether you applied successfully or not, as long as you have purchased our products, you can share your product experience with us if you willing to. After strict screening and picking out the users with the best comment quality on every testing events, and labelled as the "ultimate experiencer", users who get this title will be able to get free samples of all future public testing activities for free for life!</p>
+				<p v-show='index==1'>Congratulations on your successful qualification to obtain free samples, please click Submit Review on below related activity and share your experience and feelings about this evaluation in details. Review would be auditted and once approved, a 10% discount coupon will be provided to you when place the next order. You can contact us after placed the next order with three months, refund will be processed at once.</p>
+				<p v-show='index==3'>Sorry that your application wasn’t be seleted, please don’t be discouraged, you still have chance to share your comment as long as you purchased our products before--click Submit Review on below related activity and share your experience and feelings about this evaluation in details!</p>
 			</div>
 			<div class="items" v-for='(v,i) in list' :key='i'>
 				<div class="items_head">
@@ -54,7 +56,7 @@
 				<div class="item_content">
 					<img :src="imgUrl+v.image">
 					<div>{{v.aname}}</div>
-					<button class='active' @click='toPost(v.product_activity_id)'>Submit Review</button>
+					<button @click='toPost(v.product_activity_id)'>Submit Review</button>
 				</div>
 			</div>
 		</div>
@@ -183,7 +185,7 @@ export default {
 				margin-right: 63px;
 				text-align: center;
 				margin-top: 10px;
-				>h5{
+				>h2{
 					font-size:32px;
 					font-family:Whitney;
 					font-weight:500;
@@ -286,7 +288,7 @@ export default {
 					border-radius:21px;
 					box-sizing: border-box;
 					cursor: pointer;
-					&.active{
+					&.active,&:hover{
 						border:none;
 						background:rgba(227,22,25,1);	
 						color:rgba(255,255,255,1);
@@ -346,15 +348,15 @@ export default {
 				vertical-align: top;
 				width: 25%;
 				text-align: center;
-				height: 0.5rem;
-				line-height: 0.5rem;
+				height: 0.7rem;
+				line-height: 0.7rem;
 				font-size:0.26rem;
 				font-family:Whitney Book;
 				font-weight:400;
 				color:rgba(34,24,21,1);
 				cursor: pointer;
 				box-sizing: border-box;
-				&.active{
+				&.active,&:hover{
 					background:rgba(227,22,25,1);
 					font-family:Whitney Semibold;
 					color: white;
@@ -428,8 +430,8 @@ export default {
 					right:1.32rem;
 					transform: translateY(-50%);
 					width:1.94rem;
-					height:0.35rem;
-					line-height: 0.35rem;
+					height:0.5rem;
+					line-height: 0.5rem;
 					background:rgba(244,246,248,1);
 					border:1px solid rgba(219,220,221,1);
 					border-radius:21px;
@@ -437,7 +439,6 @@ export default {
 					font-size: 0.24rem;
 					font-family:Whitney Book;
 					font-weight:400;
-					color:rgba(255,255,255,1);
 					cursor: pointer;
 					&.active{
 						border:none;

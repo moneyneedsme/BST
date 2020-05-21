@@ -11,6 +11,9 @@
           <i>{{v.louceng}}#</i>
         </div>
         <p>{{v.content}}</p>
+        <div class="imgShow" v-if='v.images.length'>
+          <img v-for="(v,i) in v.images" :src="imgUrl+v.photopath" :key="i">
+        </div>
         <div class='zan'>
           <span >{{v.numbers_like}}</span>
           <i @click='toZan(v,i)' class='iconfont iconxin'></i>
@@ -96,6 +99,17 @@ export default {
     }
     .centent{
       overflow: hidden;
+      .imgShow{
+        overflow: hidden;
+        margin-top: 10px;
+        >img{
+          margin-top: 10px;
+          width: 90px;
+          height: 90px;
+          vertical-align: middle;
+          margin-right: 8px;
+        }
+      }
       .times{
         overflow: hidden;
         >span,>i{
@@ -109,7 +123,7 @@ export default {
         }
       }
       >p{
-        margin: 21px 0 45px;
+        margin: 21px 0 0;
         font-size:18px;
         font-family:Whitney Book;
         font-weight:400;
@@ -118,6 +132,7 @@ export default {
       }
       .zan{
         text-align: right;
+        margin-top: 45px;
         >span{
           font-size:20px;
           font-family:Whitney;
@@ -129,6 +144,9 @@ export default {
           margin-left:8px;
           font-size:18px;
           cursor: pointer;
+          &:hover{
+            color:#4f4b4b
+          }
         }
       }
     }
@@ -157,17 +175,26 @@ export default {
         }
       }
       .centent{
+        .imgShow{
+          margin-top:0.1rem;
+          >img{
+            width:1rem;
+            height:1rem;
+            margin-right:0.1rem
+          }
+        }
         .times{
           >span,>i{
             font-size:0.24rem;
           }
         }
         >p{
-          margin: 0.21rem 0 0.45rem;
+          margin: 0.21rem 0 0;
           font-size:0.26rem;
           line-height:0.40rem;
         }
         .zan{
+          margin-top: 0.45rem;
           >span{
             font-size:0.24rem;
           }

@@ -6,7 +6,7 @@
 				<div @click='toMyArticles(1,"All")' :class='{active:leftIndex==1}'><i></i>All({{allnumbers.articlenum&&allnumbers.articlenum.totalarticle||0}})</div>
 				<div @click='toMyArticles(2,"Approved")' :class='{active:leftIndex==2}'><i></i>Approved({{allnumbers.articlenum&&allnumbers.articlenum.approved||0}})</div>
 				<div @click='toMyArticles(3,"Not Approved")' :class='{active:leftIndex==3}'><i></i>Not Approved({{allnumbers.articlenum&&allnumbers.articlenum.notapproved||0}})</div>
-				<div class='title' :class='{active:leftIndex==4}'><i class='iconfont iconshiyanshaobei2 '></i>My Applications</div>
+				<div class='title' :class='{active:leftIndex==4}'><i class='iconfont iconpingzi '></i>My Applications</div>
 				<div @click='toApply(5)' :class='{active:leftIndex==5}'><i></i>All({{allnumbers.applicationnum&&allnumbers.applicationnum.totalapplication||0}})</div>
 				<div @click='toApply(6)' :class='{active:leftIndex==6}'><i></i>Applying({{allnumbers.applicationnum&&allnumbers.applicationnum.totalshenhezhong||0}})</div>
 				<div @click='toApply(7)' :class='{active:leftIndex==7}'><i></i>Succeed({{allnumbers.applicationnum&&allnumbers.applicationnum.totalchenggong||0}})</div>
@@ -60,35 +60,36 @@ export default {
 			this.vueLoading.hide()
 		})
 		this.init(this.leftIndex)
-		Utils.$on('init', (i)=>{
-        this.init(i);
-    })
+		// Utils.$on('init', (i)=>{
+		// 	console.log(i)
+    //     this.init(i);
+    // })
 	},
 	methods:{
 		init(i){
 			switch(i){
-			case 1:
-				this.toMyArticles(1,"All");
-				break;
-			case 2:
-				this.toMyArticles(2,"Approved");
-				break;
-			case 3:
-				this.toMyArticles(3,"Not Approved");
-				break;
-			case 9:
-				this.toMyDrafts(9);
-				break;
-			case 10:
-				this.getMyReviews(10);
-				break;
-			case 12:
-				this.toMyProfile(12);
-				break;
-			case 13:
-				this.toChangePassword(13);
-				break;
-		}
+				case 1:
+					this.toMyArticles(1,"All");
+					break;
+				case 2:
+					this.toMyArticles(2,"Approved");
+					break;
+				case 3:
+					this.toMyArticles(3,"Not Approved");
+					break;
+				case 9:
+					this.toMyDrafts(9);
+					break;
+				case 10:
+					this.getMyReviews(10);
+					break;
+				case 12:
+					this.toMyProfile(12);
+					break;
+				case 13:
+					this.toChangePassword(13);
+					break;
+			}
 		},
 		getAllnumbers(){
 			const url = `index.php?route=forum/houtai/getallnumbers`
@@ -126,9 +127,9 @@ export default {
         this.allList = res.data
         if(res.data&&res.data.length){
           res.data.map(v=>{
-            if(v.archived==='f'){
+            if(v.visible==='f'){
               this.fList.push(v)
-            }else if(v.archived==='t'){
+            }else if(v.visible==='t'){
               this.tList.push(v)
             }
           })
@@ -284,6 +285,7 @@ export default {
 }
  @media screen and (max-width:960px){
 	.myCenter{
+		padding-top: 0;
 		.cententBox{
 			width:100%;
 			display:block;

@@ -13,9 +13,11 @@
 import headBox from './components/headBox'
 import myHeader from '@/components/header'
 import myFooter from '@/components/footer'
+import myMinix from './config/minix.js';
 export default {
   name:"App",
   components: { headBox,myHeader,myFooter},
+  minixs: [myMinix],
   created(){
     //在页面加载时读取sessionStorage里的状态信息
     if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
@@ -28,7 +30,6 @@ export default {
     } 
     //在页面刷新时将vuex里的信息保存到sessionStorage里
     window.addEventListener("beforeunload",()=>{
-        alert(3333)
         sessionStorage.setItem("store",JSON.stringify(this.$store.state))
     })
     console.log(this.$store.state)

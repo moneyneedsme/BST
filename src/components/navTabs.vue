@@ -59,7 +59,7 @@ export default {
   display:block;
   font-size: 0;
   overflow: hidden;
-  margin:1rem 0.36rem 0;
+  margin:1rem 0.36rem 0.5rem;
   >div{
     width: 100%;
     height: 0.65rem;

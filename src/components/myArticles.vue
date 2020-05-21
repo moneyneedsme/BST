@@ -3,19 +3,20 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item v-for="(v,i) in headlist" :to="{ path:v.path }" :key='i'>{{v.name}}</el-breadcrumb-item>
 		</el-breadcrumb>
-    <h5><i class='iconfont iconcaogao' @click='toPostOriginal'></i>Post Original</h5>
-    <div v-for="(v,i) in list" :key='i' class='content'>
+    <h5><i class='iconfont iconcaogao' @click='toPostOriginal'></i><span @click='toPostOriginal'>Post Original</span></h5>
+    <div v-for="(v,i) in getList" :key='i' class='content'>
       <img :src="v.image_url||require('../assets/imgs/free/11.jpg')">
       <div>
         <div class="right">
-          <i>Edit</i>
+          <i @click='editArticles(v)'>Edit</i>
           <i>View</i>
-          <i>Delete</i>
+          <i @click='deleteItem(v,i)'>Delete</i>
         </div>
         <h2>{{v.title}}</h2>
         <div class='times'>
           <span>{{v.updated_at}}</span>
-          <span :class='{active:v.archived==="f"}'>Approved</span>
+          <span v-if='v.archived==="f"' class='active'>Not Approved</span>
+          <span v-else >Approved</span>
         </div>
       </div>
     </div>
@@ -23,6 +24,7 @@
 </template>
 
 <script>
+import  {httpNetwork} from "../config/axios"
 export default {
   name:'myArticles',
   props:{
@@ -39,6 +41,11 @@ export default {
       }
     }
   },
+  computed:{
+    getList(){
+      return this.list
+    }
+  },
   mounted(){
   },
   data(){
@@ -46,6 +53,30 @@ export default {
     }
   },
   methods:{
+    deleteItem(item,index){
+      this.$confirm('This operation will be permanently deleted. Do you want to continue?', 'Tips', {
+        confirmButtonText: 'Determine',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        const url = `index.php?route=forum/forumtopiccreate/deletetopic`
+        const data = {
+          topic_id:item.topic_id,
+        }
+        httpNetwork(url,data).then(res=>{
+          this.getList.splice(index,1)
+          this.$message({
+            showClose: true,
+            message: res.text,
+            type: 'success',
+            duration:1500
+          });
+        })
+      })
+    },
+    editArticles(item){
+      this.$router.push({path:'/publishArticle',query:{id:item.topic_id}})
+    },
     toPostOriginal(){
       this.$router.push({path:'/publishArticle'})
     }
@@ -67,6 +98,9 @@ export default {
       text-align: right;
       >i{
         margin-right: 5px;
+        cursor: pointer;
+      }
+      >span{
         cursor: pointer;
       }
     }

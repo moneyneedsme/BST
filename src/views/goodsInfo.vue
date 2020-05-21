@@ -95,7 +95,7 @@
           <el-input placeholder="Reply" v-model="submitData.whychooseyou"></el-input>  
         </div>
       </div>
-      <button @click='onSubmitBtn'>Submit</button>
+      <button @click='onSubmitBtn' :class='{active:submitData.socialaccount&&submitData.contactemail&&submitData.whychooseyou}'>Submit</button>
     </el-dialog>
     <el-dialog 
       class="showSuccess"
@@ -218,7 +218,7 @@ export default {
       >b{
         width:1px;
         height:21px;
-        border:1px solid rgba(140,141,141,1);
+        border-left:1px solid rgba(140,141,141,1);
         opacity:0.7;
         vertical-align: middle;
         margin:0 30px;
@@ -316,6 +316,7 @@ export default {
         font-size:18px;
         font-weight:500;
         color:rgba(73,70,69,1);
+        margin-left: 0px;
         span{
           font-size:18px;
           font-family:Whitney Book;
@@ -466,7 +467,7 @@ export default {
       margin: 50px auto 0;
       border:none;
       cursor: pointer;
-      &:hover{
+      &:hover,&.active{
         background:rgba(227,22,25,1);
       }
     }
@@ -524,6 +525,7 @@ export default {
       font-weight:400;
       color:rgba(255,255,255,1);
       border:none;
+      cursor: pointer;
       &:hover{
         background:rgba(227,22,25,1);
       }
@@ -532,7 +534,7 @@ export default {
 }
 @media screen and (max-width:960px){
 .goodsInfo{
-  margin:0 0.36rem;
+  margin:0.36rem 0.36rem 0;
   >img{
     width:6.78rem;
     height:5.23rem;
@@ -614,7 +616,7 @@ export default {
         }
       }
       >button,.showStatus{
-        margin-top: 0.92rem;
+        margin-top: 0.7rem;
         width:1.9rem;
         height:0.47rem;
         font-size:0.24rem;

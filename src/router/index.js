@@ -22,16 +22,6 @@ const routes = [
         name: "myReviews",
         component: () => import("../components/myReviews.vue")
       },
-      // {
-      //   path: "/myReviews",
-      //   name: "myReviews",
-      //   component: () => import("../components/myReviews.vue")
-      // },
-      // {
-      //   path: "/myReviews",
-      //   name: "myReviews",
-      //   component: () => import("../components/myReviews.vue")
-      // },
       {
         path: "/myArticles",
         name: "myArticles",
@@ -71,6 +61,9 @@ const router = new VueRouter({
   routes
 });
 router.beforeEach((to, from, next) => {
-  next();
+  if(to.query.product_activity_id) store.commit('setProductId',to.query.product_activity_id)
+  store.dispatch('getLogin').then(()=>{
+    next()
+  })
 });
 export default router;

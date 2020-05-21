@@ -17,7 +17,7 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="a"><i class='iconfont iconwenben'></i><span class='pc_fontColor'>My Articles</span></el-dropdown-item>
-              <el-dropdown-item command="b"><i class='iconfont iconshiyanshaobei2'></i><span class='pc_fontColor'>My Applications</span></el-dropdown-item>
+              <el-dropdown-item command="b"><i class='iconfont iconpingzi'></i><span class='pc_fontColor'>My Applications</span></el-dropdown-item>
               <el-dropdown-item command="c"><i class='iconfont iconshezhi2'></i><span class='pc_fontColor '>My Settings</span></el-dropdown-item>
               <el-dropdown-item command="e" divided class='align_center pc_fontColor'>Log Out</el-dropdown-item>
             </el-dropdown-menu>
@@ -47,15 +47,15 @@
               <p @click='toApplications(1)'>Succeed({{allnumbers.applicationnum&&allnumbers.applicationnum.totalchenggong||0}})</p>
               <p @click='toApplications(2)'>Applying({{allnumbers.applicationnum&&allnumbers.applicationnum.totalshenhezhong||0}})</p>
               <p @click='toApplications(3)'>Failed({{allnumbers.applicationnum&&allnumbers.applicationnum.totalshibai||0}})</p>
-              <h4 @click='toMyCentent(9)'><i class='iconfont iconpingzi'></i> My Drafts({{allnumbers.totaldrafts||0}})</h4>
-              <h4 style='margin-top:1.2rem' @click='toMyCentent(10)'><i class='iconfont iconpingzi'></i> My Reviews({{allnumbers.totalreviews||0}})</h4>
+              <h4 @click='toMyCentent(9)'><i class='iconfont iconcaogao'></i> My Drafts({{allnumbers.totaldrafts||0}})</h4>
+              <h4 style='margin-top:1.2rem' @click='toMyCentent(10)'><i class='iconfont iconpinglun'></i> My Reviews({{allnumbers.totalreviews||0}})</h4>
             </div>
             <div class="right">
-              <h4><i class='iconfont iconpingzi'></i> My Articles</h4>
+              <h4><i class='iconfont iconwenzhang'></i> My Articles</h4>
               <p @click='toMyCentent(1)'>All({{allnumbers.articlenum&&allnumbers.articlenum.totalarticle||0}})</p>
               <p @click='toMyCentent(2)'>Approved({{allnumbers.articlenum&&allnumbers.articlenum.approved||0}})</p>
               <p @click='toMyCentent(3)'>Not Approved({{allnumbers.articlenum&&allnumbers.articlenum.notapproved||0}})</p>
-              <h4 style='margin-top:1.5rem'><i class='iconfont iconpingzi'></i> My Settings</h4>
+              <h4 style='margin-top:1.5rem'><i class='iconfont iconshezhi2'></i> My Settings</h4>
               <p @click='toMyCentent(12)'>My Profile</p>
               <p @click='toMyCentent(13)'>Change Password </p>
             </div>
@@ -98,7 +98,8 @@ export default {
     }
   },
   mounted(){
-    this.getAllnumbers()
+    console.log(this.$store.state)
+    if(!this.$store.state.isPc) this.getAllnumbers()
   },
   methods:{
     getAllnumbers(){
@@ -118,13 +119,16 @@ export default {
         case 'c':
           this.toSettings();
           break;
+        case 'e':
+          this.logonOut();
+          break;
       }
     },
     toHome(){
       this.$router.push({path:'/'})
     },
     toMyCentent(leftIndex){
-      Utils.$emit('init',leftIndex);
+      Utils.$emit('init',leftIndex)
       this.tabsValue = false
     },
     toUserReviews(leftIndex=1){
@@ -141,7 +145,19 @@ export default {
     tolink(path){
       this.$router.push({path})
       this.dialogNav = false;
-    }
+    },
+    logonOut(){
+      this.$store.commit("setLogin", 0)
+      const url = `index.php?route=forum/forum2/logout`
+      const data = {
+        currenturl: 'https://www.bestekdirect.com/reviews/index.html'
+      }
+			httpNetwork(url,data).then(res=>{
+        this.$store.commit("setLogin", 0)
+        window.location.reload()
+        // window.location.href="https://www.bestekdirect.com/login"
+			})
+    },
   }
 }
 </script>
@@ -195,8 +211,8 @@ export default {
   line-height: 1rem;
   overflow: hidden;
   background: white;
-  margin:0 0.36rem;
-  padding:0 0.26rem;
+  // margin:0 0.36rem;
+  padding:0 0.36rem;
   .el-avatar{
     width: 0.5rem;
     height:0.5rem;
@@ -286,12 +302,12 @@ export default {
         }
         >button{
           margin-top: 0.78rem;
-          height:0.56rem;
-          line-height: 0.56rem;
+          height:0.66rem;
+          line-height: 0.46rem;
           padding:0px;
           background:rgba(244,246,248,1);
           border:1px solid rgba(229,230,231,1);
-          border-radius:0.285rem;
+          border-radius:0.8rem;
           width: 100%;
           font-size:0.32rem;
           font-family:Whitney;

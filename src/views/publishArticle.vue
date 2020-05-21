@@ -18,28 +18,29 @@
     </div>
     <div class="left">
       <div class="updataImgBox">
+        <img v-if="imageUrl" :src="imageUrl" class="avatar">
         <el-upload
             ref = 'upload'
             class="avatar-uploader"
             :http-request="subeImg"
-            action=""
+            action="Upload"
             :show-file-list="false"
             :before-upload="beforeAvatarUpload"
             >
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <div class='updataImg'>
+              <div class='updataImg' v-if='!imageUrl'>
                 <i class='iconfont iconjiahao'></i>
                 <h4>Upload Cover Image</h4>
                 <p>To get a better display effect, we recommends you upload the cover image size not less than size of 905*480 pixels.</p>
               </div>
+               <el-button type="primary" v-else class='changeImg'>更换图片</el-button>
           </el-upload>
         </div>
-        <el-input placeholder="Add Article Title"></el-input>
-        <quill-editor ref="text" v-model="content" class="myQuillEditor" :options="editorOption" />
+        <el-input placeholder="Add Article Title" v-model="title"></el-input>
+        <quill-editor ref="text" v-model="cooked" class="myQuillEditor" :options="editorOption" />
         <div class="btnBox">
-          <button>Submit</button>
-          <button>Save</button>
-          <button>Preview</button>
+          <button @click='toSubmit'>Submit</button>
+          <!-- <button>Save</button>
+          <button>Preview</button> -->
         </div>
     </div>
     <img-tailoring
@@ -73,33 +74,100 @@ export default {
     return{
       Upload,
       imageUrl:"",
-      autoCropWidth:200,
-      autoCropHeight:200,
+      autoCropWidth:905,
+      autoCropHeight:480,
       imgUrl:'',
+      title:'',
       fileUpload: null,
       isShowCropper:false,
-      content: '',
+      cooked: '',
+      ceping_review_photo_id:null,
+      topic_id:null,
       editorOption: {} 
     }
   },
+  mounted(){
+    this.topic_id  = this.$route.query.id
+    this.getArticle()
+  },
   methods:{
+    getArticle(){
+      if(!this.topic_id) return false
+      const data = {
+        topic_id:this.topic_id
+      }
+      const url = `index.php?route=forum/forumtopiccreate/gettopic_bytopicid`
+      return httpNetwork(url,data).then(res=>{
+        this.title = res.data.title
+        this.cooked = res.data.cooked
+        this.imageUrl =  res.image.image_url,
+        this.ceping_review_photo_id = res.image.ceping_review_photo_id
+      })
+    },
+    toSubmit(isdraft){
+      if(!this.ceping_review_photo_id){
+        this.$message({
+          showClose: true,
+          message: 'Please upload the picture first！',
+          type: 'error',
+          duration:1500
+        });
+      }else if(!this.title){
+        this.$message({
+          showClose: true,
+          message: 'Please fill in the title first！',
+          type: 'error',
+          duration:1500
+        });
+      }else if(!this.cooked){
+        this.$message({
+          showClose: true,
+          message: 'Please fill in the content first',
+          type: 'error',
+          duration:1500
+        });
+      }else{
+        const data = {
+          topic_id:this.topic_id,
+          cooked:this.cooked,
+          title:this.title,
+          ceping_review_photo_id:this.ceping_review_photo_id
+        }
+        if(this.topic_id){ //修改
+          const url = `index.php?route=forum/forumtopiccreate/updatetopic`
+          return httpNetwork(url,data).then(res=>{
+            this.$message({
+              showClose: true,
+              message: res.text,
+              type: 'success',
+              duration:1500
+            });
+            this.$router.push({path:'/myArticles'})
+          })
+        }else{
+          const url = `index.php?route=forum/forumtopiccreate/createtopic`
+          return httpNetwork(url,data).then(res=>{
+            this.$message({
+              showClose: true,
+              message: res.text,
+              type: 'success',
+              duration:1500
+            });
+            this.$router.push({path:'/myArticles'})
+          })
+        }
+      }
+    },
     subeImg(file){
-      // this.fileList = []
-      // this.$refs.upload.submit();
-      // let reader = new FileReader()
-      //   reader.onload = function (e) {
-      //     console.log(e)
-      //   }
-      //   reader.readAsDataURL(file)
-      // console.log(file)
-        let formData = new FormData();//formdata格式
-       formData.append('file', file);
-       httpNetwork(this.Upload,formData).then(res => {
-         console.log(res)
-       });
+      let formData = new FormData(); // formdata格式
+      formData.append('file', file)
+      this.$axios.post(this.Upload,formData).then(res => {
+        console.log(res)
+        this.ceping_review_photo_id = res.data.ceping_review_photo_id
+        this.imageUrl = res.data.photopath
+      })
     },
     beforeAvatarUpload(file) {
-      console.log(file)
       const isJPG = file.type === 'image/jpeg';
       const isPNG = file.type === 'image/png';
       const isLt2M = file.size / 1024 / 1024 < 8;
@@ -153,6 +221,7 @@ export default {
         text-align: center;
         margin-top: 30px;
         >button{
+          cursor: pointer;
           width:194px;
           height:46px;
           border-radius:23px;
@@ -177,6 +246,13 @@ export default {
       background: white;
       height: 480px;
       position: relative;
+      .avatar{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+      }
       div.updataImg{
         position: absolute;
         width: 100%;
@@ -247,5 +323,12 @@ export default {
       }
     }
 
+  }
+  .changeImg{
+    position: absolute;
+    width: 180px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
   }
 </style>

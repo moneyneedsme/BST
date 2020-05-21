@@ -22,9 +22,15 @@ export default {
 <style lang="less" scoped>
 .activityDetails{
   overflow: hidden;
-  padding:0 63px 105px;
+  padding:63px 63px 105px;
+  background: white;
+  // margin-top: 8px;
   .details{
     position: relative;
+    overflow: hidden;
+    /deep/ img{
+      width: 100%!important;
+    }
   }
   .share{
     text-align: center;
@@ -40,8 +46,11 @@ export default {
 }
 @media screen and (max-width:960px){
   .activityDetails{
-    padding:0 0.36rem 1.4rem;
+    padding: 0.36rem 0.36rem 1.4rem;
     .details{
+      img{
+        width: 100%!important;
+      }
     }
     .share{
       margin-top: 0.35rem;

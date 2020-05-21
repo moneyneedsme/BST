@@ -1,9 +1,11 @@
 <template>
   <div class='winnerLists'>
-    <h3>Winner Lists</h3>
-    <user-list
-      :list='winList'
-    ></user-list>
+    <template v-if='status=="0"'>
+      <h3>Winner Lists</h3>
+      <user-list
+        :list='winList'
+      ></user-list>
+    </template>
     <h3>All Lists</h3>
     <user-list
       :list='allList'
@@ -38,7 +40,7 @@ export default {
   components:{
     userList
   },
-  props:['product_activity_id'],
+  props:['product_activity_id','status'],
   data(){
     return{
       allList:[],
@@ -85,7 +87,7 @@ export default {
 .winnerLists{
   overflow: hidden;
   background: white;
-  padding:0 63px 134px;
+  padding:0 63px 105px;
   >h3{
     font-size:32px;
     font-family:Whitney Semibold;

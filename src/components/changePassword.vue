@@ -100,7 +100,7 @@ export default {
   .changePassword{
     position: relative;
     background: white;
-    padding:0px 97px 60px;
+    padding:12px 97px 81px;
     /deep/.el-breadcrumb{
       position: absolute;
       top: -25px;
@@ -108,7 +108,7 @@ export default {
     }
     >div.content{
       overflow: hidden;
-      padding-top: 55px;
+      padding-top:40px;
       >h3{
         font-size:26px;
         font-family:Whitney;

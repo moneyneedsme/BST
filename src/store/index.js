@@ -6,6 +6,7 @@ export default new Vuex.Store({
   state: {
     isPc: true,
     islogin:0,//1表示登录 0表示未登录
+    product_activity_id:766,
     userInfo:{}
   },
   mutations: {
@@ -17,19 +18,25 @@ export default new Vuex.Store({
     },
     setLogin(state, value = 0) {
       state.islogin = value;
-    }
+    },
+    setProductId(state,value){
+      state.product_activity_id = value;
+    },
   },
   actions: {
     getLogin({ state, commit }){
       const url = 'index.php?route=forum/forum2/checklogin'
-      return httpNetwork(url,null,'get').then(res=>{
+      const data = {
+        currenturl: 'https://www.bestekdirect.com/reviews/index.html'
+      }
+      return httpNetwork(url,data).then(res=>{
         if(res.code===1){
-          commit('userInfo',1)
-          commit('setLogin',res.user)
+          commit('setLogin',1)
+          commit('userInfo',JSON.parse(res.user))
         }
       }).catch(err=>{
         if(err.code===0){
-        //  window.location.href="https://www.bestekdirect.com/login"
+          window.location.href="https://www.bestekdirect.com/login"
         }
       })
     }

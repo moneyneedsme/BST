@@ -60,8 +60,8 @@ export default {
 }
 @media screen and (max-width:960px){
   .anchorPoint{
-    height: 0.53rem;
-    line-height: 0.53rem;
+    height: 0.73rem;
+    line-height: 0.73rem;
     padding:0 0.36rem;
     display: flex;
     justify-content: space-between;

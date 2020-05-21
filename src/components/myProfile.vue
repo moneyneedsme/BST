@@ -24,7 +24,7 @@
     <div class="dob">
       <div class='textBox'>
         <h4>Country*</h4>
-        <el-select v-model="country" filterable >
+        <el-select v-model="country" filterable placeholder='Please select' >
           <el-option
             v-for="item in CountryOptions"
             :key="item.value"
@@ -144,7 +144,7 @@ export default {
   .myProfile{
     position: relative;
     background: white;
-    padding:97px 60px;
+    padding:7px 60px 86px;
     /deep/.el-breadcrumb{
       position: absolute;
       top: -25px;

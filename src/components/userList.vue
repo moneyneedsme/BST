@@ -30,7 +30,6 @@ export default {
 .pc_userList{
   overflow: hidden;
   font-size: 0;
-  margin-bottom: 80px;
   >div{
     display: inline-block;
     vertical-align: top;
@@ -57,7 +56,7 @@ export default {
 .md_userList{
   overflow: hidden;
   font-size: 0;
-  margin-bottom: 1rem;
+  margin-bottom:0.4rem;
   >div{
     display: inline-block;
     vertical-align: top;

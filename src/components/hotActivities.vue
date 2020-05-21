@@ -23,8 +23,10 @@ export default {
     this.getTactivities()
   },
   methods:{
-    toLink(data){
-      console.log(data)
+    toLink(item){
+      console.log(item)
+      window.location.href = `https://www.bestekdirect.com/reviews/index.html?product_activity_id=${item.product_id}`
+      // this.$router.push({path:'/',query:{product_activity_id:item.product_id}})
     },
     getTactivities(){
       const url = `index.php?route=newhome/activity/getactivities`
@@ -41,12 +43,12 @@ export default {
   >h2{
     height: 71px;
     line-height: 71px;
-    background: white;
     text-align: center;
     font-size:32px;
     font-family:Whitney Semibold;
     font-weight:400;
-    color:rgba(73,70,69,1)
+    color:rgba(73,70,69,1);
+    background: white;
   }
   .content{
     overflow: hidden;
@@ -93,7 +95,7 @@ export default {
         padding-bottom: 0.24rem;
         float: left;
         width:3.28rem;
-        border-bottom:1px solid rgba(210,210,210,.6);
+        // border-bottom:1px solid rgba(210,210,210,.6);
         &:nth-of-type(2n){
           float: right;
         }
@@ -109,6 +111,7 @@ export default {
           font-weight:400;
           color:rgba(73,70,69,1);
           line-height:0.32rem;
+          min-height: 0.7rem;
         }
       }
     }
