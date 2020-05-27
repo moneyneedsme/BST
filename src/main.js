@@ -10,8 +10,10 @@ import ElementUI from "element-ui"
 import "element-ui/lib/theme-chalk/index.css"
 import  config from "./config"
 import axios from 'axios'
+import FB from './assets/js/sdk'
 Vue.prototype.imgUrl= config.imgUrl
 Vue.use(ElementUI);
+Vue.use(FB);
 Vue.prototype.vueLoading= {
   node:'',
   show(){

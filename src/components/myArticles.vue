@@ -127,6 +127,8 @@ export default {
           color:rgba(73,70,69,1);
           margin-top: 5px;
           min-height:42px;
+          margin-right:40px;
+          overflow: hidden;
         }
         .times{
           overflow: hidden;
@@ -182,6 +184,8 @@ export default {
             font-size:0.26rem;
             margin-top: 0.05rem;
             min-height:0.42rem;
+            margin-right:0.8rem;
+            overflow: hidden;
           }
           .times{
             margin-top: 0.20rem;

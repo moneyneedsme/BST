@@ -56,7 +56,8 @@
 				<div class="item_content">
 					<img :src="imgUrl+v.image">
 					<div>{{v.aname}}</div>
-					<button @click='toPost(v.product_activity_id)'>Submit Review</button>
+					<button :class='{"btnShare":v.issuccess==0}' @click='toPost(v.product_activity_id)'>Submit Review</button>
+					<button v-if='v.issuccess==0' @click="shareNow">share</button>
 				</div>
 			</div>
 		</div>
@@ -66,7 +67,6 @@
 		<hot-activities v-else></hot-activities>
 	</div>
 </template>
-
 <script>
 import hotActivities from '../components/hotActivities'
 import  {httpNetwork} from "../config/axios";
@@ -84,7 +84,8 @@ export default {
 			shenqing_shenhezhong: [],
 			shenqing_shibai: [],
 			userinfo: {},
-			countnum: {}
+			countnum: {},
+			shareUrl:'www.baidu.com'
 		}
 	},
 	async mounted(){
@@ -98,6 +99,19 @@ export default {
 		next()
 	},
 	methods:{
+		shareNow(){
+      console.log('分享',this.shareUrl)
+      FB.init({
+        appId: '607311862971192',
+        version: 'v2.3'
+      });
+      FB.ui({
+				method: 'share',
+				title: '【only 1 member left 】',
+				description: 'BESTEK 2 members group buy Buy the best ,Save  more.',
+				href: this.shareUrl
+			},()=>{})
+		},
 		ontab(i){
 			this.index = i
 			switch(this.index){
@@ -294,6 +308,12 @@ export default {
 						color:rgba(255,255,255,1);
 					}
 				}
+				.btnShare{
+					top:30%;
+					&+button{
+						top:70%;
+					}
+				}
 				>div{
 					margin:30px 153px 30px 230px;
 					font-size:18px;
@@ -444,6 +464,14 @@ export default {
 						border:none;
 						background:rgba(227,22,25,1);	
 						color:rgba(255,255,255,1);
+					}
+				}
+				.btnShare{
+					width:1.74rem;
+					right:2.32rem;
+					&+button{
+						width:1.74rem;
+						right:0.32rem;
 					}
 				}
 				>div{

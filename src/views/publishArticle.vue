@@ -1,6 +1,6 @@
 <template>
   <div class='publishArticle' :class='$store.state.isPc?"pcAuto":"mdAuto"'>
-    <div class="right">
+    <div class="right" v-if="$store.state.isPc">
       <h3>Instructions for Authors</h3>
       <p>To order to offer a clearer understanding of how to write a perfect article, we provide you a sample for your reference as below.</p>
       <div>
@@ -20,28 +20,46 @@
       <div class="updataImgBox">
         <img v-if="imageUrl" :src="imageUrl" class="avatar">
         <el-upload
-            ref = 'upload'
-            class="avatar-uploader"
-            :http-request="subeImg"
-            action="Upload"
-            :show-file-list="false"
-            :before-upload="beforeAvatarUpload"
-            >
-              <div class='updataImg' v-if='!imageUrl'>
-                <i class='iconfont iconjiahao'></i>
-                <h4>Upload Cover Image</h4>
-                <p>To get a better display effect, we recommends you upload the cover image size not less than size of 905*480 pixels.</p>
-              </div>
-               <el-button type="primary" v-else class='changeImg'>更换图片</el-button>
-          </el-upload>
-        </div>
-        <el-input placeholder="Add Article Title" v-model="title"></el-input>
-        <quill-editor ref="text" v-model="cooked" class="myQuillEditor" :options="editorOption" />
-        <div class="btnBox">
-          <button @click='toSubmit'>Submit</button>
-          <!-- <button>Save</button>
-          <button>Preview</button> -->
-        </div>
+          v-if="$store.state.isPc"
+          ref = 'upload'
+          class="avatar-uploader"
+          action="Upload"
+          :http-request="subeImg"
+          :show-file-list="false"
+          :before-upload="beforeAvatarUpload"
+          >
+            <div class='updataImg' v-if='!imageUrl'>
+              <i class='iconfont iconjiahao'></i>
+              <h4>Upload Cover Image</h4>
+              <p>To get a better display effect, we recommends you upload the cover image size not less than size of 905*480 pixels.</p>
+            </div>
+              <el-button type="primary" v-else class='changeImg'>Change Image</el-button>
+        </el-upload>
+        <el-upload
+          v-else
+          class="avatar-uploader"
+          :on-success = 'onSuccessImg'
+          :action="Upload"
+          :limit = '1'
+          :on-error = 'onErrorImg'
+          :show-file-list="false"
+          :before-upload="beforeAvatarUploadIsmd"
+          >
+            <div class='updataImg' v-if='!imageUrl'>
+              <i class='iconfont iconjiahao'></i>
+              <h4>Upload Cover Image</h4>
+              <p>To get a better display effect, we recommends you upload the cover image size not less than size of 905*480 pixels.</p>
+            </div>
+              <el-button type="primary" v-else class='changeImg'>Change Image</el-button>
+        </el-upload>
+      </div>
+      <el-input placeholder="Add Article Title" v-model="title"></el-input>
+      <quill-editor ref="text" v-model="cooked" class="myQuillEditor" :options="editorOption" />
+      <div class="btnBox">
+        <button @click='toSubmit'>Submit</button>
+        <!-- <button>Save</button>
+        <button>Preview</button> -->
+      </div>
     </div>
     <img-tailoring
       :isShowCropper.sync = 'isShowCropper'
@@ -166,6 +184,41 @@ export default {
         this.ceping_review_photo_id = res.data.ceping_review_photo_id
         this.imageUrl = res.data.photopath
       })
+    },
+    onSuccessImg(response, file, fileList){
+      this.ceping_review_photo_id = response.ceping_review_photo_id
+      this.imageUrl = response.photopath
+    },
+    onErrorImg(){
+      this.$message({
+        showClose: true,
+        message: 'Upload failed!',
+        type: 'error',
+        duration:1500
+      });
+    },
+    beforeAvatarUploadIsmd(file) {
+      const isJPG = file.type === 'image/jpeg';
+      const isPNG = file.type === 'image/png';
+      const isLt2M = file.size / 1024 / 1024 < 8;
+      if (!isJPG&&!isPNG) {
+        this.$message({
+          showClose: true,
+          message: 'The uploaded image can only be in JPG or PNG format!',
+          type: 'error',
+          duration:1500
+        });
+        return false;
+      }
+      if (!isLt2M) {
+        this.$message({
+          showClose: true,
+          message: 'The size of uploaded picture cannot exceed 8MB!',
+          type: 'error',
+          duration:1500
+        });
+        return false;
+      }
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
@@ -331,4 +384,65 @@ export default {
     left: 50%;
     transform: translate(-50%,-50%);
   }
+@media screen and (max-width:960px){
+  .publishArticle{
+    margin-top: 0.2rem;
+    .left{
+      width:100%;
+      padding:0 0.36rem;
+      box-sizing: border-box;
+      .el-input{
+        margin: 0.16rem 0;
+      }
+      /deep/.ql-editor{
+        min-height: 4rem;
+      }
+      .btnBox{
+        text-align: center;
+        margin-top: 0.3rem;
+        >button{
+          width:1.94rem;
+          height:0.46rem;
+          border-radius:23px;
+          font-size:0.32rem;
+          margin-right: 0.18rem;
+        }
+      }
+    }
+    .updataImgBox{
+      background: white;
+      position: relative;
+      .avatar{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+      }
+      div.updataImg{
+        position: absolute;
+        width: 100%;
+        top:50%;
+        left: 0px;
+        transform: translateY(-50%);
+        text-align: center;
+        padding:0 0.36rem;
+        box-sizing: border-box;
+        >i{
+          font-size: 0.55rem;
+          color:rgba(227,22,25,1);
+          cursor: pointer;
+        }
+        >h4{
+          font-size:0.34rem;
+          margin-top: 0.4rem;
+        }
+        >p{
+          font-size:0.32rem;
+          margin-top:0.5rem;
+        }
+      }
+    }
+  }
+}
 </style>

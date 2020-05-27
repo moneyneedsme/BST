@@ -6,9 +6,9 @@
           <img :src="require('../assets/imgs/logo.png')" class='logo'>
           <div class="list">
             <span @click='toHome'>Home</span>
-            <span>Active Testings</span>
-            <span>Test Club</span>
-            <span>User’s Reviews</span>
+            <span @click='toActive'>Active Testings</span>
+            <span @click='toTest'>Test Club</span>
+            <span @click='toUser'>User’s Reviews</span>
           </div>
           <el-dropdown @command="handleCommand">
             <span class="el-dropdown-link">
@@ -59,7 +59,7 @@
               <p @click='toMyCentent(12)'>My Profile</p>
               <p @click='toMyCentent(13)'>Change Password </p>
             </div>
-            <button>Log Out</button>
+            <button @click='logonOut'>Log Out</button>
           </div>
         </el-dialog>
         <el-dialog 
@@ -69,13 +69,13 @@
           width='100%'
           >
           <div class='dialogNav_content'>
-            <span @click='tolink("/")'>Home</span>
-            <span>Test Club</span>
+            <span @click='toHome'>Home</span>
+            <span @click='toTest'>Test Club</span>
           </div>
           <el-divider></el-divider>
           <div class='dialogNav_content'>
-            <span>Active Testing</span>
-            <span @click="tolink('/myCenter')">User’s Reviews</span>
+            <span @click='toActive'>Active Testing</span>
+            <span @click='toUser'>User’s Reviews</span>
           </div>
         </el-dialog>
       </div>
@@ -98,7 +98,6 @@ export default {
     }
   },
   mounted(){
-    console.log(this.$store.state)
     if(!this.$store.state.isPc) this.getAllnumbers()
   },
   methods:{
@@ -125,10 +124,23 @@ export default {
       }
     },
     toHome(){
-      this.$router.push({path:'/'})
+      window.location.href = 'https://www.bestekdirect.com/forum/forumindex.html'
+    },
+    toActive(){
+      window.location.href = 'https://www.bestekdirect.com/reviews/index.html'
+    },
+    toTest(){
+      window.location.href = 'https://www.bestekdirect.com/freetesting.html'
+    },
+    toUser(){
+      // window.location.href = 'https://www.bestekdirect.com/forum/forumindex.html'
     },
     toMyCentent(leftIndex){
-      Utils.$emit('init',leftIndex)
+      setTimeout(() => {
+        Utils.$emit('init',leftIndex)
+        console.log(111112)
+      }, 100);
+      this.$router.push({path:'/myCenter'})
       this.tabsValue = false
     },
     toUserReviews(leftIndex=1){
@@ -153,6 +165,7 @@ export default {
         currenturl: 'https://www.bestekdirect.com/reviews/index.html'
       }
 			httpNetwork(url,data).then(res=>{
+        this.tabsValue = false
         this.$store.commit("setLogin", 0)
         window.location.reload()
         // window.location.href="https://www.bestekdirect.com/login"

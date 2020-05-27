@@ -2,8 +2,9 @@
   <div class='activityDetails'>
     <div class=details v-html='longtext'></div>
     <div class="share">
-      <img :src="require('../assets/imgs/faceBook.png')">
-      <img :src="require('../assets/imgs/twritte.png')">
+      <a target="_blank" href="https://www.facebook.com/BestekGlobal/" ><img :src="require('../assets/imgs/faceBook.png')"></a>
+      <a target="_blank" href="https://twitter.com/bestekglobal" ><img :src="require('../assets/imgs/twritte.png')"></a>
+      
     </div>
   </div>
 </template>
@@ -35,7 +36,7 @@ export default {
   .share{
     text-align: center;
     margin-top: 26px;
-    >img{
+    img{
       width: 45px;
       height:45px;
       &:first-of-type{
@@ -54,7 +55,7 @@ export default {
     }
     .share{
       margin-top: 0.35rem;
-      >img{
+      img{
         width:0.75rem;
         height:0.75rem;
         &:first-of-type{

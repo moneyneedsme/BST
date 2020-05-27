@@ -7,12 +7,17 @@
       </div>
       <div class='centent'>
         <div class="times">
-          <span>{{v.date_added}}</span>
+          <span>{{format(v.date_added,"yyyy mmm d hh:mm:ss")}}</span>
           <i>{{v.louceng}}#</i>
         </div>
         <p>{{v.content}}</p>
         <div class="imgShow" v-if='v.images.length'>
-          <img v-for="(v,i) in v.images" :src="imgUrl+v.photopath" :key="i">
+          <el-image 
+            class="bigImg"
+            v-for="(val,index) in v.images" :src="imgUrl+val.photopath" :key="index"
+            :preview-src-list="srcList[i]"
+          >
+          </el-image>
         </div>
         <div class='zan'>
           <span >{{v.numbers_like}}</span>
@@ -26,6 +31,7 @@
 
 <script>
 import  {httpNetwork} from "../config/axios"
+import  format from "../config/format"
 export default {
   name:'commentsItems',
   props:{
@@ -39,13 +45,20 @@ export default {
   computed:{
     commentsList(){
       return this.list||[]
-    }
-  },
-  data(){
-    return{
+    },
+    srcList(){
+      let ary = []
+      this.list.map((v,i)=>{
+        ary[i] = []
+        v.images.map(value=>{
+          ary[i].push(this.imgUrl+value.photopath)
+        })
+      })
+      return ary
     }
   },
   methods:{
+    format,
     toZan(item,index){
       const url = `index.php?route=forum/ceping/commentlike`
       const data = {
@@ -102,12 +115,14 @@ export default {
       .imgShow{
         overflow: hidden;
         margin-top: 10px;
-        >img{
-          margin-top: 10px;
-          width: 90px;
-          height: 90px;
-          vertical-align: middle;
-          margin-right: 8px;
+        /deep/.bigImg{
+          >img{
+            margin-top: 10px;
+            width: 90px;
+            height: 90px;
+            vertical-align: middle;
+            margin-right: 8px;
+          }
         }
       }
       .times{
@@ -177,10 +192,12 @@ export default {
       .centent{
         .imgShow{
           margin-top:0.1rem;
-          >img{
-            width:1rem;
-            height:1rem;
-            margin-right:0.1rem
+          /deep/.bigImg{
+            >img{
+              width:1rem;
+              height:1rem;
+              margin-right:0.1rem
+            }
           }
         }
         .times{

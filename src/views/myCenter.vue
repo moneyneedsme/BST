@@ -60,10 +60,9 @@ export default {
 			this.vueLoading.hide()
 		})
 		this.init(this.leftIndex)
-		// Utils.$on('init', (i)=>{
-		// 	console.log(i)
-    //     this.init(i);
-    // })
+		Utils.$on('init', (i)=>{
+      this.init(i);
+    })
 	},
 	methods:{
 		init(i){

@@ -6,7 +6,7 @@
           <i class='iconfont iconchazishanchudaibiankuang' @click='deleteImg(i)'></i>
         </div>
         <el-upload
-          :class='!imgList.length&&$store.state.isPc?"imgTipBox":"upload-demo add"'
+          :class='!imgList.length?"imgTipBox":"upload-demo add"'
           :action='Upload'
           :on-success = 'onSuccessImg'
           :before-upload = 'beforeAvatarUpload'
@@ -14,7 +14,7 @@
           :on-error = 'onErrorImg'
           :show-file-list = 'false'
           >
-          <div class='imgTip' v-if='!imgList.length&&$store.state.isPc'>
+          <div class='imgTip' v-if='!imgList.length'>
             <i class='iconfont iconjiahao'></i>
             <p>Please upload at least 4 product images which size not less than size of 750*750 pixels.</p>
           </div>
@@ -24,7 +24,7 @@
       <el-input placeholder="Add Article Title" v-model="title"></el-input>
       <quill-editor ref="text" v-model="content" class="myQuillEditor" :options="editorOption" />
       <div class="btnBox">
-        <button @click='toSubmit'>Submit</button>
+        <button @click='toSubmit(0)'>Submit</button>
         <button @click='toSubmit(1)'>Save</button>
         <button>Preview</button>
       </div>
@@ -34,7 +34,7 @@
         :show-close	= 'false'
       >
         <i class='iconfont iconchazishanchudaibiankuang' @click='showSuccess=false'></i>
-        <p>Your article has been published successfully</p>
+        <p>{{this.isdraft?'Your article has been saved':'Your article has been published successfully'}}</p>
         <button @click='tolink'>Go and Check</button>
       </el-dialog>
   </div>
@@ -67,6 +67,7 @@ export default {
       ceping_review_id:null,
       title:'',
       showSuccess:false,
+      isdraft:0
     }
   },
   mounted(){
@@ -76,7 +77,11 @@ export default {
   },
   methods:{
     tolink(){
-      this.$router.push({path:'/apply',query:{index:0}});
+      if(this.isdraft){
+        this.$router.push({path:'/myCenter',query:{leftIndex:9}})
+      }else{
+        this.$router.push({path:'/myCenter',query:{leftIndex:10}})
+      }
     },
     getReview(){
       if(!this.ceping_review_id) return false
@@ -94,6 +99,8 @@ export default {
       })
     },
     toSubmit(isdraft){
+      this.isdraft = isdraft
+      console.log(this.isdraft)
       if(!this.product_activity_id && !this.ceping_review_id){
         this.$message({
           showClose: true,
@@ -407,7 +414,6 @@ div.imgTip{
     }
     .showSuccess{
       /deep/ .el-dialog{
-        
         margin-top: 0px;
       }
       /deep/.el-dialog__body{
@@ -432,6 +438,16 @@ div.imgTip{
           border-radius:0.3rem;
           font-size:0.32rem;
         }
+      }
+    }
+    div.imgTip{
+      padding:0 0.42rem;
+      >i{
+        font-size:0.8rem;
+      }
+      >p{
+        font-size:0.32rem;
+        margin-top:0.5rem;
       }
     }
   }

@@ -150,12 +150,12 @@ export default {
         this.content = ''
         this.imgList = []
       this.imgIds = []
-        this.$message({
-          showClose: true,
-          message: res.text,
-          type: 'success',
-          duration:1500
-        });
+        // this.$message({
+        //   showClose: true,
+        //   message: res.text,
+        //   type: 'success',
+        //   duration:1500
+        // });
         this.getList()
       })
     },

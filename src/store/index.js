@@ -36,7 +36,7 @@ export default new Vuex.Store({
         }
       }).catch(err=>{
         if(err.code===0){
-          window.location.href="https://www.bestekdirect.com/login"
+          // window.location.href="https://www.bestekdirect.com/login"
         }
       })
     }
