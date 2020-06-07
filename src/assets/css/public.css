@@ -48,4 +48,10 @@ i{font-style: normal;}
 .left{float: left;}
 .right{float: right;}
 body{font-family:Whitney,Whitney Semibold, Whitney Book, sans-serif!important;}
+strong{
+  font-weight: 700!important;
+}
+em{
+  font-style: italic!important;
+}
 

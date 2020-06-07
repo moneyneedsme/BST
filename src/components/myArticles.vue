@@ -9,13 +9,13 @@
       <div>
         <div class="right">
           <i @click='editArticles(v)'>Edit</i>
-          <i>View</i>
+          <i @click='toMyArticlesView(v)'>View</i>
           <i @click='deleteItem(v,i)'>Delete</i>
-        </div>
+        </div> 
         <h2>{{v.title}}</h2>
         <div class='times'>
-          <span>{{v.updated_at}}</span>
-          <span v-if='v.archived==="f"' class='active'>Not Approved</span>
+          <span>{{v.updated_at|time}}</span>
+          <span v-if='v.visible=="f"' class='active'>Not Approved</span>
           <span v-else >Approved</span>
         </div>
       </div>
@@ -41,6 +41,11 @@ export default {
       }
     }
   },
+  filters:{
+    time(value){
+      return value.substring(0,19)
+    }
+  },
   computed:{
     getList(){
       return this.list
@@ -53,6 +58,10 @@ export default {
     }
   },
   methods:{
+    toMyArticlesView(item){
+      console.log(item)
+      this.$router.push({path:'/myArticlesView',query:{id:item.topic_id}})
+    },
     deleteItem(item,index){
       this.$confirm('This operation will be permanently deleted. Do you want to continue?', 'Tips', {
         confirmButtonText: 'Determine',

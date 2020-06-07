@@ -3,8 +3,7 @@
     <div class=details v-html='longtext'></div>
     <div class="share">
       <a target="_blank" href="https://www.facebook.com/BestekGlobal/" ><img :src="require('../assets/imgs/faceBook.png')"></a>
-      <a target="_blank" href="https://twitter.com/bestekglobal" ><img :src="require('../assets/imgs/twritte.png')"></a>
-      
+      <!-- <a target="_blank" href="https://twitter.com/bestekglobal" ><img :src="require('../assets/imgs/twritte.png')"></a> -->
     </div>
   </div>
 </template>
@@ -58,9 +57,9 @@ export default {
       img{
         width:0.75rem;
         height:0.75rem;
-        &:first-of-type{
-          margin-right:0.5rem;
-        }
+        // &:first-of-type{
+        //   margin-right:0.5rem;
+        // }
       }
     }
   }

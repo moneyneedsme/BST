@@ -3,17 +3,10 @@
     <div class="right" v-if="$store.state.isPc">
       <h3>Instructions for Authors</h3>
       <p>To order to offer a clearer understanding of how to write a perfect article, we provide you a sample for your reference as below.</p>
-      <div>
-        <img :src="require('../assets/imgs/free/11.jpg')">
-        <p class='oneLine'>Special Designed for Global Travel Global Travel</p>
-      </div>
-      <div>
-        <img :src="require('../assets/imgs/free/11.jpg')">
-        <p class='oneLine'>Special Designed for Global Travel Global Travel</p>
-      </div>
-      <div>
-        <img :src="require('../assets/imgs/free/11.jpg')">
-        <p class='oneLine'>Special Designed for Global Travel Global Travel</p>
+      <div v-for="(v,i) in instructions" :key="i" @click='tolink(v.link)'>
+        <img :src="imgUrl+v.image">
+        <!-- <p class='oneLine '>Bestek Official l 8 Socket Charging Station</p> -->
+        <p class='oneLine '>{{v.title}}</p>
       </div>
     </div>
     <div class="left">
@@ -101,14 +94,25 @@ export default {
       cooked: '',
       ceping_review_photo_id:null,
       topic_id:null,
-      editorOption: {} 
+      editorOption: {},
+      instructions:[]
     }
   },
   mounted(){
     this.topic_id  = this.$route.query.id
     this.getArticle()
+    this.getinstructions()
   },
   methods:{
+    tolink(url){
+      window.location.href = url
+    },
+    getinstructions(){
+      const url = `index.php?route=forum/houtai/getinstructions`
+      return httpNetwork(url,null,'get').then(res=>{
+        this.instructions = res.data&&res.data.instructions
+      })
+    },
     getArticle(){
       if(!this.topic_id) return false
       const data = {
@@ -359,19 +363,24 @@ export default {
         width: 100%;
         position: relative;
         >img{
-          height:144px;
           width: 100%;
           vertical-align: top;
+          cursor: pointer;
         }
         >p{
           position: absolute;
-          bottom: 16px;
+          bottom: 0;
           left: 0;
-          padding:0 14px;
-          font-size:16px;
+          padding:7px 14px;
+          font-size:14px;
           font-family:Whitney;
           font-weight:500;
           color:rgba(255,255,255,1);
+          z-index: 999;
+          background:rgba(0,0,0,.1);
+          box-sizing: border-box;
+          width: 100%;
+          white-space: nowrap
         }
       }
     }

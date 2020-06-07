@@ -6,7 +6,7 @@
           <img :src="require('../assets/imgs/logo.png')" class='logo'>
           <div class="list">
             <span @click='toHome'>Home</span>
-            <span @click='toActive'>Active Testings</span>
+            <span @click='toActive'>Forum</span>
             <span @click='toTest'>Test Club</span>
             <span @click='toUser'>User’s Reviews</span>
           </div>
@@ -74,7 +74,7 @@
           </div>
           <el-divider></el-divider>
           <div class='dialogNav_content'>
-            <span @click='toActive'>Active Testing</span>
+            <span @click='toActive'>Forum</span>
             <span @click='toUser'>User’s Reviews</span>
           </div>
         </el-dialog>
@@ -113,7 +113,7 @@ export default {
           this.toUserReviews();
           break;
         case 'b':
-          this.toApplications();
+          this.toPCApplications();
           break;
         case 'c':
           this.toSettings();
@@ -127,7 +127,7 @@ export default {
       window.location.href = 'https://www.bestekdirect.com/forum/forumindex.html'
     },
     toActive(){
-      window.location.href = 'https://www.bestekdirect.com/reviews/index.html'
+      window.location.href = 'https://www.bestekdirect.com/community_forum'
     },
     toTest(){
       window.location.href = 'https://www.bestekdirect.com/freetesting.html'
@@ -144,15 +144,22 @@ export default {
       this.tabsValue = false
     },
     toUserReviews(leftIndex=1){
-      this.$router.push({path:'/myCenter',query:{ArticlesID:0,leftIndex}})
+      const newRouter = this.$router.resolve({path:'/myCenter',query:{ArticlesID:0,leftIndex}})
+      window.open(newRouter.href,'_blank')
       this.tabsValue = false
     },
     toApplications(index=0){
       this.$router.push({path:'/apply',query:{ArticlesID:0,index}})
       this.tabsValue = false
     },
+    toPCApplications(index=0){
+      const newRouter = this.$router.resolve({path:'/apply',query:{ArticlesID:0,index}})
+      window.open(newRouter.href,'_blank')
+      this.tabsValue = false
+    },
     toSettings(){
-      this.$router.push({path:'/myCenter',query:{leftIndex:12}})
+      const newRouter = this.$router.resolve({path:'/myCenter',query:{leftIndex:12}})
+      window.open(newRouter.href,'_blank')
     },
     tolink(path){
       this.$router.push({path})

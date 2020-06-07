@@ -47,7 +47,7 @@
             <i class='iconfont icondaohanggouwuche'></i>
             <span>Buy Now</span>
           </el-button>
-          <el-button plain>
+          <el-button plain @click="shareNow(product_activity_id)">
             <i class='iconfont iconfenxiang share'></i>
             <span>Share(30)</span>
           </el-button>
@@ -83,7 +83,7 @@
           <p>Filling in the questionnaire carefully will increase the chance of successful application</p>
         </div>
         <div class="textBox">
-          <p>Leave your active platform social accounts (Facebook, INS, Twitter or other social account)</p>
+          <p>Leave your active platform social accounts (We only support Facebook platform)</p>
           <el-input placeholder="Reply" v-model="submitData.socialaccount"></el-input>  
         </div>
         <div class="textBox">
@@ -112,6 +112,7 @@
 
 <script>
 import  {httpNetwork} from "../config/axios";
+import qs from 'qs';
 export default {
   name:'goodsInfo',
   props:{
@@ -141,8 +142,62 @@ export default {
   mounted(){
   },
   methods:{
+    shareNow(product_activity_id){
+			const shareUrl = `https://www.bestekdirect.com/reviews/index.html#/?product_activity_id=${product_activity_id}&referids=${this.$store.state.userId}`
+      console.log('分享',shareUrl,FB)
+			let FBshareurl = shareUrl
+			FB.init({
+        appId: '607311862971192',
+        version: 'v2.3'
+      });
+      FB.ui({
+				method: 'share',
+				title: 'Test Club-Bestek Charging Station ',
+				description: '  I am participating in winning free sample at Bestek, join with me!  ',
+				href: shareUrl
+			},(response)=>{
+				if (response && !response.error_code){
+					const url = `index.php?route=forum/user/recordsharesuccess`
+					const data = {
+						shareurl:FBshareurl
+					}
+					httpNetwork(url,data).then(res=>{
+						this.$message({
+							showClose: true,
+							message: 'Share success',
+							type: 'success',
+							duration:1500
+						});
+					})
+				}else{
+					this.$message({
+            showClose: true,
+            message: 'Share fail!',
+            type: 'error',
+            duration:1500
+          });
+				}
+			})
+		},
     toBuy(){
-      window.location.href = 'https://www.bestekdirect.com/groupbuy/ShoppingCart1.html'
+      // window.location.href = 'https://www.bestekdirect.com/groupbuy/ShoppingCart1.html'
+      // const url = `/index.php?route=checkout/cart/add`
+      // const data = {
+      //   quantity:1,
+      //   product_id:this.product_activity_id
+      // }
+      // httpNetwork(url,data).then(res=>{
+      //   console.log(res)
+      //   window.location.href = 'https://www.bestekdirect.com/groupbuy/ShoppingCart1.html'
+      // })
+      const url = `https://www.bestekdirect.com/index.php?route=checkout/cart/add`
+      const data = {
+        quantity:1,
+        product_id:this.datas.product_id
+      }
+      this.$axios.post(url,qs.stringify(data)).then(res => {
+        window.location.href = 'https://www.bestekdirect.com/groupbuy/ShoppingCart1.html'
+      })
     },
     tolink(){
       // window.location.href = this.url

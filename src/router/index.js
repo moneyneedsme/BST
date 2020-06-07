@@ -54,6 +54,16 @@ const routes = [
     name: "postComments",
     component: () => import("../views/postComments.vue")
   },
+  {
+    path: "/myDarftsView",
+    name: "myDarftsView",
+    component: () => import("../components/myDarftsView.vue")
+  },
+  {
+    path: "/myArticlesView",
+    name: "myArticlesView",
+    component: () => import("../components/myArticlesView.vue")
+  },
 ];
 const router = new VueRouter({
   mode: "hash",

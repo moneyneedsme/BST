@@ -5,7 +5,7 @@
 		</el-breadcrumb>
     <div class='textBox'>
       <h3>My Profile</h3>
-      <p>More complete data, more secure account. Complete your profile information</p>
+      <p>Complete your profile information</p>
     </div>
     <div class='textBox'>
       <h4>Email*</h4>

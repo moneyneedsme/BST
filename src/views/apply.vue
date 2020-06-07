@@ -5,7 +5,7 @@
 				<img :src="userinfo.avatar">
 				<span>Welcome! {{userinfo.user_name}}</span>
 				<div>
-					<h2>{{countnum.points}}</h2>
+					<h2>{{$store.state.points}}</h2>
 					<p>Points</p>
 				</div>
 				<div>
@@ -56,8 +56,9 @@
 				<div class="item_content">
 					<img :src="imgUrl+v.image">
 					<div>{{v.aname}}</div>
-					<button :class='{"btnShare":v.issuccess==0}' @click='toPost(v.product_activity_id)'>Submit Review</button>
-					<button v-if='v.issuccess==0' @click="shareNow">share</button>
+					<button :class='{"btnShare":v.issuccess==0}' @click='toPost(v.product_activity_id)' v-if="v.issuccess!=0 && v.issuccess!=-1">Submit Review</button>
+					<button :class='{"btnShare":v.issuccess==0}' @click='toPulish' v-if="v.issuccess!=0 && v.issuccess==-1">Submit Review</button>
+					<button v-if='v.issuccess==0' @click="shareNow(v.product_activity_id)">share</button>
 				</div>
 			</div>
 		</div>
@@ -84,11 +85,11 @@ export default {
 			shenqing_shenhezhong: [],
 			shenqing_shibai: [],
 			userinfo: {},
-			countnum: {},
-			shareUrl:'www.baidu.com'
+			countnum: {}
 		}
 	},
 	async mounted(){
+		console.log(this.$store.state)
 		this.index = this.$route.query.index ||0
 		await this.getData()
 		this.ontab(this.index)
@@ -99,18 +100,45 @@ export default {
 		next()
 	},
 	methods:{
-		shareNow(){
-      console.log('分享',this.shareUrl)
-      FB.init({
+		toPulish(){
+			this.$router.push({path:'/publishArticle'})
+		},
+		shareNow(product_activity_id){
+			const shareUrl = `https://www.bestekdirect.com/reviews/index.html#/?product_activity_id=${product_activity_id}&referids=${this.$store.state.userId}`
+			console.log('分享',shareUrl,FB)
+			FB.init({
         appId: '607311862971192',
         version: 'v2.3'
-      });
+			});
+			let FBshareurl = shareUrl
       FB.ui({
 				method: 'share',
-				title: '【only 1 member left 】',
-				description: 'BESTEK 2 members group buy Buy the best ,Save  more.',
-				href: this.shareUrl
-			},()=>{})
+				title: 'Test Club-Bestek Charging Station',
+				description: ' I am participating in winning free sample on Bestek, join with me! ',
+				href: shareUrl
+			},(response)=>{
+				if (response && !response.error_code){
+					const url = `index.php?route=forum/user/recordsharesuccess`
+					const data = {
+						shareurl:FBshareurl
+					}
+					httpNetwork(url,data).then(res=>{
+						this.$message({
+							showClose: true,
+							message: 'Share success',
+							type: 'success',
+							duration:1500
+						});
+					})
+				}else{
+					this.$message({
+            showClose: true,
+            message: 'Share fail!',
+            type: 'error',
+            duration:1500
+          });
+				}
+			})
 		},
 		ontab(i){
 			this.index = i

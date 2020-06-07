@@ -32,6 +32,7 @@ import activityDetails from '../components/activityDetails'
 import winnerLists from './winnerLists'
 import comments from './comments'
 import  {httpNetwork} from "../config/axios";
+import qs from 'qs';
 export default {
   name:'home',
   components: { 
@@ -73,7 +74,16 @@ export default {
   },
   methods:{
     toBuy(){
-      window.location.href = 'https://www.bestekdirect.com/groupbuy/ShoppingCart1.html'
+      // window.location.href = 'https://www.bestekdirect.com/groupbuy/ShoppingCart1.html'
+      const url = `/index.php?route=checkout/cart/add`
+      const data = {
+        quantity:1,
+        product_id:this.goodsInfodatas.product_id
+      }
+      debugger
+      this.$axios.post(url,qs.stringify(data)).then(res => {
+        window.location.href = 'https://www.bestekdirect.com/groupbuy/ShoppingCart1.html'
+      })
     },
     initScroll(){
       if(!this.$store.state.isPc){
@@ -245,6 +255,7 @@ export default {
     >div{
       width:100%; 
       margin:0 auto;
+      border-bottom: 0px;
     }
   }
   }

@@ -13,12 +13,12 @@
 				<div @click='toApply(8)' :class='{active:leftIndex==8}'><i></i>Failed({{allnumbers.applicationnum&&allnumbers.applicationnum.totalshibai||0}})</div>
 				<div class='title' @click='toMyDrafts(9)' :class='{active:leftIndex==9}'><i class='iconfont iconcaogao '></i>My Drafts ({{allnumbers.totaldrafts||0}})</div>
 				<div class='title' @click='getMyReviews(10)' :class='{active:leftIndex==10}'><i class='iconfont iconpinglun '></i>My Reviews({{allnumbers.totalreviews||0}})</div>
-				<div class='title' @click='leftIndex=11' :class='{active:leftIndex==11}'><i class='iconfont iconshezhi2 '></i>My Settings</div>
+				<div class='title'  :class='{active:leftIndex==11}'><i class='iconfont iconshezhi2 '></i>My Settings</div>
 				<div @click='toMyProfile(12)' :class='{active:leftIndex==12}'><i></i>My Profile</div>
 				<div @click='toChangePassword(13)' :class='{active:leftIndex==13}'><i></i>Change Password</div>
 			</div>
 			<div class='cententBox'>
-				<router-view :headlist = headlist :list = 'list' />
+				<router-view :headlist = headlist :list = 'list' :showView="showView" />
 			</div>
 			<div class="rightBox" v-if='$store.state.isPc'>
 				<div class="userImg">
@@ -49,7 +49,8 @@ export default {
       allList:[],
       fList:[],
 			tList:[],
-			allnumbers:{}
+			allnumbers:{},
+			showView:false
 		}
 	},
 	async mounted(){
@@ -66,7 +67,7 @@ export default {
 	},
 	methods:{
 		init(i){
-			switch(i){
+			switch(Number(i)){
 				case 1:
 					this.toMyArticles(1,"All");
 					break;
@@ -106,6 +107,7 @@ export default {
       await httpNetwork(url,null,'get').then(res=>{
         this.list = res.data
 			})
+			this.showView = true
 			this.$router.push({path:'/myReviews'})
 		},
 		async getMyReviews(i){
@@ -118,6 +120,7 @@ export default {
       await httpNetwork(url,null,'get').then(res=>{
         this.list = res.data
 			})
+			this.showView = false
 			this.$router.push({path:'/myReviews'})
 		},
 		getData(){

@@ -41,6 +41,7 @@ export default {
   padding:0 57px;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 8px;
   >a{
     font-size:22px;
     font-weight:500;

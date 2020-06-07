@@ -4,21 +4,22 @@
       <el-breadcrumb-item v-for="(v,i) in headlist" :to="{ path:v.path }" :key='i'>{{v.name}}</el-breadcrumb-item>
 		</el-breadcrumb>
     <div v-for="(v,i) in getList" :key='i' class='content'>
-      <img :src="v.review_image_ids&&v.review_image_ids[0]?imgUrl+v.review_image_ids[0].photopath:require('../assets/imgs/free/11.jpg')">
+      <img @click="toReviews(v)" :src="v.review_image_ids&&v.review_image_ids[0]?imgUrl+v.review_image_ids[0].photopath:require('../assets/imgs/free/11.jpg')">
       <div>
-        <h2 class='oneLine'>{{v.result&&v.result.review_title}}</h2>
+        <h2 @click="toReviews(v)" class='oneLine'>{{v.result&&v.result.review_title}}</h2>
         <div  class='oneLine reviewContent' v-html='v.result&&v.result.review_content'></div>
         <div>
           <span>{{v.result&&v.result.date_added}}</span>
-          <span class='active'>Approved</span>
+          <span class='active' v-if='v.result&&v.result.isprove==1'>Approved</span>
+          <span class='active' v-else-if='v.result&&v.result.isprove==-1'>Under review</span>
           <template v-if='$store.state.isPc'>
-            <i @click='editItem(v,i)'>Edit</i>
-            <i>View</i>
-            <i @click='deleteItem(v,i)'>Delete</i>
+            <i @click='editItem(v,i)' v-if='v.result&&v.result.isprove!=1'>Edit</i>
+            <i v-show="showView" @click='toView(v,i)'>View</i>
+            <i @click='deleteItem(v,i)' >Delete</i>
           </template>
           <div v-else>
-            <i @click='editItem(v,i)'>Edit</i>
-            <i>View</i>
+            <i @click='editItem(v,i)' v-if='v.result&&v.result.isprove!=1'>Edit</i>
+            <i v-show="showView" @click='toView(v,i)'>View</i>
             <i @click='deleteItem(v,i)'>Delete</i>
           </div>
         </div>
@@ -43,6 +44,9 @@ export default {
       default() {
         return []
       }
+    },
+    showView:{
+      default:false
     }
   },
   computed:{
@@ -51,6 +55,13 @@ export default {
     }
   },
   methods:{
+    toReviews(item){
+      console.log(item)
+      this.$router.push({path:'/',query:{product_activity_id:item.result.product_activity_id}})
+    },
+    toView(item,index){
+      this.$router.push({path:'/myDarftsView',query:{cid:item.result.ceping_review_id}})
+    },
     editItem(item,index){
       this.$router.push({path:'/postComments',query:{cid:item.result.ceping_review_id}})
     },
@@ -97,6 +108,7 @@ export default {
         height: 93px;
         float: left;
         margin-right: 18px;
+        cursor: pointer;
       }
       >div{
         overflow: hidden;
@@ -106,6 +118,7 @@ export default {
           font-weight:400;
           color:rgba(73,70,69,1);
           margin-top: 5px;
+          cursor: pointer;
         }
         >div.reviewContent{
           font-size:16px;

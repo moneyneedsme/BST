@@ -3,7 +3,7 @@
     <h2>Hot Activities</h2>
     <div class='content'>
       <div v-for='(v,i) in list' :key='i' @click='toLink(v)'>
-        <img :src="imgUrl+v.image">
+        <img :src="v.adimage">
         <p>{{v.name}}</p>
       </div>
     </div>

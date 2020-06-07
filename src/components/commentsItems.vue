@@ -62,7 +62,7 @@ export default {
     toZan(item,index){
       const url = `index.php?route=forum/ceping/commentlike`
       const data = {
-        ceping_comment_id:item.ceping_review_id,
+        ceping_comment_id:item.comment_id,
         type:item.type=='1'?'0':'1',
       }
       return httpNetwork(url,data).then(res=>{
@@ -73,7 +73,11 @@ export default {
           duration:1500
         });
         this.$set(this.list[index],'type',item.type=='1'?'0':'1')
-        this.$set(this.list[index],'numbers_like',this.list[index].numbers_like++)
+        console.log(this.list[index].numbers_like)
+        let num = parseInt(this.list[index].numbers_like)+1
+        this.$set(this.list[index],'numbers_like',num)
+        console.log(num)
+        console.log(this.list[index].numbers_like)
       })
       console.log(item)
     }

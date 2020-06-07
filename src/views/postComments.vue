@@ -26,7 +26,7 @@
       <div class="btnBox">
         <button @click='toSubmit(0)'>Submit</button>
         <button @click='toSubmit(1)'>Save</button>
-        <button>Preview</button>
+        <!-- <button>Preview</button> -->
       </div>
       <el-dialog 
         class="showSuccess"
