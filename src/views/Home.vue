@@ -61,6 +61,20 @@ export default {
       setTime:this.$store.state.isPc?300:0,
     }
   },
+  created(){
+    const url = 'index.php?route=forum/forum2/checklogin'
+    const data = {
+      currenturl: window.location.href 
+    }
+    return httpNetwork(url,data).then(res=>{
+      if(res.code===1){
+        this.$store.commit('setLogin',1)
+        this.$store.commit('setuserId',res.customer_id)
+        this.$store.commit('setPoints',res.points)
+        console.log(state)
+      }
+    })
+  },
   mounted(){
     console.log(this.$store.state)
     this.vueLoading.show()
@@ -74,6 +88,10 @@ export default {
   },
   methods:{
     toBuy(){
+      if(!this.$store.state.islogin){
+        this.getLogin()
+        return
+      }
       // window.location.href = 'https://www.bestekdirect.com/groupbuy/ShoppingCart1.html'
       const url = `/index.php?route=checkout/cart/add`
       const data = {

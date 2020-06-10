@@ -33,7 +33,7 @@
             <i class='iconfont iconjieshu'></i>
             <span>Completed</span>
           </div>
-          <div v-else class='showStatus buyActive' @click='showBuyInfo=true' >
+          <div v-else class='showStatus buyActive' @click='setShowBuyInfo' >
             <template v-if="$store.state.isPc">
               <i class='iconfont iconmianfei'  style="margin-right:6px"></i>
               <span >Apply for Free</span>
@@ -142,7 +142,18 @@ export default {
   mounted(){
   },
   methods:{
+    setShowBuyInfo(){
+      if(!this.$store.state.islogin){
+        this.getLogin()
+        return
+      }
+      this.showBuyInfo = true
+    },
     shareNow(product_activity_id){
+      if(!this.$store.state.islogin){
+        this.getLogin()
+        return
+      }
 			const shareUrl = `https://www.bestekdirect.com/reviews/index.html#/?product_activity_id=${product_activity_id}&referids=${this.$store.state.userId}`
       console.log('分享',shareUrl,FB)
 			let FBshareurl = shareUrl
@@ -180,16 +191,10 @@ export default {
 			})
 		},
     toBuy(){
-      // window.location.href = 'https://www.bestekdirect.com/groupbuy/ShoppingCart1.html'
-      // const url = `/index.php?route=checkout/cart/add`
-      // const data = {
-      //   quantity:1,
-      //   product_id:this.product_activity_id
-      // }
-      // httpNetwork(url,data).then(res=>{
-      //   console.log(res)
-      //   window.location.href = 'https://www.bestekdirect.com/groupbuy/ShoppingCart1.html'
-      // })
+      if(!this.$store.state.islogin){
+        this.getLogin()
+        return
+      }
       const url = `https://www.bestekdirect.com/index.php?route=checkout/cart/add`
       const data = {
         quantity:1,

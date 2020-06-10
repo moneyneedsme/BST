@@ -123,6 +123,10 @@ export default {
       return str
     },
     onRelease(){
+      if(!this.$store.state.islogin){
+        this.getLogin()
+        return
+      }
       const url = `index.php?route=forum/ceping/comment_add`
       const data = {
         ceping_review_id:this.items.result.ceping_review_id,

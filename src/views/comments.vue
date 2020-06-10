@@ -104,6 +104,10 @@ export default {
       });
     },
     beforeAvatarUpload(file) {
+      if(!this.$store.state.islogin){
+        this.getLogin()
+        return
+      }
       const isJPG = file.type === 'image/jpeg';
       const isPNG = file.type === 'image/png';
       const isLt2M = file.size / 1024 / 1024 < 8;
@@ -139,6 +143,10 @@ export default {
       })
     },
     onRelease(){
+      if(!this.$store.state.islogin){
+        this.getLogin()
+        return
+      }
       const url = `index.php?route=forum/ceping/comment_add`
       const data = {
         ceping_review_id:this.ceping_review_id,

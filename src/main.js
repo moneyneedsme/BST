@@ -11,7 +11,17 @@ import "element-ui/lib/theme-chalk/index.css"
 import  config from "./config"
 import axios from 'axios'
 import FB from './assets/js/sdk'
+import  {httpNetwork} from "./config/axios";
 Vue.prototype.imgUrl= config.imgUrl
+Vue.prototype.getLogin= function(){
+  const url = 'index.php?route=forum/forum2/checklogin'
+  const data = {
+    currenturl: window.location.href 
+  }
+  return httpNetwork(url,data).catch(err=>{
+    window.location.href="https://www.bestekdirect.com/login"
+  })
+}
 Vue.use(ElementUI);
 Vue.use(FB);
 Vue.prototype.vueLoading= {

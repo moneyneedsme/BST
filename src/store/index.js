@@ -36,7 +36,7 @@ export default new Vuex.Store({
       console.log(state)
       const url = 'index.php?route=forum/forum2/checklogin'
       const data = {
-        currenturl: window.location.href
+        currenturl: window.location.href 
       }
       return httpNetwork(url,data).then(res=>{
         if(res.code===1){

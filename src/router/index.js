@@ -64,6 +64,10 @@ const routes = [
     name: "myArticlesView",
     component: () => import("../components/myArticlesView.vue")
   },
+  {
+    path: "*",
+    redirect:"/"
+  },
 ];
 const router = new VueRouter({
   mode: "hash",
@@ -72,6 +76,10 @@ const router = new VueRouter({
 });
 router.beforeEach((to, from, next) => {
   if(to.query.product_activity_id) store.commit('setProductId',to.query.product_activity_id)
+  if(to.path==='/'){
+    next()
+    return
+  } 
   store.dispatch('getLogin').then(()=>{
     next()
   })

@@ -19,7 +19,7 @@
               <el-dropdown-item command="a"><i class='iconfont iconwenben'></i><span class='pc_fontColor'>My Articles</span></el-dropdown-item>
               <el-dropdown-item command="b"><i class='iconfont iconpingzi'></i><span class='pc_fontColor'>My Applications</span></el-dropdown-item>
               <el-dropdown-item command="c"><i class='iconfont iconshezhi2'></i><span class='pc_fontColor '>My Settings</span></el-dropdown-item>
-              <el-dropdown-item command="e" divided class='align_center pc_fontColor'>Log Out</el-dropdown-item>
+              <el-dropdown-item command="e" divided class='align_center pc_fontColor' v-if="$store.state.islogin">Log Out</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -59,7 +59,7 @@
               <p @click='toMyCentent(12)'>My Profile</p>
               <p @click='toMyCentent(13)'>Change Password </p>
             </div>
-            <button @click='logonOut'>Log Out</button>
+            <button @click='logonOut' v-if="$store.state.islogin">Log Out</button>
           </div>
         </el-dialog>
         <el-dialog 
