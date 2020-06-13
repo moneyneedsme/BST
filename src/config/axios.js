@@ -112,6 +112,7 @@ export const httpNetwork = (URL, info, method = 'post') => {
               message: res.data.text,
               showClose: true,
               type: 'error',
+              offset:100,
               duration:1500
             })
           }

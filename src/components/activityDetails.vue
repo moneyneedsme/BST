@@ -2,7 +2,7 @@
   <div class='activityDetails'>
     <div class=details v-html='longtext'></div>
     <div class="share">
-      <a target="_blank" href="https://www.facebook.com/BestekGlobal/" ><img :src="require('../assets/imgs/faceBook.png')"></a>
+      <!-- <a target="_blank" href="https://www.facebook.com/BestekGlobal/" ><img :src="require('../assets/imgs/faceBook.png')"></a> -->
       <!-- <a target="_blank" href="https://twitter.com/bestekglobal" ><img :src="require('../assets/imgs/twritte.png')"></a> -->
     </div>
   </div>
@@ -22,7 +22,7 @@ export default {
 <style lang="less" scoped>
 .activityDetails{
   overflow: hidden;
-  padding:63px 63px 105px;
+  padding:63px 63px ;
   background: white;
   // margin-top: 8px;
   .details{
@@ -30,6 +30,11 @@ export default {
     overflow: hidden;
     /deep/ img{
       width: 100%!important;
+    }
+    /deep/h2,/deep/span,/deep/p,/deep/div{
+      line-height: 1.5!important;
+      font-size: 16px!important;
+      font-family: "Whitney Book", "Microsoft YaHei"!important;
     }
   }
   .share{

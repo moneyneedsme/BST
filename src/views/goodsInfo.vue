@@ -48,8 +48,9 @@
             <span>Buy Now</span>
           </el-button>
           <el-button plain @click="shareNow(product_activity_id)">
-            <i class='iconfont iconfenxiang share'></i>
-            <span>Share(30)</span>
+            <!-- <i class='iconfont iconfenxiang share'></i> -->
+            <img :src="require('../assets/imgs/faceBook.png')" style='width:24px;height:24px;vertical-align: -5px;margin-right: 5px'>
+            <span>Share</span>
           </el-button>
         </div>
       </div>

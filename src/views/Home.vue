@@ -20,6 +20,7 @@
         <hot-activities class='hot-activities'></hot-activities>
       </div>
     </div>
+    <el-backtop></el-backtop>
   </div>
 </template>
 <script>
