@@ -3,7 +3,7 @@
     <div class="right" v-if="$store.state.isPc">
       <h3>Instructions for Authors</h3>
       <p>To order to offer a clearer understanding of how to write a perfect article, we provide you a sample for your reference as below.</p>
-      <div v-for="(v,i) in instructions" :key="i" @click='tolink(v.link)'>
+      <div v-for="(v,i) in instructions" :key="i" @click='tolink(v)'>
         <img :src="imgUrl+v.image">
         <!-- <p class='oneLine '>Bestek Official l 8 Socket Charging Station</p> -->
         <p class='oneLine '>{{v.title}}</p>
@@ -104,7 +104,8 @@ export default {
     this.getinstructions()
   },
   methods:{
-    tolink(url){
+    tolink(v){
+      const url = v.adlink?v.adlink:v.link
       window.location.href = url
     },
     getinstructions(){

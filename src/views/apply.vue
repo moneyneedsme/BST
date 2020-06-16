@@ -311,8 +311,8 @@ export default {
 				width:100%;
 				box-sizing: border-box;
 				>img{
-					width:198px;
-					height:101px;
+					width:110px;
+					height:110px;
 					position: absolute;
 					top:50%;
 					transform: translateY(-50%);
