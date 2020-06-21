@@ -1,8 +1,12 @@
 <template>
   <div>
     <div class='goodsInfo'>
-      <img :src="imgUrl+datas.image">
-      <div>
+      <el-carousel height="562px" class='carousel' indicator-position='none'>
+        <el-carousel-item v-for="item in datas.images" :key="item">
+          <img :src="imgUrl+item">
+        </el-carousel-item>
+      </el-carousel>
+      <div class='rightBox'>
         <h2>{{datas.name}}</h2>
         <div class='Applied'>
           <i class='iconfont iconrenwu-tuandui-copy'></i>
@@ -79,22 +83,22 @@
             </div>
           </div>       
         </div>
-        <div class='describe'>
+        <!-- <div class='describe'>
           <h4>Fill out the public test questionnaire:</h4>
           <p>Filling in the questionnaire carefully will increase the chance of successful application</p>
         </div>
         <div class="textBox">
           <p>Leave your active platform social accounts (We only support Facebook platform)</p>
           <el-input placeholder="Reply" v-model="submitData.socialaccount"></el-input>  
-        </div>
+        </div> -->
         <div class="textBox">
           <p>Please leave an email address for contact</p>
           <el-input placeholder="Reply" v-model="submitData.contactemail"></el-input>  
         </div>
-        <div class="textBox">
+        <!-- <div class="textBox">
           <p>Convince us why choose you</p>
           <el-input placeholder="Reply" v-model="submitData.whychooseyou"></el-input>  
-        </div>
+        </div> -->
       </div>
       <button @click='onSubmitBtn' :class='{active:submitData.socialaccount&&submitData.contactemail&&submitData.whychooseyou}'>Submit</button>
     </el-dialog>
@@ -242,7 +246,12 @@ export default {
     height:562px;
     float: left;
   }
-  >div{
+  .carousel{
+    width:562px;
+    height:562px;
+    float: left;
+  }
+  >div.rightBox{
     margin-left:562px;
     padding:57px 55px 0;
     >h2{
@@ -432,7 +441,6 @@ export default {
       text-align: center;
     }
     .contenet{
-      height: 420px;
       overflow-y:auto;
       margin-top: 34px;
       padding-bottom: 10px;
@@ -601,7 +609,18 @@ export default {
     height:5.23rem;
     float: inherit;
   }
-  >div{
+  .carousel{
+    width:6.78rem;
+    height:5.23rem;
+    float: inherit;
+    overflow: hidden;
+    img{
+      width:6.78rem;
+      height:5.23rem;
+      float: inherit;
+    }
+  }
+  >div.rightBox{
     margin-left:0px;
     padding:0.65rem 0.33rem 0.74rem;
     >h2{
