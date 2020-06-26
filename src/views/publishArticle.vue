@@ -75,6 +75,7 @@ import { quillEditor } from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
+import quillConfig from "../config/quill-config";
 export default {
   name:'publishArticle',
   components:{
@@ -94,7 +95,7 @@ export default {
       cooked: '',
       ceping_review_photo_id:null,
       topic_id:null,
-      editorOption: {},
+      editorOption:quillConfig,
       instructions:[]
     }
   },
